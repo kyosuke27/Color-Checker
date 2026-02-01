@@ -1,19 +1,16 @@
-//
-//  Color+Type.swift
-//  Color-Checker
-//
-//  Created by kyosuke on 2026/01/31.
-//
-
 import Foundation
 import SwiftUI
 
 struct Component{
-    
+    let colorSelectButtonBackgrond:Color
+    let buttonBackground:Color
+    let buttonBorder:Color
+    let textFieldBorder:Color
 }
 
 struct Base{
     let BaseBackground:Color
+    let baseFontColor:Color
 }
 
 struct ExtendedColors{
@@ -26,11 +23,18 @@ extension Color{
         return Color(red:r/255,green:g/255,blue:b/255,opacity:a)
     }
     
+    
     static let extendedColors:ExtendedColors = ExtendedColors(
         base:Base(
-            BaseBackground: Color.rgba(r: 255, g: 255, b: 255)
+            BaseBackground: Color.rgba(r: 40, g: 42, b: 65),
+            baseFontColor: Color.rgba(r: 223, g: 226, b: 232)
         ),
-        component:Component(),
+        component:Component(
+            colorSelectButtonBackgrond: Color.rgba(r: 46, g: 72, b: 160),
+            buttonBackground: Color.rgba(r: 40, g: 42, b: 65),
+            buttonBorder: Color.rgba(r: 159, g: 167, b: 202),
+            textFieldBorder: Color.rgba(r: 186, g: 197, b: 228)
+        ),
     )
    
 }
