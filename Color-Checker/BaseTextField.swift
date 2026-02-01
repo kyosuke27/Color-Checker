@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct BaseTextField: View {
-    @Binding var r:String
+    @Binding var inputString:String
     var body: some View {
-        TextField("abc",text: $r)
+        TextField("abc",text: $inputString)
             .padding()
             .background(Color.extendedColors.base.BaseBackground)
             .cornerRadius(8)
@@ -18,9 +18,9 @@ struct BaseTextField: View {
 }
 
 #Preview {
-    @Previewable @State var s = "abc"
+    @Previewable @State var inputString = "abc"
     VStack{
-        BaseTextField(r:$s)
+        BaseTextField(inputString:$inputString)
     }
     .padding()
 }
