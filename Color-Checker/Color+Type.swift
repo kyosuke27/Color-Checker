@@ -11,6 +11,9 @@ struct Component{
 struct Base{
     let BaseBackground:Color
     let baseFontColor:Color
+    let redFontColor:Color
+    let greenFontColor:Color
+    let blueFontColor:Color
 }
 
 struct ExtendedColors{
@@ -27,7 +30,10 @@ extension Color{
     static let extendedColors:ExtendedColors = ExtendedColors(
         base:Base(
             BaseBackground: Color.rgba(r: 40, g: 42, b: 65),
-            baseFontColor: Color.rgba(r: 223, g: 226, b: 232)
+            baseFontColor: Color.rgba(r: 223, g: 226, b: 232),
+            redFontColor: Color.rgba(r: 221, g: 118, b: 124),
+            greenFontColor: Color.rgba(r: 141, g: 231, b: 167),
+            blueFontColor: Color.rgba(r: 132, g: 137, b: 221),
         ),
         component:Component(
             colorSelectButtonBackgrond: Color.rgba(r: 46, g: 72, b: 160),
