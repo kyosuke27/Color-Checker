@@ -8,10 +8,10 @@ struct RGBInput: View {
     var body: some View {
         HStack{
             Text(labelString)
-                .font(.system(size: 34))
-                .padding(.horizontal,12)
+                .font(.system(size: 24))
+                .padding(.trailing,16)
                 .foregroundStyle(fontColor)
-            BaseTextField(inputString: $text,width: 80,height: 34)
+            BaseTextField(inputString: $text,width: 45,height: 18)
         }
     }
 }

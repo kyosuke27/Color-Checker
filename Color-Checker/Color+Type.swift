@@ -4,6 +4,7 @@ import SwiftUI
 struct Component{
     let colorSelectButtonBackgrond:Color
     let buttonBackground:Color
+    let buttonBlueBackground:Color
     let buttonBorder:Color
     let textFieldBorder:Color
 }
@@ -38,6 +39,7 @@ extension Color{
         component:Component(
             colorSelectButtonBackgrond: Color.rgba(r: 46, g: 72, b: 160),
             buttonBackground: Color.rgba(r: 40, g: 42, b: 65),
+            buttonBlueBackground: Color.rgba(r: 46, g: 72, b: 160),
             buttonBorder: Color.rgba(r: 159, g: 167, b: 202),
             textFieldBorder: Color.rgba(r: 186, g: 197, b: 228)
         ),
