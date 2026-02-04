@@ -5,6 +5,7 @@ struct Component{
     let colorSelectButtonBackgrond:Color
     let buttonBackground:Color
     let buttonBlueBackground:Color
+    let buttonPurpleBackground:Color
     let buttonBorder:Color
     let textFieldBorder:Color
 }
@@ -40,8 +41,9 @@ extension Color{
             colorSelectButtonBackgrond: Color.rgba(r: 46, g: 72, b: 160),
             buttonBackground: Color.rgba(r: 40, g: 42, b: 65),
             buttonBlueBackground: Color.rgba(r: 46, g: 72, b: 160),
+            buttonPurpleBackground: Color.rgba(r: 88, g: 82, b: 228),
             buttonBorder: Color.rgba(r: 159, g: 167, b: 202),
-            textFieldBorder: Color.rgba(r: 186, g: 197, b: 228)
+            textFieldBorder: Color.rgba(r: 186, g: 197, b: 228),
         ),
     )
    
