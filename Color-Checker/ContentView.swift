@@ -2,72 +2,74 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @State var r:String = "0"
-    @State var g:String = "0"
-    @State var b:String = "0"
-    @State var color:Color = .white
-    let maxValue = 255
-    let minLimtValue = 0
-    
-    private func rounded2(value:Double)->Double{
-        return (value*100).rounded()/100
-    }
-    
-    private func RGBtoColor() -> Color{
-        let calcR = Double(min(max((Int(r) ?? 0), minLimtValue),maxValue))/255.0
-        let calcG = Double(min(max((Int(g) ?? 0), minLimtValue),maxValue))/255.0
-        let calcB = Double(min(max((Int(b) ?? 0), minLimtValue),maxValue))/255.0
-        return Color(red: rounded2(value:calcR), green: rounded2(value: calcG), blue: rounded2(value: calcB))
-    }
+    @State var activeTab:TabData = .home
     var body: some View {
         VStack {
-            HStack{
-                TextField(text: $r, prompt: Text("255")) {
-                    Text("R")
-                }
-                .keyboardType(.numberPad)
-                .padding()
-                .border(Color.purple, width: 1)
-                TextField(text: $g, prompt: Text("255")) {
-                    Text("G")
-                }
-                .keyboardType(.numberPad)
-                .padding()
-                .border(Color.purple, width: 1)
-                TextField(text: $b, prompt: Text("255")) {
-                    Text("B")
-                }
-                .keyboardType(.numberPad)
-                .padding()
-                .border(Color.purple, width: 1)
-                
+            TabView(selection: $activeTab) {
+                ColorCheckerScreen()
+                    .tag(TabData.home)
+                // デフォルトのtabBarは非表示にする
+                    .toolbar(.hidden,for:.tabBar)
+                FavoriteColorScreen()
+                    .tag(TabData.favorite)
+                    .toolbar(.hidden,for:.tabBar)
             }
-            RoundedRectangle(cornerRadius: 30)
-                .fill(color)
-                .frame(maxWidth:.infinity)
-                .frame(height: 200)
-            Spacer()
-            Button {
-                color = RGBtoColor()
-            } label: {
-                Text("カラー選択")
-                    .foregroundStyle(.white)
-                    .padding()
-                    .background(Color.blue.opacity(0.5))
-            }
-            Spacer()
-            Button {
-                color = .white
-            } label: {
-                Text("リセット")
-                    .foregroundStyle(.white)
-                    .padding()
-                    .background(Color.purple.opacity(0.5))
-            }
-            Spacer()
-            
+            CustomTabBar(
+                tint:Color.extendedColors.component.selectedTabColor,
+                activeColor:Color.extendedColors.component.defaultTabColor
+            )
         }
-        .padding()
+    }
+    
+    @ViewBuilder
+    func CustomTabBar(tint:Color = Color.extendedColors.component.selectedTabColor,activeColor:Color = Color.pink)->some View{
+        HStack(alignment: .bottom,spacing: 0){
+            ForEach(TabData.allCases,id: \.rawValue){
+                TabItem(tint: tint, inactiveColor: activeColor, tab: $0, activeTab: $activeTab)
+            }
+        }
+        .padding(.horizontal,15)
+        .padding(.vertical,10)
+        .background {
+            Image("Background")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+        }
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(Color.extendedColors.component.buttonBorder)
+                .frame(height: 0.2)
+                .ignoresSafeArea(edges: .horizontal)
+        }
+    }
+}
+
+struct TabItem:View{
+    let tint:Color
+    let inactiveColor:Color
+    // このコンポーネント内で表示するタブ
+    let tab:TabData
+    // 現在選択されているタブ
+    @Binding var activeTab:TabData
+    
+    var body: some View{
+        VStack(spacing:0){
+            Image(systemName: tab.systemImage)
+                .font(.system(size: 28, weight: .regular))
+                .foregroundStyle(activeTab == tab ? tint : inactiveColor)
+                .frame(width: 40, height: 40)
+                .shadow(color:(activeTab == tab ? tint.opacity(0.6) : .clear),radius: 8,x: 0,y: 0)
+                .shadow(color:(activeTab == tab ? tint.opacity(0.4) : .clear),radius: 28,x: 0,y: 0)
+                .shadow(color:(activeTab == tab ? tint.opacity(0.2) : .clear),radius: 36,x: 0,y: 0)
+            Text(tab.rawValue)
+                .foregroundStyle(activeTab ==  tab ? tint : .gray)
+        }
+        .frame(maxWidth: .infinity)
+        .onTapGesture {
+            // activetabタブの入れ替え
+            activeTab = tab
+        }
     }
 }
 
