@@ -6,19 +6,46 @@ struct ColorCheckerScreen: View {
     @State var blue:String = ""
     @State var color:Color = .white
     @State var opacity:Double = 1.0
-    let maxValue = 255
-    let minLimtValue = 0
+    @State var colors:[ColorData] = []
+    let reposiroty:FavoriteColorRepository = FavoriteColorRepositoryImpl()
     
-    private func rounded2(value:Double)->Double{
+    private func rounded2String(value:Double)->String{
         print((value*100).rounded()/100)
-        return (value*100).rounded()/100
+        return String((value*100).rounded()/100)
     }
     
     private func RGBtoColor() -> Color{
-        let calcR = Double(min(max((Int(red) ?? 0), minLimtValue),maxValue))/255.0
-        let calcG = Double(min(max((Int(green) ?? 0), minLimtValue),maxValue))/255.0
-        let calcB = Double(min(max((Int(blue) ?? 0), minLimtValue),maxValue))/255.0
-        return Color(red: rounded2(value:calcR), green: rounded2(value: calcG), blue: rounded2(value: calcB),opacity: opacity)
+        let calcR = clampTo255(colorNum: red)
+        let calcG = clampTo255(colorNum: green)
+        let calcB = clampTo255(colorNum: blue)
+        return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB))
+    }
+    
+    private func RGBtoHex() -> String{
+        let calcR = clampTo255(colorNum: red)
+        let calcG = clampTo255(colorNum: green)
+        let calcB = clampTo255(colorNum: blue)
+        // 2桁の16進数表記にする
+        // %: フォーマット指定
+        // 0: 0埋め
+        // 2: 2桁
+        // X: 16進数表記にする
+        return String(format:"#%02X%02X%02X",calcR,calcG,calcB)
+
+    }
+    
+    // 0~255に変換
+    private func clampTo255(colorNum:String)->Int{
+        let minLimtValue = 0
+        let maxValue = 255
+        return min(max((Int(colorNum) ?? 0), minLimtValue),maxValue)
+    }
+    
+    private func saveColor()->Void{
+        // Get Favorite Colors Data
+        colors = reposiroty.getColor()
+        // Add New Favorite Data
+        // Save Favorite Colors Data
     }
     
     var body: some View {
@@ -30,13 +57,13 @@ struct ColorCheckerScreen: View {
             RGBRow(red:$red , green:$green , blue:$blue )
             ColorArea(color: $color, height: 240)
             HStack{
-                Text("A : \(rounded2(value:opacity))")
+                Text("A : \(rounded2String(value:opacity))")
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
-             Slider(value:$opacity,in: 0...1)
-                .onChange(of: opacity) { _ , newValue in
-                    opacity = newValue
-                    color = RGBtoColor()
-                }   
+                Slider(value:$opacity,in: 0...1)
+                    .onChange(of: opacity) { _ , newValue in
+                        opacity = newValue
+                        color = RGBtoColor()
+                    }
             }
             HStack{
                 BaseButton(text: "カラー表示", width: 180, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
@@ -50,7 +77,9 @@ struct ColorCheckerScreen: View {
                 })
             }
             HStack{
-                BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {})
+                BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
+                  print(RGBtoHex())
+                })
             }
             
             Spacer()
