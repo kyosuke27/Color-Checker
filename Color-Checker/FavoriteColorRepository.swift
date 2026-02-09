@@ -15,7 +15,16 @@ struct FavoriteColorRepositoryImpl:FavoriteColorRepository{
     }
     
     func getColor()->[ColorData] {
-        return IosFileManager.getData(fileName: fileName)
+        do{
+            let colors:[ColorData] = try IosFileManager.getData(fileName: fileName)
+            return colors
+        }catch FileException.fileNotFound(let url){
+            print("file not found : \(url)")
+            // FileNotFoundは空を返す
+            return []
+        }catch{
+            fatalError()
+        }
     }
     
     

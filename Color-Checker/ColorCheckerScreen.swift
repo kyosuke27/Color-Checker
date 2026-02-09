@@ -6,11 +6,9 @@ struct ColorCheckerScreen: View {
     @State var blue:String = ""
     @State var color:Color = .white
     @State var opacity:Double = 1.0
-    @State var colors:[ColorData] = []
     let reposiroty:FavoriteColorRepository = FavoriteColorRepositoryImpl()
     
     private func rounded2String(value:Double)->String{
-        print((value*100).rounded()/100)
         return String((value*100).rounded()/100)
     }
     
@@ -43,9 +41,19 @@ struct ColorCheckerScreen: View {
     
     private func saveColor()->Void{
         // Get Favorite Colors Data
-        colors = reposiroty.getColor()
+        var colorsData:[ColorData] = reposiroty.getColor()
         // Add New Favorite Data
+        let saveColorData:ColorData = ColorData(red: red, green: green, blue: blue, hexColor: RGBtoHex())
+        colorsData.append(saveColorData)
         // Save Favorite Colors Data
+        reposiroty.saveColor(colorsData)
+    }
+    
+    private func getColor()->Void{
+        let colorsData:[ColorData] = reposiroty.getColor()
+        colorsData.forEach { color in
+            print(color)
+        }
     }
     
     var body: some View {
@@ -78,9 +86,16 @@ struct ColorCheckerScreen: View {
             }
             HStack{
                 BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
-                  print(RGBtoHex())
+                    saveColor()
                 })
             }
+            
+            Button {
+                getColor()
+            } label: {
+                Text("Color get")
+            }
+
             
             Spacer()
         }
