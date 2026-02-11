@@ -39,7 +39,7 @@ struct ColorCheckerScreen: View {
         return min(max((Int(colorNum) ?? 0), minLimtValue), maxValue)
     }
 
-    private func saveColor(){
+    private func saveColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
@@ -49,7 +49,7 @@ struct ColorCheckerScreen: View {
         reposiroty.saveColor(colorsData)
     }
 
-    private func getColor(){
+    private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
         colorsData.forEach { color in
             print(color)
