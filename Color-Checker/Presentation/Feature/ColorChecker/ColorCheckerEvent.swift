@@ -1,6 +1,6 @@
 import Foundation
 
-enum ColorCheckerEvent{
+enum ColorCheckerEvent {
     case showColor
     case clearAll
 }

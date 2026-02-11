@@ -1,7 +1,7 @@
 import Foundation
 
-struct ColorCheckerViewModel{
-    func onEvent(event:ColorCheckerEvent){
+struct ColorCheckerViewModel {
+    func onEvent(event: ColorCheckerEvent) {
         switch event {
         case .showColor:
             print("hello")
