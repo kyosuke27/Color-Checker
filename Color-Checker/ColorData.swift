@@ -1,8 +1,8 @@
 import Foundation
 
 struct ColorData: Codable {
-    let red:String
-    let green:String
-    let blue:String
-    let hexColor:String
+    let red: Int
+    let green: Int
+    let blue: Int
+    let hexColor: String
 }
