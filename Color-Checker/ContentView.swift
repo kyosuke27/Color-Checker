@@ -18,8 +18,15 @@ struct ContentView: View {
                 activeColor: Color.extendedColors.component.defaultTabColor
             )
         }
+        .background {
+                Image("Background")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            }
+        
     }
-
+    
     @ViewBuilder
     func CustomTabBar(tint: Color = Color.extendedColors.component.selectedTabColor, activeColor: Color = Color.pink) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
@@ -28,13 +35,7 @@ struct ContentView: View {
             }
         }
         .padding(.horizontal, 15)
-        .padding(.vertical, 10)
-        .background {
-            Image("Background")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-        }
+        .padding(.top, 10)
         .overlay(alignment: .top) {
             Rectangle()
                 .fill(Color.extendedColors.component.buttonBorder)
@@ -51,7 +52,7 @@ struct TabItem: View {
     let tab: TabData
     // 現在選択されているタブ
     @Binding var activeTab: TabData
-
+    
     var body: some View {
         VStack(spacing: 0) {
             Image(systemName: tab.systemImage)

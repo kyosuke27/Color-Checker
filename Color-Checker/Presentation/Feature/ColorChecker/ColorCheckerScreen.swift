@@ -51,6 +51,7 @@ struct ColorCheckerScreen: View {
 
     private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
+        print("colorsData : \(colorsData)")
         colorsData.forEach { color in
             print(color)
         }
@@ -98,7 +99,6 @@ struct ColorCheckerScreen: View {
 
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 16)
         .background(
             Image("Background")

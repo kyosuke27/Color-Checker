@@ -9,7 +9,7 @@ struct RGBInput: View {
         HStack {
             Text(labelString)
                 .font(.system(size: 24))
-                .padding(.trailing, 16)
+                .padding(.trailing, 8)
                 .foregroundStyle(fontColor)
             BaseTextField(inputString: $text, width: 45, height: 18)
         }
