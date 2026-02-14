@@ -23,13 +23,14 @@ struct FavoriteColorCardView: View {
                     
                 }
                 .frame(height: height)
-                .padding(.trailing, 8)
+                .padding(.trailing, 4)
                 Spacer()
                 Button {
                     onTap()
                 } label: {
                     Image(systemName: "xmark")
                         .tint(Color.extendedColors.base.baseFontColor)
+                        .frame(width:12,height: 12)
                 }
             }
         }
