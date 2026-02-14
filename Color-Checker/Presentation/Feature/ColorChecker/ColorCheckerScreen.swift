@@ -28,7 +28,7 @@ struct ColorCheckerScreen: View {
         // 0: 0埋め
         // 2: 2桁
         // X: 16進数表記にする
-        return String(format: "#%02X%02X%02X", calcR, calcG, calcB)
+        return String(format: "%02X%02X%02X", calcR, calcG, calcB)
 
     }
 
