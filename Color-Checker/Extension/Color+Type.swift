@@ -13,6 +13,7 @@ struct Component {
     let textFieldBorder: Color
     let selectedTabColor: Color
     let defaultTabColor: Color
+    let toastBackgroundColor: Color
 }
 
 struct Base {
@@ -52,7 +53,8 @@ extension Color {
             buttonBorder: Color.rgba(r: 159, g: 167, b: 202),
             textFieldBorder: Color.rgba(r: 186, g: 197, b: 228),
             selectedTabColor: Color.rgba(r: 152, g: 173, b: 253),
-            defaultTabColor: Color.rgba(r: 105, g: 94, b: 154)
+            defaultTabColor: Color.rgba(r: 105, g: 94, b: 154),
+            toastBackgroundColor: Color.rgba(r: 66, g: 210, b: 147)
         ),
     )
 
