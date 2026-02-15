@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ColorCheckerScreen: View {
     @State var red: String = ""
@@ -92,6 +93,19 @@ struct ColorCheckerScreen: View {
             }
             Spacer()
         }
+       .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                HStack {
+                    Spacer()
+                    Button {
+                        UIApplication.shared.endEditing()
+                    } label: {
+                        Text("閉じる")
+                    }
+
+                }
+            }
+        }
         .padding(.horizontal, 16)
         .background(
             Image("Background")
@@ -99,6 +113,13 @@ struct ColorCheckerScreen: View {
                 .scaledToFill()
                 .ignoresSafeArea()
         )
+    }
+}
+
+extension UIApplication {
+    func endEditing(_ force: Bool = true) {
+        self.sendAction(#selector(UIResponder.resignFirstResponder),
+                        to: nil, from: nil, for: nil)
     }
 }
 

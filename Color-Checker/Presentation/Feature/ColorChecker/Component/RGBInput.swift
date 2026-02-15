@@ -11,7 +11,7 @@ struct RGBInput: View {
                 .font(.system(size: 24))
                 .padding(.trailing, 8)
                 .foregroundStyle(fontColor)
-            BaseTextField(inputString: $text, width: 45, height: 18)
+            BaseTextField(inputString: $text, width: 45, height: 18, type: .numberInput)
         }
     }
 }
