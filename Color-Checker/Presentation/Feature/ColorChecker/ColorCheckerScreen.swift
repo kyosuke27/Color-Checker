@@ -9,18 +9,18 @@ struct ColorCheckerScreen: View {
     @State var opacity: Float = 1.0
     @State var isShowToast: Bool = false
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
-    
+
     private func rounded2(value: Float) -> Float {
         return (value*100).rounded()/100
     }
-    
+
     private func RGBtoColor() -> Color {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
         let calcB = clampTo255(colorNum: blue)
         return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
     }
-    
+
     private func RGBtoHex() -> String {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -31,16 +31,20 @@ struct ColorCheckerScreen: View {
         // 2: 2桁
         // X: 16進数表記にする
         return String(format: "%02X%02X%02X", calcR, calcG, calcB)
-        
+
     }
-    
+
     // 0~255に変換
     private func clampTo255(colorNum: String) -> Int {
         let minLimtValue = 0
         let maxValue = 255
+        // 空の場合初期化後なので、255を返す
+        if colorNum.isEmpty {
+            return 255
+        }
         return min(max((Int(colorNum) ?? 0), minLimtValue), maxValue)
     }
-    
+
     private func saveColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
@@ -50,7 +54,7 @@ struct ColorCheckerScreen: View {
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
     }
-    
+
     private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
         print("colorsData : \(colorsData)")
@@ -58,9 +62,9 @@ struct ColorCheckerScreen: View {
             print(color)
         }
     }
-    
+
     var body: some View {
-        ZStack{
+        ZStack {
             VStack(spacing: 16) {
                 Text("Color Checker")
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
@@ -111,7 +115,7 @@ struct ColorCheckerScreen: View {
                         } label: {
                             Text("閉じる")
                         }
-                        
+
                     }
                 }
             }
