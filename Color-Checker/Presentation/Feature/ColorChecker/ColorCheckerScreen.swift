@@ -5,18 +5,18 @@ struct ColorCheckerScreen: View {
     @State var green: String = ""
     @State var blue: String = ""
     @State var color: Color = .white
-    @State var opacity: Double = 1.0
+    @State var opacity: Float = 1.0
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
 
-    private func rounded2String(value: Double) -> String {
-        return String((value*100).rounded()/100)
+    private func rounded2(value: Float) -> Float {
+        return (value*100).rounded()/100
     }
 
     private func RGBtoColor() -> Color {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
         let calcB = clampTo255(colorNum: blue)
-        return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB))
+        return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
     }
 
     private func RGBtoHex() -> String {
@@ -43,7 +43,7 @@ struct ColorCheckerScreen: View {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
-        let saveColorData: ColorData = ColorData(red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), hexColor: RGBtoHex())
+        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex())
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
@@ -66,11 +66,11 @@ struct ColorCheckerScreen: View {
             RGBRow(red: $red, green: $green, blue: $blue )
             ColorArea(color: $color, height: 240)
             HStack {
-                Text("A : \(rounded2String(value: opacity))")
+                Text("A : \(String(format: "%.2f", opacity))")
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
                 Slider(value: $opacity, in: 0...1)
                     .onChange(of: opacity) { _, newValue in
-                        opacity = newValue
+                        opacity = rounded2(value: newValue)
                         color = RGBtoColor()
                     }
             }
