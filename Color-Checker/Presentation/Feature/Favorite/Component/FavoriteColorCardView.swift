@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FavoriteColorCardView: View {
     let colorData: ColorData
-    let onTap: () -> Void
+    let onDeleteTap: () -> Void
     let height: CGFloat
     var body: some View {
         VStack {
@@ -26,7 +26,7 @@ struct FavoriteColorCardView: View {
                 .padding(.trailing, 4)
                 Spacer()
                 Button {
-                    onTap()
+                    onDeleteTap()
                 } label: {
                     Image(systemName: "xmark")
                         .tint(Color.extendedColors.base.baseFontColor)
@@ -50,9 +50,9 @@ struct FavoriteColorCardView: View {
     let colorData: ColorData = ColorData(id: UUID().uuidString, red: 100, green: 100, blue: 100, alpha: 0.5, hexColor: "FFFFFF")
     VStack {
         HStack {
-            FavoriteColorCardView(colorData: colorData, onTap: {}, height: 50)
-            FavoriteColorCardView(colorData: colorData, onTap: {}, height: 50)
+            FavoriteColorCardView(colorData: colorData, onDeleteTap: {}, height: 50)
+            FavoriteColorCardView(colorData: colorData, onDeleteTap: {}, height: 50)
         }
-        FavoriteColorCardView(colorData: colorData, onTap: {}, height: 50)
+        FavoriteColorCardView(colorData: colorData, onDeleteTap: {}, height: 50)
     }
 }

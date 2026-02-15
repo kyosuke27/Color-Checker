@@ -90,13 +90,6 @@ struct ColorCheckerScreen: View {
                     saveColor()
                 })
             }
-
-            Button {
-                getColor()
-            } label: {
-                Text("Color get")
-            }
-
             Spacer()
         }
         .padding(.horizontal, 16)

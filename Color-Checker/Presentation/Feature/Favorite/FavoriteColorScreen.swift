@@ -8,7 +8,10 @@ struct FavoriteColorScreen: View {
     var body: some View {
         LazyVGrid(columns: columns, alignment: .leading, spacing: 20) {
             ForEach(colorsData) { color in
-                FavoriteColorCardView(colorData: color, onTap: {}, height: 45)
+                FavoriteColorCardView(colorData: color, onDeleteTap: {
+                    repository.deleteColor(color.id)
+                    colorsData = repository.getColor()
+                }, height: 45)
             }
         }
         .onAppear {
