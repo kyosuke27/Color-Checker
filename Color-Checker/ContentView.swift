@@ -24,9 +24,9 @@ struct ContentView: View {
                     .scaledToFill()
                     .ignoresSafeArea()
             }
-        
+
     }
-    
+
     @ViewBuilder
     func CustomTabBar(tint: Color = Color.extendedColors.component.selectedTabColor, activeColor: Color = Color.pink) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
@@ -52,7 +52,7 @@ struct TabItem: View {
     let tab: TabData
     // 現在選択されているタブ
     @Binding var activeTab: TabData
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Image(systemName: tab.systemImage)

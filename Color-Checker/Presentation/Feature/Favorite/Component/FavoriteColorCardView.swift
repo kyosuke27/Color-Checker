@@ -3,11 +3,11 @@ import SwiftUI
 struct FavoriteColorCardView: View {
     let colorData: ColorData
     let onTap: () -> Void
-    let height:CGFloat
+    let height: CGFloat
     var body: some View {
         VStack {
             HStack(alignment: .top) {
-                VStack(alignment: .center){
+                VStack(alignment: .center) {
                         ColorCardView(color: Color.rgba(r: Double(colorData.red), g: Double(colorData.green), b: Double(colorData.blue)), side: height)
                 }
                 Spacer()
@@ -20,7 +20,7 @@ struct FavoriteColorCardView: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)
                     Spacer()
-                    
+
                 }
                 .frame(height: height)
                 .padding(.trailing, 4)
@@ -30,11 +30,11 @@ struct FavoriteColorCardView: View {
                 } label: {
                     Image(systemName: "xmark")
                         .tint(Color.extendedColors.base.baseFontColor)
-                        .frame(width:12,height: 12)
+                        .frame(width: 12, height: 12)
                 }
             }
         }
-        
+
         .frame(maxWidth: .infinity)
         .padding()
         .background(Color.extendedColors.component.compBackground)
@@ -47,12 +47,12 @@ struct FavoriteColorCardView: View {
 }
 
 #Preview {
-    let colorData: ColorData = ColorData(red: 100, green: 100, blue: 100, hexColor: "FFFFFF")
+    let colorData: ColorData = ColorData(id: UUID().uuidString, red: 100, green: 100, blue: 100, alpha: 0.5, hexColor: "FFFFFF")
     VStack {
         HStack {
-            FavoriteColorCardView(colorData: colorData, onTap: {},height:50)
-            FavoriteColorCardView(colorData: colorData, onTap: {},height:50)
+            FavoriteColorCardView(colorData: colorData, onTap: {}, height: 50)
+            FavoriteColorCardView(colorData: colorData, onTap: {}, height: 50)
         }
-        FavoriteColorCardView(colorData: colorData, onTap: {},height:50)
+        FavoriteColorCardView(colorData: colorData, onTap: {}, height: 50)
     }
 }
