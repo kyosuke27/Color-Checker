@@ -4,8 +4,13 @@ struct FavoriteColorCardView: View {
     let colorData: ColorData
     let onDeleteTap: () -> Void
     let height: CGFloat
+
+    func numToPercent(fNum: Float) -> Int {
+        return Int((fNum*100).rounded())
+    }
+
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             HStack(alignment: .top) {
                 VStack(alignment: .center) {
                         ColorCardView(color: Color.rgba(r: Double(colorData.red), g: Double(colorData.green), b: Double(colorData.blue)), side: height)
@@ -33,6 +38,11 @@ struct FavoriteColorCardView: View {
                         .frame(width: 12, height: 12)
                 }
             }
+            Divider()
+                .background(Color.extendedColors.component.borderColor)
+            Text("透明度 \(numToPercent(fNum: colorData.alpha))%")
+                .font(.system(size: 14))
+                .minimumScaleFactor(0.6)
         }
 
         .frame(maxWidth: .infinity)

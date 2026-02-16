@@ -103,8 +103,7 @@ struct ColorCheckerScreen: View {
                     })
                 }
                 Spacer()
-                
-                
+
             }
             .toolbar {
                 ToolbarItem(placement: .keyboard) {
