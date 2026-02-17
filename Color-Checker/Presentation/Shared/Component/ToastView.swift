@@ -1,19 +1,19 @@
 import SwiftUI
 
-enum ToastType{
+enum ToastType {
     case success
 }
 
 struct ToastView: View {
-    let toastType:ToastType
+    let toastType: ToastType
     var body: some View {
-        switch toastType{
+        switch toastType {
         case .success:
             registSucess()
         }
     }
-    
-    private func registSucess()->some View{
+
+    private func registSucess() -> some View {
         return ZStack {
             HStack {
                 Image(systemName: "checkmark.circle.fill")

@@ -129,7 +129,7 @@ struct ColorCheckerScreen: View {
             )
             if isShowToast {
                 VStack {
-                    ToastView()
+                    ToastView(toastType: ToastType.success)
                     Spacer()
                 }
                 .padding()
