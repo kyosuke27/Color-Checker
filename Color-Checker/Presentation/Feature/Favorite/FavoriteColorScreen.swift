@@ -6,17 +6,19 @@ struct FavoriteColorScreen: View {
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        LazyVGrid(columns: columns, alignment: .leading, spacing: 20) {
-            ForEach(colorsData) { color in
-                FavoriteColorCardView(colorData: color, onDeleteTap: {
-                    repository.deleteColor(color.id)
-                    colorsData = repository.getColor()
-                }, height: 45)
+        ScrollView(showsIndicators: false) {
+            LazyVGrid(columns: columns, alignment: .leading, spacing: 20) {
+                ForEach(colorsData) { color in
+                    FavoriteColorCardView(colorData: color, onDeleteTap: {
+                        repository.deleteColor(color.id)
+                        colorsData = repository.getColor()
+                    }, height: 45)
+                }
             }
-        }
-        .onAppear {
-            colorsData =  repository.getColor()
-            print("colorsData \(colorsData)")
+            .onAppear {
+                colorsData =  repository.getColor()
+                print("colorsData \(colorsData)")
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(.horizontal, 4)
