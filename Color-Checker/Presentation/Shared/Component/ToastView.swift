@@ -1,8 +1,20 @@
 import SwiftUI
 
+enum ToastType{
+    case success
+}
+
 struct ToastView: View {
+    let toastType:ToastType
     var body: some View {
-        ZStack {
+        switch toastType{
+        case .success:
+            registSucess()
+        }
+    }
+    
+    private func registSucess()->some View{
+        return ZStack {
             HStack {
                 Image(systemName: "checkmark.circle.fill")
                     .resizable()
@@ -17,9 +29,9 @@ struct ToastView: View {
             .background(Color.extendedColors.component.toastBackgroundColor)
         }
         .cornerRadius(8)
-    }
+   }
 }
 
 #Preview {
-    ToastView()
+    ToastView(toastType: ToastType.success)
 }
