@@ -4,6 +4,7 @@ import SwiftUI
 enum TabData: String, CaseIterable {
     case home = "Home"
     case favorite = "Favorite"
+    case setting = "Setting"
 
     var systemImage: String {
         switch self {
@@ -11,7 +12,10 @@ enum TabData: String, CaseIterable {
             return "drop.halffull"
         case .favorite:
             return "star"
+        case .setting:
+            return "gear"
         }
+
     }
 
     var index: Int {

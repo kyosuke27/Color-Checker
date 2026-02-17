@@ -12,6 +12,8 @@ struct ContentView: View {
                 FavoriteColorScreen()
                     .tag(TabData.favorite)
                     .toolbar(.hidden, for: .tabBar)
+                SettingScreen()
+                    .tag(TabData.setting)
             }
             CustomTabBar(
                 tint: Color.extendedColors.component.selectedTabColor,
