@@ -43,6 +43,10 @@ struct FavoriteColorCardView: View {
             Text("透明度 \(numToPercent(fNum: colorData.alpha))%")
                 .font(.system(size: 14))
                 .minimumScaleFactor(0.6)
+            Text("メモ：\(colorData.memo)")
+                .font(.system(size: 14))
+                .minimumScaleFactor(0.6)
+
         }
 
         .frame(maxWidth: .infinity)
@@ -57,7 +61,7 @@ struct FavoriteColorCardView: View {
 }
 
 #Preview {
-    let colorData: ColorData = ColorData(id: UUID().uuidString, red: 100, green: 100, blue: 100, alpha: 0.5, hexColor: "FFFFFF")
+    let colorData: ColorData = ColorData(id: UUID().uuidString, red: 100, green: 100, blue: 100, alpha: 0.5, hexColor: "FFFFFF", memo: "Test")
     VStack {
         HStack {
             FavoriteColorCardView(colorData: colorData, onDeleteTap: {}, height: 50)

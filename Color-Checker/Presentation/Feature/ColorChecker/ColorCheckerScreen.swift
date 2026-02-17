@@ -8,6 +8,7 @@ struct ColorCheckerScreen: View {
     @State var color: Color = .white
     @State var opacity: Float = 1.0
     @State var isShowToast: Bool = false
+    @State var memoText: String = ""
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
 
     private func rounded2(value: Float) -> Float {
@@ -49,7 +50,7 @@ struct ColorCheckerScreen: View {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
-        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex())
+        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText)
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
@@ -71,7 +72,8 @@ struct ColorCheckerScreen: View {
                     .font(.system(size: 38))
                     .padding()
                 RGBRow(red: $red, green: $green, blue: $blue )
-                ColorArea(color: $color, height: 240)
+                ColorArea(color: $color, height: 180)
+                BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
                 HStack {
                     Text("A : \(String(format: "%.2f", opacity))")
                         .foregroundStyle(Color.extendedColors.base.baseFontColor)

@@ -7,4 +7,5 @@ struct ColorData: Codable, Identifiable {
     let blue: Int
     let alpha: Float
     let hexColor: String
+    let memo: String
 }
