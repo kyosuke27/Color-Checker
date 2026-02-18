@@ -8,9 +8,22 @@ struct RGBRow: View {
     var body: some View {
         HStack {
             RGBInput(text: $red, labelString: "R", fontColor: Color.extendedColors.base.redFontColor)
+            Spacer()
             RGBInput(text: $green, labelString: "G", fontColor: Color.extendedColors.base.greenFontColor)
+            Spacer()
             RGBInput(text: $blue, labelString: "B", fontColor: Color.extendedColors.base.blueFontColor)
+            Spacer()
+            Button {
+                UIPasteboard.general.string = "\(red),\(green),\(blue)"
+            } label: {
+                Image(systemName: "list.clipboard.fill")
+                    .resizable()
+                    .frame(width: 20, height: 25)
+                    .foregroundStyle(.white)
+            }
+
         }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
         .background(Color.extendedColors.base.BaseBackground)
