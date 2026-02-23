@@ -8,7 +8,7 @@ class AppState: ObservableObject {
         self.reposiroty = reposiroty
         self.appSetting = reposiroty.read()
     }
-    
+
     func updateThemeColor(_ type: SettingImageType) {
         let newSettings = AppSettings(id: appSetting.id, themeColor: type)
         self.appSetting = newSettings

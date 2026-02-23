@@ -4,7 +4,7 @@ struct RGBRow: View {
     @Binding var red: String
     @Binding var green: String
     @Binding var blue: String
-    @Binding var isShowToastType:ToastType?
+    @Binding var isShowToastType: ToastType?
 
     var body: some View {
         HStack {
@@ -45,6 +45,6 @@ struct RGBRow: View {
     @Previewable @State var red = ""
     @Previewable @State var green = ""
     @Previewable @State var blue = ""
-    @Previewable @State var isShowToastType:ToastType? = nil
-    RGBRow(red: $red, green: $green, blue: $blue,isShowToastType: $isShowToastType)
+    @Previewable @State var isShowToastType: ToastType?
+    RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType)
 }

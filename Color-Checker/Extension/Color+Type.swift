@@ -14,8 +14,8 @@ struct Component {
     let selectedTabColor: Color
     let defaultTabColor: Color
     let toastBackgroundColor: Color
-    let blueToastBackgroundColor:Color
-    let errorToastBackgroundColor:Color
+    let blueToastBackgroundColor: Color
+    let errorToastBackgroundColor: Color
     let imageCardBorder: Color
 }
 

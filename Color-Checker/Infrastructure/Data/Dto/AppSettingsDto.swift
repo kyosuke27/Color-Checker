@@ -1,6 +1,6 @@
 import Foundation
 
-struct AppSettingsDto:Codable,Identifiable{
-    let id:String
-    let themeColor:SettingImageType
+struct AppSettingsDto: Codable, Identifiable {
+    let id: String
+    let themeColor: SettingImageType
 }

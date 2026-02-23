@@ -3,24 +3,24 @@ import UIKit
 
 struct EditFavoriteColorScreen: View {
     // FavoriteScreenからの受け渡し値
-    @State var selectedColor:ColorData
+    @State var selectedColor: ColorData
     @State var red: String
     @State var green: String
     @State var blue: String
     @State var color: Color = .white
     @State var opacity: Float = 1.0
-    @State var isShowToastType: ToastType? = nil
+    @State var isShowToastType: ToastType?
     @State var memoText: String = ""
-    @EnvironmentObject var appSettitngs:AppSettings
+    @EnvironmentObject var appSettitngs: AppSettings
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
-    
+
     init(selectedColor: ColorData) {
         self._selectedColor = State(initialValue: selectedColor)
         // RGB を文字列で初期化
         self._red = State(initialValue: String(selectedColor.red))
         self._green = State(initialValue: String(selectedColor.green))
         self._blue = State(initialValue: String(selectedColor.blue))
-        
+
         // Color と opacity を初期化
         self._opacity = State(initialValue: selectedColor.alpha)
         self._color = State(initialValue:
@@ -31,22 +31,22 @@ struct EditFavoriteColorScreen: View {
                                     a: Double(selectedColor.alpha)
                                 )
         )
-        
+
         // メモを初期化
         self._memoText = State(initialValue: selectedColor.memo)
     }
-    
+
     private func rounded2(value: Float) -> Float {
         return (value*100).rounded()/100
     }
-    
+
     private func RGBtoColor() -> Color {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
         let calcB = clampTo255(colorNum: blue)
         return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
     }
-    
+
     private func RGBtoHex() -> String {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -57,9 +57,9 @@ struct EditFavoriteColorScreen: View {
         // 2: 2桁
         // X: 16進数表記にする
         return String(format: "%02X%02X%02X", calcR, calcG, calcB)
-        
+
     }
-    
+
     // 0~255に変換
     private func clampTo255(colorNum: String) -> Int {
         let minLimtValue = 0
@@ -70,7 +70,7 @@ struct EditFavoriteColorScreen: View {
         }
         return min(max((Int(colorNum) ?? 0), minLimtValue), maxValue)
     }
-    
+
     private func saveColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
@@ -80,7 +80,7 @@ struct EditFavoriteColorScreen: View {
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
     }
-    
+
     private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
         print("colorsData : \(colorsData)")
@@ -88,7 +88,7 @@ struct EditFavoriteColorScreen: View {
             print(color)
         }
     }
-    
+
     private func isValidRGB(red: String, green: String, blue: String) -> String? {
         let upperLimit = 255
         let r = clampTo255(colorNum: red)
@@ -99,7 +99,7 @@ struct EditFavoriteColorScreen: View {
         }
         return nil
     }
-    
+
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
@@ -107,7 +107,7 @@ struct EditFavoriteColorScreen: View {
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     .font(.system(size: 38))
                     .padding()
-                RGBRow(red: $red, green: $green, blue: $blue,isShowToastType: $isShowToastType )
+                RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
                 ColorArea(color: $color, height: 180)
                 BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
                 HStack {
@@ -152,7 +152,7 @@ struct EditFavoriteColorScreen: View {
                     })
                 }
                 Spacer()
-                
+
             }
             .toolbar {
                 ToolbarItem(placement: .keyboard) {
@@ -163,7 +163,7 @@ struct EditFavoriteColorScreen: View {
                         } label: {
                             Text("閉じる")
                         }
-                        
+
                     }
                 }
             }
@@ -174,7 +174,7 @@ struct EditFavoriteColorScreen: View {
                     .scaledToFill()
                     .ignoresSafeArea()
             )
-            if let type = isShowToastType{
+            if let type = isShowToastType {
                 VStack {
                     ToastView(toastType: type)
                     Spacer()
@@ -186,7 +186,7 @@ struct EditFavoriteColorScreen: View {
 }
 
 #Preview {
-    let appSetting = AppSettings(id: "1234", themeColor:SettingImageType.blueColor)
+    let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
     // 適当なダミーデータを用意
     let selectedColorData = ColorData(
         id: UUID().uuidString,

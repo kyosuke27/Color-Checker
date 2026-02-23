@@ -1,10 +1,10 @@
 import Foundation
 
-enum SettingImageType: Int, CaseIterable,Codable{
+enum SettingImageType: Int, CaseIterable, Codable {
     case defaultImage = 1
     case lightImage = 2
     case blueColor = 3
-    
+
     // SwiftUIのコンポーネントは返さない
     // 文字列の方が汎用性がある
     var stringValue: String {
@@ -15,7 +15,7 @@ enum SettingImageType: Int, CaseIterable,Codable{
             return "LightColor"
         case .blueColor:
             return "BlueColor"
-            
+
         }
     }
 }

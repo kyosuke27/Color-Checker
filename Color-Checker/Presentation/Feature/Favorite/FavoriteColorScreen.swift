@@ -2,18 +2,18 @@ import SwiftUI
 
 struct FavoriteColorScreen: View {
     @State var colorsData: [ColorData] = []
-    @EnvironmentObject var appSettings:AppSettings
+    @EnvironmentObject var appSettings: AppSettings
     let repository = FavoriteColorRepositoryImpl()
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        NavigationView{
+        NavigationView {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns, alignment: .leading, spacing: 20) {
                     ForEach(colorsData) { color in
-                        NavigationLink{
+                        NavigationLink {
                             EditFavoriteColorScreen(selectedColor: color)
-                        }label:{
+                        }label: {
                             FavoriteColorCardView(colorData: color, onDeleteTap: {
                                 repository.deleteColor(color.id)
                                 colorsData = repository.getColor()
@@ -35,13 +35,13 @@ struct FavoriteColorScreen: View {
                     .scaledToFill()
                     .ignoresSafeArea()
             }
-            
+
         }
     }
 }
 
 #Preview {
-    let appSetting = AppSettings(id: "1234", themeColor:SettingImageType.blueColor)
+    let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
     FavoriteColorScreen()
         .environmentObject(appSetting)
 }

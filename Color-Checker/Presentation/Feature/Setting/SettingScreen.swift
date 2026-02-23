@@ -2,8 +2,8 @@ import SwiftUI
 
 struct SettingScreen: View {
     @State var selectedImageType: SettingImageType = .defaultImage
-    @EnvironmentObject var appSettings:AppSettings
-    let appSettingReposiroty:AppSettingsRepository = AppSettingsRepositoryImpl()
+    @EnvironmentObject var appSettings: AppSettings
+    let appSettingReposiroty: AppSettingsRepository = AppSettingsRepositoryImpl()
     var body: some View {
         ScrollView {
             VStack {
@@ -24,21 +24,21 @@ struct SettingScreen: View {
                 .ignoresSafeArea()
         )
     }
-    
+
     func menuItemHeader(_ title: String) -> some View {
         VStack(alignment: .leading) {
             HStack(alignment: .center) {
                 Text(title)
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     .fontWeight(.bold)
-                
+
             }
             Divider()
                 .background(.white)
         }
         .frame(maxWidth: .infinity)
     }
-    
+
     func colorItemRowView() -> some View {
         HStack {
             ForEach(SettingImageType.allCases, id: \.rawValue) {setting in
@@ -52,12 +52,11 @@ struct SettingScreen: View {
         }
         .frame(maxWidth: .infinity)
     }
-    
-    
+
 }
 
 #Preview {
-    let appSetting = AppSettings(id: "1234", themeColor:SettingImageType.blueColor)
+    let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
     SettingScreen()
         .environmentObject(appSetting)
 }
