@@ -1,7 +1,8 @@
 import SwiftUI
 
-struct ContentView: View {
+struct AppScreen: View {
     @State var activeTab: TabData = .home
+    let reopsitory:AppSettingsRepository = AppSettingsRepositoryImpl()
     var body: some View {
         VStack {
             TabView(selection: $activeTab) {
@@ -14,11 +15,15 @@ struct ContentView: View {
                     .toolbar(.hidden, for: .tabBar)
                 SettingScreen()
                     .tag(TabData.setting)
+                    .toolbar(.hidden, for: .tabBar)
             }
             CustomTabBar(
                 tint: Color.extendedColors.component.selectedTabColor,
                 activeColor: Color.extendedColors.component.defaultTabColor
             )
+        }
+        .onAppear{
+           
         }
         .background {
                 Image("Background")
@@ -76,5 +81,5 @@ struct TabItem: View {
 }
 
 #Preview {
-    ContentView()
+    AppScreen()
 }

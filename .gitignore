@@ -71,3 +71,5 @@ xcuserdata/
 
 # Debug Data
 DebugData/
+
+.DS_Store
