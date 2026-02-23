@@ -9,6 +9,7 @@ struct ColorCheckerScreen: View {
     @State var opacity: Float = 1.0
     @State var isShowToast: Bool = false
     @State var memoText: String = ""
+    @EnvironmentObject var appSettitngs:AppSettings
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
 
     private func rounded2(value: Float) -> Float {
@@ -122,7 +123,7 @@ struct ColorCheckerScreen: View {
             }
             .padding(.horizontal, 16)
             .background(
-                Image("Background")
+                Image(appSettitngs.themeColor.stringValue)
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()

@@ -3,7 +3,7 @@ import Foundation
 enum SettingImageType: Int, CaseIterable,Codable{
     case defaultImage = 1
     case lightImage = 2
-    case grayColor = 3
+    case blueColor = 3
     
     // SwiftUIのコンポーネントは返さない
     // 文字列の方が汎用性がある
@@ -13,8 +13,8 @@ enum SettingImageType: Int, CaseIterable,Codable{
             return "Background"
         case .lightImage:
             return "LightColor"
-        case .grayColor:
-            return "GrayColor"
+        case .blueColor:
+            return "BlueColor"
             
         }
     }

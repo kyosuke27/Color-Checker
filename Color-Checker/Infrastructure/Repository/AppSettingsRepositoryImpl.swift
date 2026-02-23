@@ -6,12 +6,14 @@ struct AppSettingsRepositoryImpl:AppSettingsRepository{
     init(iosManager: IOSFileManger = IOSFileMangerImpl()) {
         self.iosManager = iosManager
     }
-    func read() -> AppSettings {
+    func read() -> AppSettings{
         do{
-            let appSettings:AppSettings = try iosManager.getData(fileName: fileName)
-            return appSettings
+            let appSettings:AppSettingsDto = try iosManager.getData(fileName: fileName)
+            return mapToEntity(appSettings)
         }catch FileException.fileNotFound(let url){
+            // 新規作成
             print("file not founc \(url)")
+            // UUIDはここだけで採番する
             return AppSettings(id: UUID().uuidString, themeColor: SettingImageType.defaultImage)
         }catch{
             fatalError()
@@ -19,8 +21,14 @@ struct AppSettingsRepositoryImpl:AppSettingsRepository{
     }
     
     func save(_ appSettins:AppSettings) {
-        iosManager.saveData(fileName: fileName, data: appSettins)
+        iosManager.saveData(fileName: fileName, data: mapToDto(appSettins))
     }
     
+    func mapToEntity(_ appSettingDto:AppSettingsDto)->AppSettings{
+        return AppSettings(id: appSettingDto.id, themeColor: appSettingDto.themeColor)
+    }
+    func mapToDto(_ appSettingDto:AppSettings)->AppSettingsDto{
+        return AppSettingsDto(id: appSettingDto.id, themeColor: appSettingDto.themeColor)
+    }
     
 }

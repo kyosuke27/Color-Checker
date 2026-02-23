@@ -17,7 +17,7 @@ struct SettingImageCardView: View {
                 Group {
                     if isCheck {
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.extendedColors.component.imageCardBorder, lineWidth: 2)
+                            .stroke(Color.extendedColors.component.selectedTabColor, lineWidth: 2)
                     } else {
                         Color.clear.opacity(0)
                     }

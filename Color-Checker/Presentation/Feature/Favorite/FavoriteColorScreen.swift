@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FavoriteColorScreen: View {
     @State var colorsData: [ColorData] = []
+    @EnvironmentObject var appSettings:AppSettings
     let repository = FavoriteColorRepositoryImpl()
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
@@ -23,7 +24,7 @@ struct FavoriteColorScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(.horizontal, 4)
         .background {
-            Image("Background")
+            Image(appSettings.themeColor.stringValue)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()

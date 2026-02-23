@@ -1,6 +1,12 @@
 import Foundation
+import Combine
 
-struct AppSettings:Codable,Identifiable{
+final class AppSettings:ObservableObject{
     let id:String
-    let themeColor:SettingImageType
+    @Published var themeColor:SettingImageType
+    
+    init(id: String, themeColor: SettingImageType) {
+        self.id = id
+        self.themeColor = themeColor
+    }
 }
