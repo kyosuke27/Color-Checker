@@ -41,5 +41,7 @@ struct FavoriteColorScreen: View {
 }
 
 #Preview {
+    let appSetting = AppSettings(id: "1234", themeColor:SettingImageType.blueColor)
     FavoriteColorScreen()
+        .environmentObject(appSetting)
 }

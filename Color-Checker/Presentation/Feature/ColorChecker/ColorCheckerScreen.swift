@@ -170,5 +170,7 @@ extension UIApplication {
 }
 
 #Preview {
+    let appSetting = AppSettings(id: "1234", themeColor:SettingImageType.blueColor)
     ColorCheckerScreen()
+        .environmentObject(appSetting)
 }

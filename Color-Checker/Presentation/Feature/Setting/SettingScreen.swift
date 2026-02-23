@@ -57,5 +57,7 @@ struct SettingScreen: View {
 }
 
 #Preview {
+    let appSetting = AppSettings(id: "1234", themeColor:SettingImageType.blueColor)
     SettingScreen()
+        .environmentObject(appSetting)
 }
