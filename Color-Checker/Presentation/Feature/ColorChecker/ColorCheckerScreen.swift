@@ -7,22 +7,22 @@ struct ColorCheckerScreen: View {
     @State var blue: String = ""
     @State var color: Color = .white
     @State var opacity: Float = 1.0
-    @State var isShowToast: Bool = false
+    @State var isShowToastType: ToastType? = nil
     @State var memoText: String = ""
     @EnvironmentObject var appSettitngs:AppSettings
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
-
+    
     private func rounded2(value: Float) -> Float {
         return (value*100).rounded()/100
     }
-
+    
     private func RGBtoColor() -> Color {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
         let calcB = clampTo255(colorNum: blue)
         return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
     }
-
+    
     private func RGBtoHex() -> String {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -33,20 +33,18 @@ struct ColorCheckerScreen: View {
         // 2: 2桁
         // X: 16進数表記にする
         return String(format: "%02X%02X%02X", calcR, calcG, calcB)
-
+        
     }
-
+    
     // 0~255に変換
     private func clampTo255(colorNum: String) -> Int {
-        let minLimtValue = 0
-        let maxValue = 255
         // 空の場合初期化後なので、255を返す
         if colorNum.isEmpty {
             return 255
         }
-        return min(max((Int(colorNum) ?? 0), minLimtValue), maxValue)
+        return Int(colorNum) ?? 0
     }
-
+    
     private func saveColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
@@ -56,7 +54,7 @@ struct ColorCheckerScreen: View {
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
     }
-
+    
     private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
         print("colorsData : \(colorsData)")
@@ -64,7 +62,16 @@ struct ColorCheckerScreen: View {
             print(color)
         }
     }
-
+    
+    private func isValidRGB(red:String,green:String,blue:String)->String?{
+        let upperLimit = 255
+        if (clampTo255(colorNum: red)>upperLimit || clampTo255 (colorNum:green)>upperLimit || clampTo255(colorNum:blue)>upperLimit){
+            let message = "入力値は255以下にしてください。"
+            return message
+        }
+        return nil
+    }
+    
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
@@ -72,7 +79,7 @@ struct ColorCheckerScreen: View {
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     .font(.system(size: 38))
                     .padding()
-                RGBRow(red: $red, green: $green, blue: $blue )
+                RGBRow(red: $red, green: $green, blue: $blue,isShowToastType: $isShowToastType )
                 ColorArea(color: $color, height: 180)
                 BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
                 HStack {
@@ -86,6 +93,14 @@ struct ColorCheckerScreen: View {
                 }
                 HStack {
                     BaseButton(text: "カラー表示", width: 180, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
+                        if let valid = isValidRGB(red: red, green: green, blue:  blue){
+                            self.isShowToastType = .error(valid)
+                            Task {
+                                try await Task.sleep(nanoseconds: 3_000_000_000)
+                                self.isShowToastType = nil
+                            }
+                            return
+                        }
                         color = RGBtoColor()
                     })
                     BaseButton(text: "リセット", width: 180, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
@@ -97,16 +112,24 @@ struct ColorCheckerScreen: View {
                 }
                 HStack {
                     BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
+                        if let valid = isValidRGB(red: red, green: green, blue:  blue){
+                            self.isShowToastType = .error(valid)
+                            Task {
+                                try await Task.sleep(nanoseconds: 3_000_000_000)
+                                self.isShowToastType = nil
+                            }
+                            return
+                        }
                         saveColor()
-                        isShowToast = true
+                        self.isShowToastType = .success
                         Task {
                             try await Task.sleep(nanoseconds: 3_000_000_000)
-                            isShowToast = false
+                            self.isShowToastType = nil
                         }
                     })
                 }
                 Spacer()
-
+                
             }
             .toolbar {
                 ToolbarItem(placement: .keyboard) {
@@ -117,7 +140,7 @@ struct ColorCheckerScreen: View {
                         } label: {
                             Text("閉じる")
                         }
-
+                        
                     }
                 }
             }
@@ -128,9 +151,9 @@ struct ColorCheckerScreen: View {
                     .scaledToFill()
                     .ignoresSafeArea()
             )
-            if isShowToast {
+            if let type = isShowToastType{
                 VStack {
-                    ToastView(toastType: ToastType.success)
+                    ToastView(toastType: type)
                     Spacer()
                 }
                 .padding()

@@ -4,6 +4,7 @@ struct RGBRow: View {
     @Binding var red: String
     @Binding var green: String
     @Binding var blue: String
+    @Binding var isShowToastType:ToastType?
 
     var body: some View {
         HStack {
@@ -15,6 +16,11 @@ struct RGBRow: View {
             Spacer()
             Button {
                 UIPasteboard.general.string = "\(red),\(green),\(blue)"
+                isShowToastType = .copySuccess
+                Task {
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    self.isShowToastType = nil
+                }
             } label: {
                 Image(systemName: "list.clipboard.fill")
                     .resizable()
@@ -39,5 +45,6 @@ struct RGBRow: View {
     @Previewable @State var red = ""
     @Previewable @State var green = ""
     @Previewable @State var blue = ""
-    RGBRow(red: $red, green: $green, blue: $blue)
+    @Previewable @State var isShowToastType:ToastType? = nil
+    RGBRow(red: $red, green: $green, blue: $blue,isShowToastType: $isShowToastType)
 }

@@ -14,6 +14,8 @@ struct Component {
     let selectedTabColor: Color
     let defaultTabColor: Color
     let toastBackgroundColor: Color
+    let blueToastBackgroundColor:Color
+    let errorToastBackgroundColor:Color
     let imageCardBorder: Color
 }
 
@@ -56,6 +58,8 @@ extension Color {
             selectedTabColor: Color.rgba(r: 152, g: 173, b: 253),
             defaultTabColor: Color.rgba(r: 105, g: 94, b: 154),
             toastBackgroundColor: Color.rgba(r: 66, g: 210, b: 147),
+            blueToastBackgroundColor: Color.rgba(r: 0, g: 131, b: 246),
+            errorToastBackgroundColor: Color.rgba(r: 255, g: 72, b: 82),
             imageCardBorder: Color.rgba(r: 229, g: 231, b: 239)
         ),
     )
