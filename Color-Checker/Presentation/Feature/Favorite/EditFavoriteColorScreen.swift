@@ -71,14 +71,18 @@ struct EditFavoriteColorScreen: View {
         return min(max((Int(colorNum) ?? 0), minLimtValue), maxValue)
     }
 
-    private func saveColor() {
+    private func updateColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
         let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText)
-        colorsData.append(saveColorData)
-        // Save Favorite Colors Data
-        reposiroty.saveColor(colorsData)
+        if let index = colorsData.firstIndex(where: {$0.id == selectedColor.id}) {
+            colorsData[index] = saveColorData
+            reposiroty.saveColor(colorsData)
+            return
+        } else {
+            return
+        }
     }
 
     private func getColor() {
@@ -104,7 +108,7 @@ struct EditFavoriteColorScreen: View {
         let messageLimit = 20
 
         if memoText.count > messageLimit {
-             let message = "入力値は20文字以下にしてください。"
+            let message = "入力値は20文字以下にしてください。"
             return message
         }
         return nil
@@ -113,10 +117,6 @@ struct EditFavoriteColorScreen: View {
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
-                Text("Color Checker")
-                    .foregroundStyle(Color.extendedColors.base.baseFontColor)
-                    .font(.system(size: 38))
-                    .padding()
                 RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
                 ColorArea(color: $color, height: 180)
                 BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
@@ -130,7 +130,7 @@ struct EditFavoriteColorScreen: View {
                         }
                 }
                 HStack {
-                    BaseButton(text: "カラー表示", width: 180, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
+                    BaseButton(text: "カラー表示", width: 360, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
                         if let valid = isValidRGB(red: red, green: green, blue: blue) {
                             self.isShowToastType = .error(valid)
                             Task {
@@ -161,8 +161,8 @@ struct EditFavoriteColorScreen: View {
                             }
                             return
                         }
-                        saveColor()
-                        self.isShowToastType = .success
+                        updateColor()
+                        self.isShowToastType = .update
                         Task {
                             try await Task.sleep(nanoseconds: 3_000_000_000)
                             self.isShowToastType = nil
