@@ -103,7 +103,7 @@ struct EditFavoriteColorScreen: View {
     private func isValidMessage(messageText: String) -> String? {
         let messageLimit = 20
 
-        if memoText.count > 20 {
+        if memoText.count > messageLimit {
              let message = "入力値は20文字以下にしてください。"
             return message
         }

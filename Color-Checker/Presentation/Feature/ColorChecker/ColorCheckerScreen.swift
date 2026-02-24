@@ -81,11 +81,19 @@ struct ColorCheckerScreen: View {
     private func isValidMessage(messageText: String) -> String? {
         let messageLimit = 20
 
-        if memoText.count > 20 {
+        if memoText.count > messageLimit {
              let message = "入力値は20文字以下にしてください。"
             return message
         }
         return nil
+    }
+
+    private func initialInput() {
+        self.red = ""
+        self.green = ""
+        self.blue = ""
+        self.memoText = ""
+        self.color = .white
     }
 
     var body: some View {
@@ -120,10 +128,7 @@ struct ColorCheckerScreen: View {
                         color = RGBtoColor()
                     })
                     BaseButton(text: "リセット", width: 180, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
-                        red = ""
-                        green = ""
-                        blue = ""
-                        color = .white
+                        initialInput()
                     })
                 }
                 HStack {
@@ -145,6 +150,7 @@ struct ColorCheckerScreen: View {
                             return
                         }
                         saveColor()
+                        initialInput()
                         self.isShowToastType = .success
                         Task {
                             try await Task.sleep(nanoseconds: 3_000_000_000)
