@@ -100,6 +100,16 @@ struct EditFavoriteColorScreen: View {
         return nil
     }
 
+    private func isValidMessage(messageText: String) -> String? {
+        let messageLimit = 20
+
+        if memoText.count > 20 {
+             let message = "入力値は20文字以下にしてください。"
+            return message
+        }
+        return nil
+    }
+
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
@@ -136,6 +146,14 @@ struct EditFavoriteColorScreen: View {
                 HStack {
                     BaseButton(text: "更新", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
                         if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                            self.isShowToastType = .error(valid)
+                            Task {
+                                try await Task.sleep(nanoseconds: 3_000_000_000)
+                                self.isShowToastType = nil
+                            }
+                            return
+                        }
+                        if let valid = isValidMessage(messageText: memoText) {
                             self.isShowToastType = .error(valid)
                             Task {
                                 try await Task.sleep(nanoseconds: 3_000_000_000)
