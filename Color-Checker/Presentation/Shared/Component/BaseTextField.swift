@@ -36,7 +36,7 @@ struct BaseTextField: View {
 
     private func defaultTextField() -> some View {
         return ZStack {
-            TextField("0", text: $inputString, prompt: Text("0").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+            TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
                 .background(Color.extendedColors.base.BaseBackground.opacity(0.9))
@@ -77,7 +77,7 @@ struct BaseTextField: View {
                 image?
                     .resizable()
                     .frame(width: 24, height: 24)
-                TextField("0", text: $inputString, prompt: Text("0").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity)
                     .padding(8)
