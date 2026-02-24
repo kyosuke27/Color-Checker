@@ -65,8 +65,24 @@ struct ColorCheckerScreen: View {
 
     private func isValidRGB(red: String, green: String, blue: String) -> String? {
         let upperLimit = 255
+        let downLimit = 0
         if clampTo255(colorNum: red)>upperLimit || clampTo255(colorNum: green)>upperLimit || clampTo255(colorNum: blue)>upperLimit {
             let message = "入力値は255以下にしてください。"
+            return message
+        }
+        if clampTo255(colorNum: red) < downLimit || clampTo255(colorNum: green) < downLimit || clampTo255(colorNum: blue) < downLimit {
+            let message = "入力値は0以上にしてください。"
+            return message
+        }
+
+        return nil
+    }
+
+    private func isValidMessage(messageText: String) -> String? {
+        let messageLimit = 20
+
+        if memoText.count > 20 {
+             let message = "入力値は20文字以下にしてください。"
             return message
         }
         return nil
@@ -113,6 +129,14 @@ struct ColorCheckerScreen: View {
                 HStack {
                     BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
                         if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                            self.isShowToastType = .error(valid)
+                            Task {
+                                try await Task.sleep(nanoseconds: 3_000_000_000)
+                                self.isShowToastType = nil
+                            }
+                            return
+                        }
+                        if let valid = isValidMessage(messageText: memoText) {
                             self.isShowToastType = .error(valid)
                             Task {
                                 try await Task.sleep(nanoseconds: 3_000_000_000)
