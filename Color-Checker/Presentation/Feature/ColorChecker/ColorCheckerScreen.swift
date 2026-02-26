@@ -108,11 +108,8 @@ struct ColorCheckerScreen: View {
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
-                Text("Color Checker")
-                    .foregroundStyle(Color.extendedColors.base.baseFontColor)
-                    .font(.system(size: 38))
-                    .padding()
                 RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
+                    .padding(.top, 12)
                 ColorArea(color: $color, height: 180)
                 BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
                 HStack {
