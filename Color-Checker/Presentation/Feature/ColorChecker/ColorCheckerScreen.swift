@@ -96,6 +96,15 @@ struct ColorCheckerScreen: View {
         self.color = .white
     }
 
+    private func isCheckDuplicate() -> String? {
+        let data = reposiroty.getColor()
+        let hexColor = RGBtoHex()
+        if data.contains(where: {$0.hexColor == hexColor && $0.alpha == opacity}) {
+            return "同じ色は登録できません"
+        }
+        return nil
+    }
+
     var body: some View {
         ZStack {
             VStack(spacing: 16) {
@@ -142,6 +151,14 @@ struct ColorCheckerScreen: View {
                             return
                         }
                         if let valid = isValidMessage(messageText: memoText) {
+                            self.isShowToastType = .error(valid)
+                            Task {
+                                try await Task.sleep(nanoseconds: 3_000_000_000)
+                                self.isShowToastType = nil
+                            }
+                            return
+                        }
+                        if let valid = isCheckDuplicate() {
                             self.isShowToastType = .error(valid)
                             Task {
                                 try await Task.sleep(nanoseconds: 3_000_000_000)
