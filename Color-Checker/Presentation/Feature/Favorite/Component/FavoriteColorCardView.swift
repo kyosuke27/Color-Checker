@@ -6,7 +6,7 @@ struct FavoriteColorCardView: View {
     let height: CGFloat
 
     func numToPercent(fNum: Float) -> Int {
-        return Int((fNum*100).rounded())
+        return Int((fNum * 100).rounded())
     }
 
     var body: some View {
@@ -61,7 +61,7 @@ struct FavoriteColorCardView: View {
 }
 
 #Preview {
-    let colorData: ColorData = ColorData(id: UUID().uuidString, red: 100, green: 100, blue: 100, alpha: 0.5, hexColor: "FFFFFF", memo: "Test")
+    let colorData: ColorData = ColorData(id: UUID().uuidString, red: 100, green: 100, blue: 100, alpha: 0.5, hexColor: "FFFFFF", memo: "Test", tagId: "")
     VStack {
         HStack {
             FavoriteColorCardView(colorData: colorData, onDeleteTap: {}, height: 50)

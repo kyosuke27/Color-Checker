@@ -25,8 +25,10 @@ struct BaseTextField: View {
         switch type {
         case .defaultTextInput:
             defaultTextField()
+
         case .numberInput:
             numberTextField()
+
         case .imageTextField:
             imageTextField()
 

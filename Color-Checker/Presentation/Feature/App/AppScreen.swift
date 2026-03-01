@@ -67,7 +67,7 @@ struct TabItem: View {
                 .shadow(color: (activeTab == tab ? tint.opacity(0.4) : .clear), radius: 28, x: 0, y: 0)
                 .shadow(color: (activeTab == tab ? tint.opacity(0.2) : .clear), radius: 36, x: 0, y: 0)
             Text(tab.rawValue)
-                .foregroundStyle(activeTab ==  tab ? tint : .gray)
+                .foregroundStyle(activeTab == tab ? tint : .gray)
         }
         .frame(maxWidth: .infinity)
         .onTapGesture {

@@ -5,6 +5,7 @@ struct ColorCheckerViewModel {
         switch event {
         case .showColor:
             print("hello")
+
         case .clearAll:
             print("hello")
         }

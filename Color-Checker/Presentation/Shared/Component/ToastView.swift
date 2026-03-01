@@ -24,13 +24,16 @@ struct ToastView: View {
         switch type {
         case .success:
             return (Color.extendedColors.component.toastBackgroundColor, "登録しました", "checkmark.circle.fill")
+
         case .update:
             return (Color.extendedColors.component.toastBackgroundColor, "更新しました", "checkmark.circle.fill")
 
         case .copySuccess:
             return (Color.extendedColors.component.blueToastBackgroundColor, "コピーしました", "info.circle")
+
         case .error(let errorText):
             return (Color.extendedColors.component.errorToastBackgroundColor, errorText, "exclamationmark.circle")
+
         case .none:
             return nil
         }

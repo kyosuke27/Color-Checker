@@ -11,8 +11,10 @@ enum SettingImageType: Int, CaseIterable, Codable {
         switch self {
         case .defaultImage:
             return "Background"
+
         case .lightImage:
             return "LightColor"
+
         case .blueColor:
             return "BlueColor"
 

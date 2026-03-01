@@ -10,8 +10,10 @@ enum TabData: String, CaseIterable {
         switch self {
         case .home:
             return "drop.halffull"
+
         case .favorite:
             return "star"
+
         case .setting:
             return "gear"
         }
