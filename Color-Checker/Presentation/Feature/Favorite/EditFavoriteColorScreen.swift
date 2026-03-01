@@ -11,8 +11,11 @@ struct EditFavoriteColorScreen: View {
     @State var opacity: Float = 1.0
     @State var isShowToastType: ToastType?
     @State var memoText: String = ""
+    @State var tagSelectedIndex: String = ""
+    @State var tagData: [Tag] = []
     @EnvironmentObject var appSettitngs: AppSettings
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
+    let tagReposiroty: TagRepository = TagRepositoryImpl()
 
     init(selectedColor: ColorData) {
         self._selectedColor = State(initialValue: selectedColor)
@@ -20,6 +23,7 @@ struct EditFavoriteColorScreen: View {
         self._red = State(initialValue: String(selectedColor.red))
         self._green = State(initialValue: String(selectedColor.green))
         self._blue = State(initialValue: String(selectedColor.blue))
+        self._tagSelectedIndex = State(initialValue: String(selectedColor.tagId))
 
         // Color と opacity を初期化
         self._opacity = State(initialValue: selectedColor.alpha)
@@ -37,7 +41,7 @@ struct EditFavoriteColorScreen: View {
     }
 
     private func rounded2(value: Float) -> Float {
-        return (value*100).rounded()/100
+        return (value * 100).rounded() / 100
     }
 
     private func RGBtoColor() -> Color {
@@ -75,8 +79,8 @@ struct EditFavoriteColorScreen: View {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
-        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText)
-        if let index = colorsData.firstIndex(where: {$0.id == selectedColor.id}) {
+        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: tagSelectedIndex)
+        if let index = colorsData.firstIndex(where: { $0.id == selectedColor.id }) {
             colorsData[index] = saveColorData
             reposiroty.saveColor(colorsData)
             return
@@ -119,7 +123,20 @@ struct EditFavoriteColorScreen: View {
             VStack(spacing: 16) {
                 RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
                 ColorArea(color: $color, height: 180)
-                BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                VStack {
+                    BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                    HStack {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(tagData) { tag in
+                                    TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id })
+                                }
+                            }
+                        }
+                        .scrollIndicators(.hidden)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
                 HStack {
                     Text("A : \(String(format: "%.2f", opacity))")
                         .foregroundStyle(Color.extendedColors.base.baseFontColor)
@@ -172,6 +189,9 @@ struct EditFavoriteColorScreen: View {
                 Spacer()
 
             }
+            .onAppear {
+                tagData = tagReposiroty.readAll()
+            }
             .toolbar {
                 ToolbarItem(placement: .keyboard) {
                     HStack {
@@ -213,7 +233,8 @@ struct EditFavoriteColorScreen: View {
         blue: 240,
         alpha: 0.85,
         hexColor: "78B4F0",
-        memo: "プレビュー用のメモ"
+        memo: "プレビュー用のメモ",
+        tagId: ""
     )
     EditFavoriteColorScreen(selectedColor: selectedColorData)
         .environmentObject(appSetting)

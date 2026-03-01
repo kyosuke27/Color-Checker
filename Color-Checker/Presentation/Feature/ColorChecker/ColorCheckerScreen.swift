@@ -9,11 +9,16 @@ struct ColorCheckerScreen: View {
     @State var opacity: Float = 1.0
     @State var isShowToastType: ToastType?
     @State var memoText: String = ""
+    @State var isSelectedIndex: String = ""
+    @State var inputTagAlert: Bool = false
+    @State var newTagText: String = ""
+    @State var tagData: [Tag] = []
     @EnvironmentObject var appSettitngs: AppSettings
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
+    let tagReposiroty: TagRepository = TagRepositoryImpl()
 
     private func rounded2(value: Float) -> Float {
-        return (value*100).rounded()/100
+        return (value * 100).rounded() / 100
     }
 
     private func RGBtoColor() -> Color {
@@ -49,7 +54,7 @@ struct ColorCheckerScreen: View {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
-        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText)
+        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: isSelectedIndex)
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
@@ -66,7 +71,7 @@ struct ColorCheckerScreen: View {
     private func isValidRGB(red: String, green: String, blue: String) -> String? {
         let upperLimit = 255
         let downLimit = 0
-        if clampTo255(colorNum: red)>upperLimit || clampTo255(colorNum: green)>upperLimit || clampTo255(colorNum: blue)>upperLimit {
+        if clampTo255(colorNum: red) > upperLimit || clampTo255(colorNum: green) > upperLimit || clampTo255(colorNum: blue) > upperLimit {
             let message = "入力値は255以下にしてください。"
             return message
         }
@@ -82,7 +87,7 @@ struct ColorCheckerScreen: View {
         let messageLimit = 20
 
         if memoText.count > messageLimit {
-             let message = "入力値は20文字以下にしてください。"
+            let message = "入力値は20文字以下にしてください。"
             return message
         }
         return nil
@@ -93,13 +98,14 @@ struct ColorCheckerScreen: View {
         self.green = ""
         self.blue = ""
         self.memoText = ""
+        self.newTagText = ""
         self.color = .white
     }
 
     private func isCheckDuplicate() -> String? {
         let data = reposiroty.getColor()
         let hexColor = RGBtoHex()
-        if data.contains(where: {$0.hexColor == hexColor && $0.alpha == opacity}) {
+        if data.contains(where: { $0.hexColor == hexColor && $0.alpha == opacity }) {
             return "同じ色は登録できません"
         }
         return nil
@@ -111,7 +117,25 @@ struct ColorCheckerScreen: View {
                 RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
                     .padding(.top, 12)
                 ColorArea(color: $color, height: 180)
-                BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                VStack {
+                    BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                    HStack {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(tagData) { tag in
+                                    TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: { isSelectedIndex = tag.id })
+                                }
+                            }
+                        }
+                        .scrollIndicators(.hidden)
+                        BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
+                            inputTagAlert = true
+                        })
+
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+
                 HStack {
                     Text("A : \(String(format: "%.2f", opacity))")
                         .foregroundStyle(Color.extendedColors.base.baseFontColor)
@@ -175,6 +199,27 @@ struct ColorCheckerScreen: View {
                 Spacer()
 
             }
+            .onAppear {
+                tagData = tagReposiroty.readAll()
+            }
+            .alert("タグ入力", isPresented: $inputTagAlert, actions: {
+                TextField("タグを入力", text: $newTagText)
+                Button {
+                    if !newTagText.isEmpty {
+                        let tag = Tag(id: UUID().uuidString, tagName: newTagText)
+                        self.tagData.append(tag)
+                        tagReposiroty.save(tagData)
+                        self.tagData = tagReposiroty.readAll()
+                    }
+                } label: {
+                    Text("OK")
+
+                }
+                Button {
+                } label: {
+                    Text("Cancel")
+                }
+            })
             .toolbar {
                 ToolbarItem(placement: .keyboard) {
                     HStack {

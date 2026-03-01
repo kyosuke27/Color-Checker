@@ -8,4 +8,5 @@ struct ColorData: Codable, Identifiable {
     let alpha: Float
     let hexColor: String
     let memo: String
+    let tagId: String
 }

@@ -34,7 +34,7 @@ struct ExtendedColors {
 
 extension Color {
     static func rgba(r: Double, g: Double, b: Double, a: Double = 1.0) -> Color {
-        return Color(red: r/255, green: g/255, blue: b/255, opacity: a)
+        return Color(red: r / 255, green: g / 255, blue: b / 255, opacity: a)
     }
 
     static let extendedColors: ExtendedColors = ExtendedColors(
@@ -48,7 +48,7 @@ extension Color {
         component: Component(
             borderColor: Color.rgba(r: 65, g: 61, b: 115),
             compBackground: Color.rgba(r: 26, g: 21, b: 59),
-            compSelectBackground: Color.rgba(r: 26, g: 21, b: 59, a: 0.8),
+            compSelectBackground: Color.rgba(r: 46, g: 60, b: 140),
             colorSelectButtonBackgrond: Color.rgba(r: 46, g: 72, b: 160),
             buttonBackground: Color.rgba(r: 40, g: 42, b: 65),
             buttonBlueBackground: Color.rgba(r: 46, g: 72, b: 160),

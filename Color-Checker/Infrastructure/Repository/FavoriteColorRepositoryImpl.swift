@@ -27,8 +27,13 @@ struct FavoriteColorRepositoryImpl: FavoriteColorRepository {
     }
 
     func deleteColor(_ id: String) {
-        let colorsData = getColor().filter {$0.id != id}
+        let colorsData = getColor().filter { $0.id != id }
         saveColor(colorsData)
+    }
+
+    func searchByTagId(_ id: String) -> [ColorData] {
+        let colorsData = getColor().filter { $0.tagId == id }
+        return colorsData
     }
 
 }

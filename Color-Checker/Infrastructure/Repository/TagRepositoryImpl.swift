@@ -43,7 +43,7 @@ struct TagRepositoryImpl: TagRepository {
     func update(_ tag: Tag) {
         do {
             var data: [Tag] = try iosManager.getData(fileName: fileName)
-            if let index = data.firstIndex(where: {$0.id == tag.id}) {
+            if let index = data.firstIndex(where: { $0.id == tag.id }) {
                 data[index] = tag
                 iosManager.saveData(fileName: fileName, data: data)
             } else {
