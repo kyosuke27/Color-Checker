@@ -14,6 +14,7 @@ struct EditFavoriteColorScreen: View {
     @State var tagSelectedIndex: String = ""
     @State var tagData: [Tag] = []
     @EnvironmentObject var appSettitngs: AppSettings
+    
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
     let tagReposiroty: TagRepository = TagRepositoryImpl()
 

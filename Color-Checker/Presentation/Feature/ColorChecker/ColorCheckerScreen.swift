@@ -110,7 +110,7 @@ struct ColorCheckerScreen: View {
         }
         return nil
     }
-
+    
     var body: some View {
         ZStack {
             VStack(spacing: 16) {

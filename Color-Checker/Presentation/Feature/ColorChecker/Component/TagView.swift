@@ -15,16 +15,16 @@ struct TagView: View {
             Text(text)
                 .foregroundStyle(Color.extendedColors.base.baseFontColor)
         }
-        .contentShape(RoundedRectangle(cornerRadius: 24))
+        .contentShape(RoundedRectangle(cornerRadius: 8))
         .onTapGesture {
             onTap()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
         .background(isSelected ? Color.extendedColors.component.compSelectBackground : Color.extendedColors.component.compBackground)
-        .cornerRadius(24)
+        .cornerRadius(8)
         .overlay {
-            RoundedRectangle(cornerRadius: 24)
+            RoundedRectangle(cornerRadius: 8)
                 .stroke(
                     Color.extendedColors.component.textFieldBorder.opacity(0.6))
         }
