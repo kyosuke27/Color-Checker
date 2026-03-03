@@ -16,6 +16,9 @@ struct SettingScreen: View {
                     .stroke(Color.extendedColors.component.borderColor, lineWidth: 1)
             )
         }
+        .onAppear {
+            selectedImageType = appSettings.themeColor
+        }
         .padding()
         .background(
             Image(appSettings.themeColor.stringValue)
@@ -24,21 +27,21 @@ struct SettingScreen: View {
                 .ignoresSafeArea()
         )
     }
-
+    
     func menuItemHeader(_ title: String) -> some View {
         VStack(alignment: .leading) {
             HStack(alignment: .center) {
                 Text(title)
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     .fontWeight(.bold)
-
+                
             }
             Divider()
                 .background(.white)
         }
         .frame(maxWidth: .infinity)
     }
-
+    
     func colorItemRowView() -> some View {
         HStack {
             ForEach(SettingImageType.allCases, id: \.rawValue) {setting in
@@ -52,7 +55,7 @@ struct SettingScreen: View {
         }
         .frame(maxWidth: .infinity)
     }
-
+    
 }
 
 #Preview {
