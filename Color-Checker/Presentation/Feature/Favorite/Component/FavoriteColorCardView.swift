@@ -21,9 +21,11 @@ struct FavoriteColorCardView: View {
                     Text("\(colorData.red),\(colorData.green),\(colorData.blue)")
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)
+                        .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     Text("#\(colorData.hexColor)")
                         .lineLimit(1)
                         .minimumScaleFactor(0.6)
+                        .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     Spacer()
 
                 }
@@ -43,9 +45,11 @@ struct FavoriteColorCardView: View {
             Text("透明度 \(numToPercent(fNum: colorData.alpha))%")
                 .font(.system(size: 14))
                 .minimumScaleFactor(0.6)
+                .foregroundStyle(Color.extendedColors.base.baseFontColor)
             Text("メモ：\(colorData.memo)")
                 .font(.system(size: 14))
                 .minimumScaleFactor(0.6)
+                .foregroundStyle(Color.extendedColors.base.baseFontColor)
 
         }
 
