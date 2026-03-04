@@ -67,6 +67,7 @@ struct FavoriteColorScreen: View {
                         .ignoresSafeArea()
                 }
         }
+        .navigationViewStyle(.stack)
     }
 }
 
