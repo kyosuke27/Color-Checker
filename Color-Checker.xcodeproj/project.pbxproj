@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6CBD2EC52F5D3CDB005A87A0 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 6CBD2EC42F5D3CDB005A87A0 /* GoogleMobileAds */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		6CBBC0242F2A5D720082C00B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		6CBBC02D2F2A5D720082C00B /* Color-CheckerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Color-CheckerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6CABFE0F2F5D4E6900E788D9 /* Exceptions for "Color-Checker" folder in "Color-Checker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6CBBC0152F2A5D700082C00B /* Color-Checker */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6CBBC0182F2A5D700082C00B /* Color-Checker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6CABFE0F2F5D4E6900E788D9 /* Exceptions for "Color-Checker" folder in "Color-Checker" target */,
+			);
 			path = "Color-Checker";
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CBD2EC52F5D3CDB005A87A0 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +90,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6CABFE0D2F5D4C1100E788D9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6CBBC00D2F2A5D6F0082C00B = {
 			isa = PBXGroup;
 			children = (
 				6CBBC0182F2A5D700082C00B /* Color-Checker */,
 				6CBBC0262F2A5D720082C00B /* Color-CheckerTests */,
 				6CBBC0302F2A5D720082C00B /* Color-CheckerUITests */,
+				6CABFE0D2F5D4C1100E788D9 /* Frameworks */,
 				6CBBC0172F2A5D700082C00B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +138,7 @@
 			);
 			name = "Color-Checker";
 			packageProductDependencies = (
+				6CBD2EC42F5D3CDB005A87A0 /* GoogleMobileAds */,
 			);
 			productName = "Color-Checker";
 			productReference = 6CBBC0162F2A5D700082C00B /* Color-Checker.app */;
@@ -195,6 +222,9 @@
 			);
 			mainGroup = 6CBBC00D2F2A5D6F0082C00B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6CBD2EC32F5D3CDB005A87A0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6CBBC0172F2A5D700082C00B /* Products */;
 			projectDirPath = "";
@@ -400,17 +430,19 @@
 				DEVELOPMENT_TEAM = 93WV698C8R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Color-Checker/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Palette Box";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kyosuke.Color-Checker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -433,17 +465,19 @@
 				DEVELOPMENT_TEAM = 93WV698C8R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Color-Checker/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Palette Box";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kyosuke.Color-Checker";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -580,6 +614,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6CBD2EC32F5D3CDB005A87A0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6CBD2EC42F5D3CDB005A87A0 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6CBD2EC32F5D3CDB005A87A0 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6CBBC00E2F2A5D700082C00B /* Project object */;
 }

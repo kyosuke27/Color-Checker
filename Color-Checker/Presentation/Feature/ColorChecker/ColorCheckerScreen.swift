@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import GoogleMobileAds
 
 struct ColorCheckerScreen: View {
     @State var red: String = ""
@@ -201,6 +202,12 @@ struct ColorCheckerScreen: View {
                     })
                 }
                 Spacer()
+                GeometryReader {proxy in
+                    let width = proxy.size.width
+                    let adSize = largeLandscapeAnchoredAdaptiveBanner(width: width)
+                    AdmobBannerView(adSize)
+                    .frame(width: adSize.size.width, height: adSize.size.height)
+                }
 
             }
             .onAppear {
