@@ -11,15 +11,28 @@ struct TagView: View {
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             Text(text)
                 .foregroundStyle(Color.extendedColors.base.baseFontColor)
+            Button {
+                // アクション
+            } label: {
+                Image(systemName: "xmark")
+                    .resizable()
+                    .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                    .frame(width: 6, height: 6)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 6)
+                    .background(Color.white.opacity(0.1))
+                    .cornerRadius(999)
+            }
         }
         .contentShape(RoundedRectangle(cornerRadius: 8))
         .onTapGesture {
             onTap()
         }
-        .padding(.horizontal, 16)
+        .padding(.leading, 8)
+        .padding(.trailing, 2)
         .padding(.vertical, 8)
         .background(isSelected ? Color.extendedColors.component.compSelectBackground : Color.extendedColors.component.compBackground)
         .cornerRadius(8)
