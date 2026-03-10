@@ -130,7 +130,9 @@ struct EditFavoriteColorScreen: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(tagData) { tag in
-                                    TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id })
+                                    TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id }, onDeleteTap: { tagReposiroty.delete(tag)
+                                        tagData = tagReposiroty.readAll()
+                                    })
                                 }
                             }
                         }

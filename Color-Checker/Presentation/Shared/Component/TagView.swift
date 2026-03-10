@@ -5,6 +5,7 @@ struct TagView: View {
     let index: String
     let text: String
     let onTap: () -> Void
+    let onDeleteTap: () -> Void
 
     private var isSelected: Bool {
         self.index == self.isSelectedIndex
@@ -16,6 +17,7 @@ struct TagView: View {
                 .foregroundStyle(Color.extendedColors.base.baseFontColor)
             Button {
                 // アクション
+                onDeleteTap()
             } label: {
                 Image(systemName: "xmark")
                     .resizable()
@@ -49,6 +51,6 @@ struct TagView: View {
     @Previewable @State var selectedIndex = "1"
     let indexs = ["1", "2", "3"]
     ForEach(indexs.indices, id: \.self) {index in
-        TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] })
+        TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] }, onDeleteTap: {})
     }
 }

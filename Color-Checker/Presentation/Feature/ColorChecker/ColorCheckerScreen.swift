@@ -123,7 +123,11 @@ struct ColorCheckerScreen: View {
                         ScrollView(.horizontal) {
                             HStack {
                                 ForEach(tagData) { tag in
-                                    TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: { isSelectedIndex = tag.id })
+                                    TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: { isSelectedIndex = tag.id }, onDeleteTap: {
+                                            tagReposiroty.delete(tag)
+                                            tagData = tagReposiroty.readAll()
+                                        }
+                                    )
                                 }
                             }
                         }

@@ -23,6 +23,9 @@ struct FavoriteColorScreen: View {
                                     } else {
                                         self.isSelectedIndex = ""
                                     }
+                                }, onDeleteTap: {
+                                    tagReposiroty.delete(tag)
+                                    tagData = tagReposiroty.readAll()
                                 })
                             }
                         }
