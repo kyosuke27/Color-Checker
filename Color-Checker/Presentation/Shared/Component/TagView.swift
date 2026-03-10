@@ -26,6 +26,7 @@ struct TagView: View {
                     .background(Color.white.opacity(0.1))
                     .cornerRadius(999)
             }
+            .padding(.trailing, 4)
         }
         .contentShape(RoundedRectangle(cornerRadius: 8))
         .onTapGesture {
