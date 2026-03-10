@@ -50,10 +50,25 @@ struct TagRepositoryImpl: TagRepository {
               fatalError("\(tag) tag not found")
             }
         } catch FileException.fileNotFound(let url) {
-            fatalError("\(tag) readById error")
+            fatalError("\(tag) readById error \(url)")
         } catch {
             fatalError("\(tag) readById error")
         }
     }
-
+    func delete(_ tag: Tag) {
+        do {
+            var data: [Tag] = try iosManager.getData(fileName: self.fileName)
+            if let index = data.firstIndex(where: { $0.id == tag.id }) {
+                // 削除
+                data.remove(at: index)
+                iosManager.saveData(fileName: fileName, data: data)
+            } else {
+              fatalError("\(tag) tag not found")
+            }
+        } catch FileException.fileNotFound(let url) {
+            fatalError("\(tag) delete fileNotFound error \(url)")
+        } catch {
+            fatalError("\(tag) readById error")
+        }
+    }
 }
