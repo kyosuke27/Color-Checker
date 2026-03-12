@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingScreen: View {
     @State var selectedImageType: SettingImageType = .defaultImage
+    @State var isPresented: Bool = false
     @EnvironmentObject var appSettings: AppSettings
     let appSettingReposiroty: AppSettingsRepository = AppSettingsRepositoryImpl()
     var body: some View {
@@ -10,6 +11,22 @@ struct SettingScreen: View {
                 menuItemHeader("テーマカラー")
                 colorItemRowView()
             }
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.extendedColors.component.borderColor, lineWidth: 1)
+            )
+            Button {
+                isPresented = true
+            } label: {
+                VStack {
+                    menuItemHeader("問い合わせ")
+                }
+            }
+            
+            .sheet(isPresented: $isPresented, content: {
+                MailScreen()
+            })
             .padding()
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
