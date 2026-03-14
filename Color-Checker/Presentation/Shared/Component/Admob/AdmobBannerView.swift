@@ -12,7 +12,10 @@ struct AdmobBannerView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> BannerView {
         let banner = BannerView(adSize: adSize)
-        banner.adUnitID = "ca-app-pub-3940256099942544/2435281174"
+        let keys = Bundle.main.infoDictionary?["ApiKeys"] as? [String: Any]
+        let key = keys?["BannerKey"] as? String ?? ""
+        banner.adUnitID = key
+        print("BannerKey \(key)")
         banner.load(Request())
         banner.delegate = context.coordinator
         return banner

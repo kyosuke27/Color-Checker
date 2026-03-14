@@ -301,6 +301,8 @@
 /* Begin XCBuildConfiguration section */
 		6CBBC0352F2A5D720082C00B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-debug.xcconfig";
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -365,6 +367,8 @@
 		};
 		6CBBC0362F2A5D720082C00B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-prod.xcconfig";
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -422,6 +426,8 @@
 		};
 		6CBBC0382F2A5D720082C00B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-debug.xcconfig";
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -457,6 +463,8 @@
 		};
 		6CBBC0392F2A5D720082C00B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-prod.xcconfig";
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -492,6 +500,8 @@
 		};
 		6CBBC03B2F2A5D720082C00B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-debug.xcconfig";
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -514,6 +524,8 @@
 		};
 		6CBBC03C2F2A5D720082C00B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-prod.xcconfig";
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -536,6 +548,8 @@
 		};
 		6CBBC03E2F2A5D720082C00B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-debug.xcconfig";
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -556,6 +570,8 @@
 		};
 		6CBBC03F2F2A5D720082C00B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 6CBBC0182F2A5D700082C00B /* Color-Checker */;
+			baseConfigurationReferenceRelativePath = "Config-prod.xcconfig";
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

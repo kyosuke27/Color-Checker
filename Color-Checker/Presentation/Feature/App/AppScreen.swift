@@ -1,4 +1,5 @@
 import SwiftUI
+import GoogleMobileAds
 
 struct AppScreen: View {
     @State var activeTab: TabData = .home
@@ -17,10 +18,15 @@ struct AppScreen: View {
                     .tag(TabData.setting)
                     .toolbar(.hidden, for: .tabBar)
             }
-            CustomTabBar(
-                tint: Color.extendedColors.component.selectedTabColor,
-                activeColor: Color.extendedColors.component.defaultTabColor
-            )
+                VStack {
+                    // AdSizeBanner:320*50サイズ
+                    AdmobBannerView(AdSizeBanner)
+                        .frame(height: 50)
+                }
+                CustomTabBar(
+                    tint: Color.extendedColors.component.selectedTabColor,
+                    activeColor: Color.extendedColors.component.defaultTabColor
+                )
         }
         .background {
             Image(appSettings.themeColor.stringValue)
@@ -28,9 +34,9 @@ struct AppScreen: View {
                 .scaledToFill()
                 .ignoresSafeArea()
         }
-
+        
     }
-
+    
     @ViewBuilder
     func CustomTabBar(tint: Color = Color.extendedColors.component.selectedTabColor, activeColor: Color = Color.pink) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
@@ -56,7 +62,7 @@ struct TabItem: View {
     let tab: TabData
     // 現在選択されているタブ
     @Binding var activeTab: TabData
-
+    
     var body: some View {
         VStack(spacing: 0) {
             Image(systemName: tab.systemImage)

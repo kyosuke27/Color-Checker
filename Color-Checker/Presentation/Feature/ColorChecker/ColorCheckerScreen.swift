@@ -202,13 +202,7 @@ struct ColorCheckerScreen: View {
                     })
                 }
                 Spacer()
-                GeometryReader {proxy in
-                    let width = proxy.size.width
-                    let adSize = largeLandscapeAnchoredAdaptiveBanner(width: width)
-                    AdmobBannerView(adSize)
-                    .frame(width: adSize.size.width, height: adSize.size.height)
-                }
-
+                
             }
             .onAppear {
                 tagData = tagReposiroty.readAll()
