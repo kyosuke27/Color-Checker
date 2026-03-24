@@ -1,9 +1,11 @@
 import SwiftUI
 import GoogleMobileAds
+import AppTrackingTransparency
 
 struct AppScreen: View {
     @State var activeTab: TabData = .home
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var interstitialViewModel: InterstitialViewModel
     var body: some View {
         VStack {
             TabView(selection: $activeTab) {
@@ -18,15 +20,15 @@ struct AppScreen: View {
                     .tag(TabData.setting)
                     .toolbar(.hidden, for: .tabBar)
             }
-                VStack {
-                    // AdSizeBanner:320*50サイズ
-                    AdmobBannerView(AdSizeBanner)
-                        .frame(height: 50)
-                }
-                CustomTabBar(
-                    tint: Color.extendedColors.component.selectedTabColor,
-                    activeColor: Color.extendedColors.component.defaultTabColor
-                )
+            VStack {
+                // AdSizeBanner:320*50サイズ
+                AdmobBannerView(AdSizeBanner)
+                    .frame(height: 50)
+            }
+            CustomTabBar(
+                tint: Color.extendedColors.component.selectedTabColor,
+                activeColor: Color.extendedColors.component.defaultTabColor
+            )
         }
         .background {
             Image(appSettings.themeColor.stringValue)
@@ -79,6 +81,26 @@ struct TabItem: View {
         .onTapGesture {
             // activetabタブの入れ替え
             activeTab = tab
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .notDetermined:
+                    print("トラッキング許可の有無が未設定です")
+
+                case .restricted:
+                    print("トラッキングが制限されています")
+
+                case .denied:
+                    print("トラッキングが拒否されました")
+
+                case .authorized:
+                    print("トラッキングが許可されました")
+
+                @unknown default:
+                    print("不明な状態です")
+                }
+            }
         }
     }
 }

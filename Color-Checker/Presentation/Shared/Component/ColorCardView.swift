@@ -6,7 +6,10 @@ struct ColorCardView: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
             .fill(color)
-            .stroke(Color.extendedColors.component.borderColor, lineWidth: 1)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.extendedColors.component.borderColor, lineWidth: 1)
+            )
             .frame(width: side, height: side)
     }
 }

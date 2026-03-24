@@ -17,10 +17,19 @@ struct RGBInput: View {
 }
 
 #Preview {
-    @Previewable @State var inputString1 = "255"
-    @Previewable @State var inputString2 = "255"
-    @Previewable @State var inputString3 = "255"
-    RGBInput(text: $inputString1, labelString: "R", fontColor: Color.extendedColors.base.redFontColor)
-    RGBInput(text: $inputString2, labelString: "G", fontColor: Color.extendedColors.base.greenFontColor)
-    RGBInput(text: $inputString3, labelString: "B", fontColor: Color.extendedColors.base.blueFontColor)
+    PreviewContainer()
+}
+private struct PreviewContainer: View {
+    @State private var inputString1 = "255"
+    @State private var inputString2 = "255"
+    @State private var inputString3 = "255"
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            RGBInput(text: $inputString1, labelString: "R", fontColor: Color.extendedColors.base.redFontColor)
+            RGBInput(text: $inputString2, labelString: "G", fontColor: Color.extendedColors.base.greenFontColor)
+            RGBInput(text: $inputString3, labelString: "B", fontColor: Color.extendedColors.base.blueFontColor)
+        }
+        .padding()
+    }
 }

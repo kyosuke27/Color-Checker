@@ -13,6 +13,12 @@ struct ColorArea: View {
 }
 
 #Preview {
-    @Previewable @State var color: Color = .white
-    ColorArea(color: $color, height: 120)
+    ColorAreaContainer()
+}
+
+private struct ColorAreaContainer: View {
+    @State var color: Color = .white
+    var body: some View {
+        ColorArea(color: $color, height: 120)
+    }
 }

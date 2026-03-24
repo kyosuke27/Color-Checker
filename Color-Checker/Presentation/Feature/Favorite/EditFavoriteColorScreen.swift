@@ -144,7 +144,7 @@ struct EditFavoriteColorScreen: View {
                     Text("A : \(String(format: "%.2f", opacity))")
                         .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     Slider(value: $opacity, in: 0...1)
-                        .onChange(of: opacity) { _, newValue in
+                        .onChange(of: opacity) { newValue in
                             opacity = rounded2(value: newValue)
                             color = RGBtoColor()
                         }

@@ -5,12 +5,13 @@ struct TagView: View {
     let index: String
     let text: String
     let onTap: () -> Void
+    
     let onDeleteTap: () -> Void
 
     private var isSelected: Bool {
         self.index == self.isSelectedIndex
     }
-
+    
     var body: some View {
         HStack(spacing: 8) {
             Text(text)
@@ -48,6 +49,19 @@ struct TagView: View {
 }
 
 #Preview {
+    TagViewPreviewContainer()
+}
+
+private struct TagViewPreviewContainer: View {
+    
+    @State var selectedIndex = "1"
+    var body: some View {
+        let indexs = ["1", "2", "3"]
+        ForEach(indexs.indices, id: \.self) {index in
+            TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] })
+        }    
+    }
+    
     @Previewable @State var selectedIndex = "1"
     let indexs = ["1", "2", "3"]
     ForEach(indexs.indices, id: \.self) {index in
