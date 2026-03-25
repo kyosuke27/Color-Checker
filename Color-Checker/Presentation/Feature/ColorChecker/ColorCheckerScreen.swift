@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import GoogleMobileAds
 
 struct ColorCheckerScreen: View {
     @State var red: String = ""
@@ -14,8 +15,10 @@ struct ColorCheckerScreen: View {
     @State var newTagText: String = ""
     @State var tagData: [Tag] = []
     @EnvironmentObject var appSettitngs: AppSettings
+    @EnvironmentObject var initializeViewModel: InterstitialViewModel
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
     let tagReposiroty: TagRepository = TagRepositoryImpl()
+    let interstitialViewModle: InterstitialViewModel = InterstitialViewModel()
 
     private func rounded2(value: Float) -> Float {
         return (value * 100).rounded() / 100
@@ -27,7 +30,7 @@ struct ColorCheckerScreen: View {
         let calcB = clampTo255(colorNum: blue)
         return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
     }
-
+    
     private func RGBtoHex() -> String {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -58,6 +61,7 @@ struct ColorCheckerScreen: View {
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
+        interstitialViewModle.showAd()
     }
 
     private func getColor() {
@@ -144,7 +148,7 @@ struct ColorCheckerScreen: View {
                     Text("A : \(String(format: "%.2f", opacity))")
                         .foregroundStyle(Color.extendedColors.base.baseFontColor)
                     Slider(value: $opacity, in: 0...1)
-                        .onChange(of: opacity) { _, newValue in
+                        .onChange(of: opacity) { newValue in
                             opacity = rounded2(value: newValue)
                             color = RGBtoColor()
                         }
@@ -201,10 +205,13 @@ struct ColorCheckerScreen: View {
                     })
                 }
                 Spacer()
-
+                
             }
             .onAppear {
                 tagData = tagReposiroty.readAll()
+                Task {
+                    await interstitialViewModle.loadAd()
+                }
             }
             .alert("タグ入力", isPresented: $inputTagAlert, actions: {
                 TextField("タグを入力", text: $newTagText)

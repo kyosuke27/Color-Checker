@@ -31,7 +31,7 @@ struct FavoriteColorScreen: View {
                         }
                     }
                 }
-                .onChange(of: isSelectedIndex) {_, newValue in
+                .onChange(of: isSelectedIndex) {newValue in
                     if self.isSelectedIndex.isEmpty {
                         self.colorsData = repository.getColor()
                         print("colorData \(self.colorsData)")

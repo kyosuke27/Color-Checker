@@ -1,8 +1,11 @@
 import SwiftUI
+import GoogleMobileAds
+import AppTrackingTransparency
 
 struct AppScreen: View {
     @State var activeTab: TabData = .home
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var interstitialViewModel: InterstitialViewModel
     var body: some View {
         VStack {
             TabView(selection: $activeTab) {
@@ -17,6 +20,11 @@ struct AppScreen: View {
                     .tag(TabData.setting)
                     .toolbar(.hidden, for: .tabBar)
             }
+            VStack {
+                // AdSizeBanner:320*50サイズ
+                AdmobBannerView(AdSizeBanner)
+                    .frame(height: 50)
+            }
             CustomTabBar(
                 tint: Color.extendedColors.component.selectedTabColor,
                 activeColor: Color.extendedColors.component.defaultTabColor
@@ -28,9 +36,9 @@ struct AppScreen: View {
                 .scaledToFill()
                 .ignoresSafeArea()
         }
-
+        
     }
-
+    
     @ViewBuilder
     func CustomTabBar(tint: Color = Color.extendedColors.component.selectedTabColor, activeColor: Color = Color.pink) -> some View {
         HStack(alignment: .bottom, spacing: 0) {
@@ -56,7 +64,7 @@ struct TabItem: View {
     let tab: TabData
     // 現在選択されているタブ
     @Binding var activeTab: TabData
-
+    
     var body: some View {
         VStack(spacing: 0) {
             Image(systemName: tab.systemImage)
@@ -73,6 +81,26 @@ struct TabItem: View {
         .onTapGesture {
             // activetabタブの入れ替え
             activeTab = tab
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+            ATTrackingManager.requestTrackingAuthorization { status in
+                switch status {
+                case .notDetermined:
+                    print("トラッキング許可の有無が未設定です")
+
+                case .restricted:
+                    print("トラッキングが制限されています")
+
+                case .denied:
+                    print("トラッキングが拒否されました")
+
+                case .authorized:
+                    print("トラッキングが許可されました")
+
+                @unknown default:
+                    print("不明な状態です")
+                }
+            }
         }
     }
 }

@@ -42,9 +42,23 @@ struct RGBRow: View {
 }
 
 #Preview {
-    @Previewable @State var red = ""
-    @Previewable @State var green = ""
-    @Previewable @State var blue = ""
-    @Previewable @State var isShowToastType: ToastType?
-    RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType)
+    PreviewContainer()
+}
+
+private struct PreviewContainer: View {
+    @State private var red = "255"
+    @State private var green = "255"
+    @State private var blue = "255"
+    @State private var isShowToastType: ToastType?
+
+    var body: some View {
+        RGBRow(
+            red: $red,
+            green: $green,
+            blue: $blue,
+            isShowToastType: $isShowToastType
+        )
+        .padding()
+        .background(Color.black) // 背景が必要なら
+    }
 }

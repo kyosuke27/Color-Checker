@@ -6,7 +6,7 @@ struct BaseTextField: View {
     let height: CGFloat
     let type: InputType
     let image: Image?
-
+    
     init(
         inputString: Binding<String>,
         width: CGFloat,
@@ -20,25 +20,25 @@ struct BaseTextField: View {
         self.type = type
         self.image = image
     }
-
+    
     var body: some View {
         switch type {
         case .defaultTextInput:
             defaultTextField()
-
+            
         case .numberInput:
             numberTextField()
-
+            
         case .imageTextField:
             imageTextField()
-
+            
         }
-
+        
     }
-
+    
     private func defaultTextField() -> some View {
         return ZStack {
-            TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+            TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
                 .background(Color.extendedColors.base.BaseBackground.opacity(0.9))
@@ -51,13 +51,13 @@ struct BaseTextField: View {
                 .multilineTextAlignment(TextAlignment.center)
                 .foregroundStyle(Color.extendedColors.base.baseFontColor)
                 .font(.system(size: 18))
-
+            
         }
-
+        
     }
     private func numberTextField() -> some View {
         return ZStack {
-            TextField("0", text: $inputString, prompt: Text("0").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+            TextField("0", text: $inputString, prompt: Text("0").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
                 .background(Color.extendedColors.base.BaseBackground.opacity(0.9))
@@ -70,7 +70,7 @@ struct BaseTextField: View {
                 .multilineTextAlignment(TextAlignment.center)
                 .foregroundStyle(Color.extendedColors.base.baseFontColor)
                 .font(.system(size: 18))
-
+            
         }
     }
     private func imageTextField() -> some View {
@@ -79,7 +79,7 @@ struct BaseTextField: View {
                 image?
                     .resizable()
                     .frame(width: 24, height: 24)
-                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundStyle(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity)
                     .padding(8)
@@ -94,17 +94,23 @@ struct BaseTextField: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 8).stroke(Color.extendedColors.component.textFieldBorder, lineWidth: 1)
             )
-
+            
         }
     }
 }
 
 #Preview {
-    @Previewable @State var inputString = ""
-    VStack {
-        BaseTextField(inputString: $inputString, width: 100, height: 50, type: .defaultTextInput)
-        BaseTextField(inputString: $inputString, width: 200, height: 80, type: .numberInput)
-        BaseTextField(inputString: $inputString, width: 200, height: 80, type: .imageTextField, image: Image(systemName: "bubble.left"))
+    BaseTextFieldContainer()
+}
+
+private struct BaseTextFieldContainer: View {
+    @State var inputString = ""
+    var body: some View {
+        VStack {
+            BaseTextField(inputString: $inputString, width: 100, height: 50, type: .defaultTextInput)
+            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .numberInput)
+            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .imageTextField, image: Image(systemName: "bubble.left"))
+        }
+        .padding()
     }
-    .padding()
 }
