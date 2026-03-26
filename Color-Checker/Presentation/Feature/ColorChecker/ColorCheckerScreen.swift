@@ -116,7 +116,7 @@ struct ColorCheckerScreen: View {
     }
     
     var body: some View {
-        ScrollView{
+        ScrollView {
             ZStack {
                 VStack(spacing: 16) {
                     RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
@@ -258,6 +258,7 @@ struct ColorCheckerScreen: View {
             Image(appSettitngs.themeColor.stringValue)
                 .resizable()
                 .scaledToFill()
+                .ignoresSafeArea()
         )
     }
 }
