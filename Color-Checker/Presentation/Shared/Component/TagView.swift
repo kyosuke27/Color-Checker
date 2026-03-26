@@ -58,13 +58,7 @@ private struct TagViewPreviewContainer: View {
     var body: some View {
         let indexs = ["1", "2", "3"]
         ForEach(indexs.indices, id: \.self) {index in
-            TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] })
-        }    
-    }
-    
-    @Previewable @State var selectedIndex = "1"
-    let indexs = ["1", "2", "3"]
-    ForEach(indexs.indices, id: \.self) {index in
-        TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] }, onDeleteTap: {})
+            TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] }, onDeleteTap: {})
+        }
     }
 }
