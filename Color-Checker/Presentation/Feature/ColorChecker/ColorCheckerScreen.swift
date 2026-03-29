@@ -23,7 +23,7 @@ struct ColorCheckerScreen: View {
     private func rounded2(value: Float) -> Float {
         return (value * 100).rounded() / 100
     }
-
+    
     private func RGBtoColor() -> Color {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -41,9 +41,9 @@ struct ColorCheckerScreen: View {
         // 2: 2桁
         // X: 16進数表記にする
         return String(format: "%02X%02X%02X", calcR, calcG, calcB)
-
+        
     }
-
+    
     // 0~255に変換
     private func clampTo255(colorNum: String) -> Int {
         // 空の場合初期化後なので、255を返す
@@ -52,7 +52,7 @@ struct ColorCheckerScreen: View {
         }
         return Int(colorNum) ?? 0
     }
-
+    
     private func saveColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
@@ -63,7 +63,7 @@ struct ColorCheckerScreen: View {
         reposiroty.saveColor(colorsData)
         interstitialViewModle.showAd()
     }
-
+    
     private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
         print("colorsData : \(colorsData)")
@@ -71,7 +71,7 @@ struct ColorCheckerScreen: View {
             print(color)
         }
     }
-
+    
     private func isValidRGB(red: String, green: String, blue: String) -> String? {
         let upperLimit = 255
         let downLimit = 0
@@ -83,20 +83,20 @@ struct ColorCheckerScreen: View {
             let message = "入力値は0以上にしてください。"
             return message
         }
-
+        
         return nil
     }
-
+    
     private func isValidMessage(messageText: String) -> String? {
         let messageLimit = 20
-
+        
         if memoText.count > messageLimit {
             let message = "入力値は20文字以下にしてください。"
             return message
         }
         return nil
     }
-
+    
     private func initialInput() {
         self.red = ""
         self.green = ""
@@ -105,7 +105,7 @@ struct ColorCheckerScreen: View {
         self.newTagText = ""
         self.color = .white
     }
-
+    
     private func isCheckDuplicate() -> String? {
         let data = reposiroty.getColor()
         let hexColor = RGBtoHex()
@@ -116,149 +116,150 @@ struct ColorCheckerScreen: View {
     }
     
     var body: some View {
-        ZStack {
-            VStack(spacing: 16) {
-                RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
-                    .padding(.top, 12)
-                ColorArea(color: $color, height: 180)
-                VStack {
-                    BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
-                    HStack {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(tagData) { tag in
-                                    TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: { isSelectedIndex = tag.id }, onDeleteTap: {
+        ScrollView {
+            ZStack {
+                VStack(spacing: 16) {
+                    RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
+                        .padding(.top, 12)
+                    ColorArea(color: $color, height: 180)
+                    VStack {
+                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                        HStack {
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(tagData) { tag in
+                                        TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: { isSelectedIndex = tag.id }, onDeleteTap: {
                                             tagReposiroty.delete(tag)
                                             tagData = tagReposiroty.readAll()
                                         }
-                                    )
+                                        )
+                                    }
                                 }
                             }
+                            .scrollIndicators(.hidden)
+                            BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
+                                inputTagAlert = true
+                            })
+                            
                         }
-                        .scrollIndicators(.hidden)
-                        BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
-                            inputTagAlert = true
-                        })
-
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity)
-                }
-
-                HStack {
-                    Text("A : \(String(format: "%.2f", opacity))")
-                        .foregroundStyle(Color.extendedColors.base.baseFontColor)
-                    Slider(value: $opacity, in: 0...1)
-                        .onChange(of: opacity) { newValue in
-                            opacity = rounded2(value: newValue)
+                    
+                    HStack {
+                        Text("A : \(String(format: "%.2f", opacity))")
+                            .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                        Slider(value: $opacity, in: 0...1)
+                            .onChange(of: opacity) { newValue in
+                                opacity = rounded2(value: newValue)
+                                color = RGBtoColor()
+                            }
+                    }
+                    HStack {
+                        BaseButton(text: "カラー表示", width: 180, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
+                            if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                                self.isShowToastType = .error(valid)
+                                Task {
+                                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                                    self.isShowToastType = nil
+                                }
+                                return
+                            }
                             color = RGBtoColor()
-                        }
-                }
-                HStack {
-                    BaseButton(text: "カラー表示", width: 180, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
-                        if let valid = isValidRGB(red: red, green: green, blue: blue) {
-                            self.isShowToastType = .error(valid)
+                        })
+                        BaseButton(text: "リセット", width: 180, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
+                            initialInput()
+                        })
+                    }
+                    HStack {
+                        BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
+                            if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                                self.isShowToastType = .error(valid)
+                                Task {
+                                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                                    self.isShowToastType = nil
+                                }
+                                return
+                            }
+                            if let valid = isValidMessage(messageText: memoText) {
+                                self.isShowToastType = .error(valid)
+                                Task {
+                                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                                    self.isShowToastType = nil
+                                }
+                                return
+                            }
+                            if let valid = isCheckDuplicate() {
+                                self.isShowToastType = .error(valid)
+                                Task {
+                                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                                    self.isShowToastType = nil
+                                }
+                                return
+                            }
+                            saveColor()
+                            initialInput()
+                            self.isShowToastType = .success
                             Task {
                                 try await Task.sleep(nanoseconds: 3_000_000_000)
                                 self.isShowToastType = nil
                             }
-                            return
-                        }
-                        color = RGBtoColor()
-                    })
-                    BaseButton(text: "リセット", width: 180, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
-                        initialInput()
-                    })
-                }
-                HStack {
-                    BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
-                        if let valid = isValidRGB(red: red, green: green, blue: blue) {
-                            self.isShowToastType = .error(valid)
-                            Task {
-                                try await Task.sleep(nanoseconds: 3_000_000_000)
-                                self.isShowToastType = nil
-                            }
-                            return
-                        }
-                        if let valid = isValidMessage(messageText: memoText) {
-                            self.isShowToastType = .error(valid)
-                            Task {
-                                try await Task.sleep(nanoseconds: 3_000_000_000)
-                                self.isShowToastType = nil
-                            }
-                            return
-                        }
-                        if let valid = isCheckDuplicate() {
-                            self.isShowToastType = .error(valid)
-                            Task {
-                                try await Task.sleep(nanoseconds: 3_000_000_000)
-                                self.isShowToastType = nil
-                            }
-                            return
-                        }
-                        saveColor()
-                        initialInput()
-                        self.isShowToastType = .success
-                        Task {
-                            try await Task.sleep(nanoseconds: 3_000_000_000)
-                            self.isShowToastType = nil
-                        }
-                    })
-                }
-                Spacer()
-                
-            }
-            .onAppear {
-                tagData = tagReposiroty.readAll()
-                Task {
+                        })
+                    }
+                    Spacer()
+                                }
+                .onAppear {
+                    tagData = tagReposiroty.readAll()
+                    Task {
                     await interstitialViewModle.loadAd()
                 }
             }
-            .alert("タグ入力", isPresented: $inputTagAlert, actions: {
-                TextField("タグを入力", text: $newTagText)
-                Button {
-                    if !newTagText.isEmpty {
-                        let tag = Tag(id: UUID().uuidString, tagName: newTagText)
-                        self.tagData.append(tag)
-                        tagReposiroty.save(tagData)
-                        self.tagData = tagReposiroty.readAll()
-                    }
-                } label: {
-                    Text("OK")
-
-                }
-                Button {
-                } label: {
-                    Text("Cancel")
-                }
-            })
-            .toolbar {
-                ToolbarItem(placement: .keyboard) {
-                    HStack {
-                        Spacer()
-                        Button {
-                            UIApplication.shared.endEditing()
-                        } label: {
-                            Text("閉じる")
+                .alert("タグ入力", isPresented: $inputTagAlert, actions: {
+                    TextField("タグを入力", text: $newTagText)
+                    Button {
+                        if !newTagText.isEmpty {
+                            let tag = Tag(id: UUID().uuidString, tagName: newTagText)
+                            self.tagData.append(tag)
+                            tagReposiroty.save(tagData)
+                            self.tagData = tagReposiroty.readAll()
                         }
-
+                    } label: {
+                        Text("OK")
+                        
+                    }
+                    Button {
+                    } label: {
+                        Text("Cancel")
+                    }
+                })
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        HStack {
+                            Spacer()
+                            Button {
+                                UIApplication.shared.endEditing()
+                            } label: {
+                                Text("閉じる")
+                            }
+                            
+                        }
                     }
                 }
-            }
-            .padding(.horizontal, 16)
-            .background(
-                Image(appSettitngs.themeColor.stringValue)
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-            )
-            if let type = isShowToastType {
-                VStack {
-                    ToastView(toastType: type)
-                    Spacer()
+                .padding(.horizontal, 16)
+                if let type = isShowToastType {
+                    VStack {
+                        ToastView(toastType: type)
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
             }
         }
+        .background(
+            Image(appSettitngs.themeColor.stringValue)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+        )
     }
 }
 

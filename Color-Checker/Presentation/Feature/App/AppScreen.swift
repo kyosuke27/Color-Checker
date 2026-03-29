@@ -41,12 +41,11 @@ struct AppScreen: View {
     
     @ViewBuilder
     func CustomTabBar(tint: Color = Color.extendedColors.component.selectedTabColor, activeColor: Color = Color.pink) -> some View {
-        HStack(alignment: .bottom, spacing: 0) {
+        HStack(alignment: .bottom, spacing: 16) {
             ForEach(TabData.allCases, id: \.rawValue) {
                 TabItem(tint: tint, inactiveColor: activeColor, tab: $0, activeTab: $activeTab)
             }
         }
-        .padding(.horizontal, 15)
         .padding(.top, 10)
         .overlay(alignment: .top) {
             Rectangle()
