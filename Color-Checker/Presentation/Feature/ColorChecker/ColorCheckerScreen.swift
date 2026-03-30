@@ -6,6 +6,9 @@ struct ColorCheckerScreen: View {
     @State var red: String = ""
     @State var green: String = ""
     @State var blue: String = ""
+    @State var redSldier: Double = 128
+    @State var greenSlider: Double = 128
+    @State var blueSlider: Double = 128
     @State var color: Color = .white
     @State var opacity: Float = 1.0
     @State var isShowToastType: ToastType?
@@ -14,12 +17,14 @@ struct ColorCheckerScreen: View {
     @State var inputTagAlert: Bool = false
     @State var newTagText: String = ""
     @State var tagData: [Tag] = []
+    @State var isResetting = false
+    @State var checkerType: ColorCheckerType = .Input
     @EnvironmentObject var appSettitngs: AppSettings
     @EnvironmentObject var initializeViewModel: InterstitialViewModel
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
     let tagReposiroty: TagRepository = TagRepositoryImpl()
     let interstitialViewModle: InterstitialViewModel = InterstitialViewModel()
-
+    
     private func rounded2(value: Float) -> Float {
         return (value * 100).rounded() / 100
     }
@@ -29,6 +34,10 @@ struct ColorCheckerScreen: View {
         let calcG = clampTo255(colorNum: green)
         let calcB = clampTo255(colorNum: blue)
         return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
+    }
+    
+    private func RGBtoColor(r: Double, g: Double, b: Double) -> Color {
+        return Color.rgba(r: r, g: g, b: b, a: Double(opacity))
     }
     
     private func RGBtoHex() -> String {
@@ -43,6 +52,14 @@ struct ColorCheckerScreen: View {
         return String(format: "%02X%02X%02X", calcR, calcG, calcB)
         
     }
+    private func RGBtoHex(r: Int, g: Int, b: Int) -> String {
+        // 2桁の16進数表記にする
+        // %: フォーマット指定
+        // 0: 0埋め
+        // 2: 2桁
+        // X: 16進数表記にする
+        return String(format: "%02X%02X%02X", r, g, b)
+    }
     
     // 0~255に変換
     private func clampTo255(colorNum: String) -> Int {
@@ -56,8 +73,13 @@ struct ColorCheckerScreen: View {
     private func saveColor() {
         // Get Favorite Colors Data
         var colorsData: [ColorData] = reposiroty.getColor()
+        var saveColorData: ColorData
         // Add New Favorite Data
-        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: isSelectedIndex)
+        if checkerType == .Input {
+            saveColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: isSelectedIndex)
+        } else {
+            saveColorData = ColorData(id: UUID().uuidString, red: Int(redSldier), green: Int(greenSlider), blue: Int(blueSlider), alpha: rounded2(value: opacity), hexColor: RGBtoHex(r: Int(redSldier), g: Int(greenSlider), b: Int(blueSlider)), memo: memoText, tagId: isSelectedIndex)
+        }
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
@@ -98,12 +120,19 @@ struct ColorCheckerScreen: View {
     }
     
     private func initialInput() {
+        isResetting = true
         self.red = ""
         self.green = ""
         self.blue = ""
+        self.redSldier = 128
+        self.greenSlider = 128
+        self.blueSlider = 128
         self.memoText = ""
         self.newTagText = ""
+        self.opacity = 1.0
         self.color = .white
+        print("color \(color)")
+        print("initialInput \(isResetting)")
     }
     
     private func isCheckDuplicate() -> String? {
@@ -118,9 +147,36 @@ struct ColorCheckerScreen: View {
     var body: some View {
         ScrollView {
             ZStack {
-                VStack(spacing: 16) {
-                    RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
-                        .padding(.top, 12)
+                VStack(spacing: 8) {
+                    Picker("Screentype", selection: $checkerType) {
+                        Text("Input")
+                            .tag(ColorCheckerType.Input)
+                        Text("Slider")
+                            .tag(ColorCheckerType.Slider)
+                    }
+                    .pickerStyle(.segmented)
+                    .onChange(of: checkerType) { newValue in
+                        print("newValue \(newValue)")
+                    }
+                    if checkerType == .Input {
+                        RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
+                            .padding(.top, 12)
+                    } else if checkerType == .Slider {
+                        VStack {
+                            SliderView(redSlider: $redSldier, greenSlider: $greenSlider, blueSlider: $blueSlider)
+                            
+                        }
+                        .onChange(of: [redSldier, greenSlider, blueSlider]) { _ in
+                            // isResettingがtrueの際に呼び出される
+                            guard !isResetting else {
+                                isResetting = false
+                                return
+                            }
+                            print("isResetting \(isResetting)")
+                            print("red: \(redSldier) green: \(greenSlider) blue: \(blueSlider)")
+                            self.color = RGBtoColor(r: redSldier, g: greenSlider, b: blueSlider)
+                        }
+                    }
                     ColorArea(color: $color, height: 180)
                     VStack {
                         BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
@@ -144,7 +200,6 @@ struct ColorCheckerScreen: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    
                     HStack {
                         Text("A : \(String(format: "%.2f", opacity))")
                             .foregroundStyle(Color.extendedColors.base.baseFontColor)
@@ -152,17 +207,20 @@ struct ColorCheckerScreen: View {
                             .onChange(of: opacity) { newValue in
                                 opacity = rounded2(value: newValue)
                                 color = RGBtoColor()
+                                print("opacity change color \(color)")
                             }
                     }
                     HStack {
                         BaseButton(text: "カラー表示", width: 180, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
-                            if let valid = isValidRGB(red: red, green: green, blue: blue) {
-                                self.isShowToastType = .error(valid)
-                                Task {
-                                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                                    self.isShowToastType = nil
+                            if checkerType == .Input {
+                                if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                                    self.isShowToastType = .error(valid)
+                                    Task {
+                                        try await Task.sleep(nanoseconds: 3_000_000_000)
+                                        self.isShowToastType = nil
+                                    }
+                                    return
                                 }
-                                return
                             }
                             color = RGBtoColor()
                         })
@@ -172,29 +230,31 @@ struct ColorCheckerScreen: View {
                     }
                     HStack {
                         BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
-                            if let valid = isValidRGB(red: red, green: green, blue: blue) {
-                                self.isShowToastType = .error(valid)
-                                Task {
-                                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                                    self.isShowToastType = nil
+                            if checkerType == .Input {
+                                if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                                    self.isShowToastType = .error(valid)
+                                    Task {
+                                        try await Task.sleep(nanoseconds: 3_000_000_000)
+                                        self.isShowToastType = nil
+                                    }
+                                    return
                                 }
-                                return
-                            }
-                            if let valid = isValidMessage(messageText: memoText) {
-                                self.isShowToastType = .error(valid)
-                                Task {
-                                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                                    self.isShowToastType = nil
+                                if let valid = isValidMessage(messageText: memoText) {
+                                    self.isShowToastType = .error(valid)
+                                    Task {
+                                        try await Task.sleep(nanoseconds: 3_000_000_000)
+                                        self.isShowToastType = nil
+                                    }
+                                    return
                                 }
-                                return
-                            }
-                            if let valid = isCheckDuplicate() {
-                                self.isShowToastType = .error(valid)
-                                Task {
-                                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                                    self.isShowToastType = nil
+                                if let valid = isCheckDuplicate() {
+                                    self.isShowToastType = .error(valid)
+                                    Task {
+                                        try await Task.sleep(nanoseconds: 3_000_000_000)
+                                        self.isShowToastType = nil
+                                    }
+                                    return
                                 }
-                                return
                             }
                             saveColor()
                             initialInput()
@@ -206,13 +266,13 @@ struct ColorCheckerScreen: View {
                         })
                     }
                     Spacer()
-                                }
+                }
                 .onAppear {
                     tagData = tagReposiroty.readAll()
                     Task {
-                    await interstitialViewModle.loadAd()
+                        await interstitialViewModle.loadAd()
+                    }
                 }
-            }
                 .alert("タグ入力", isPresented: $inputTagAlert, actions: {
                     TextField("タグを入力", text: $newTagText)
                     Button {
@@ -260,6 +320,14 @@ struct ColorCheckerScreen: View {
                 .scaledToFill()
                 .ignoresSafeArea()
         )
+    }
+}
+
+extension ColorCheckerScreen {
+    private var inputColorCheckerView: some View {
+        return VStack {
+            Text("")
+        }
     }
 }
 
