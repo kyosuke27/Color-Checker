@@ -18,7 +18,7 @@ struct ColorCheckerScreen: View {
     @State var newTagText: String = ""
     @State var tagData: [Tag] = []
     @State var isResetting = false
-    @State var checkerType: ColorCheckerType = .Input
+    @State var checkerType: ColorCheckerType = .Slider
     @EnvironmentObject var appSettitngs: AppSettings
     @EnvironmentObject var initializeViewModel: InterstitialViewModel
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
@@ -149,10 +149,10 @@ struct ColorCheckerScreen: View {
             ZStack {
                 VStack(spacing: 8) {
                     Picker("Screentype", selection: $checkerType) {
-                        Text("Input")
-                            .tag(ColorCheckerType.Input)
                         Text("Slider")
                             .tag(ColorCheckerType.Slider)
+                        Text("Input")
+                            .tag(ColorCheckerType.Input)
                     }
                     .pickerStyle(.segmented)
                     .onChange(of: checkerType) { newValue in
