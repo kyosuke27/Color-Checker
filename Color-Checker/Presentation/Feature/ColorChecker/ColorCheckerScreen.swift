@@ -24,6 +24,8 @@ struct ColorCheckerScreen: View {
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
     let tagReposiroty: TagRepository = TagRepositoryImpl()
     let interstitialViewModle: InterstitialViewModel = InterstitialViewModel()
+    let onEvent: (ColorCheckerEvent) -> Void
+    var state: ColorCheckerState
     
     private func rounded2(value: Float) -> Float {
         return (value * 100).rounded() / 100
@@ -159,8 +161,28 @@ struct ColorCheckerScreen: View {
                         print("newValue \(newValue)")
                     }
                     if checkerType == .Input {
-                        RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
-                            .padding(.top, 12)
+                        RGBRow(
+                            red: Binding<String>(
+                                get: { String(state.red) },
+                                set: { newValue in
+                                    onEvent(.changeColor(.red, newValue))
+                                }
+                            ),
+                            green: Binding<String>(
+                                get: { String(state.green) },
+                                set: { newValue in
+                                    onEvent(.changeColor(.green, newValue))
+                                }
+                            ),
+                            blue: Binding<String>(
+                                get: { String(state.blue) },
+                                set: { newValue in
+                                    onEvent(.changeColor(.blue, newValue))
+                                }
+                            ),
+                            isShowToastType: $isShowToastType
+                        )
+                        .padding(.top, 12)
                     } else if checkerType == .Slider {
                         VStack {
                             SliderView(redSlider: $redSldier, greenSlider: $greenSlider, blueSlider: $blueSlider)
@@ -203,7 +225,14 @@ struct ColorCheckerScreen: View {
                     HStack {
                         Text("A : \(String(format: "%.2f", opacity))")
                             .foregroundStyle(Color.extendedColors.base.baseFontColor)
-                        Slider(value: $opacity, in: 0...1)
+                        Slider(value: Binding<Double>(
+                            get:{
+                                state.opacity
+                            },
+                            set:{ newValue in
+                                onEvent(.changeOpacity(newValue))
+                            }
+                        ), in: 0...1)
                             .onChange(of: opacity) { newValue in
                                 opacity = rounded2(value: newValue)
                                 color = RGBtoColor()
@@ -266,51 +295,51 @@ struct ColorCheckerScreen: View {
                         })
                     }
                     Spacer()
+            }
+            .onAppear {
+                tagData = tagReposiroty.readAll()
+                Task {
+                    await interstitialViewModle.loadAd()
                 }
-                .onAppear {
-                    tagData = tagReposiroty.readAll()
-                    Task {
-                        await interstitialViewModle.loadAd()
+            }
+            .alert("タグ入力", isPresented: $inputTagAlert, actions: {
+                TextField("タグを入力", text: $newTagText)
+                Button {
+                    if !newTagText.isEmpty {
+                        let tag = Tag(id: UUID().uuidString, tagName: newTagText)
+                        self.tagData.append(tag)
+                        tagReposiroty.save(tagData)
+                        self.tagData = tagReposiroty.readAll()
                     }
+                } label: {
+                    Text("OK")
+                    
                 }
-                .alert("タグ入力", isPresented: $inputTagAlert, actions: {
-                    TextField("タグを入力", text: $newTagText)
-                    Button {
-                        if !newTagText.isEmpty {
-                            let tag = Tag(id: UUID().uuidString, tagName: newTagText)
-                            self.tagData.append(tag)
-                            tagReposiroty.save(tagData)
-                            self.tagData = tagReposiroty.readAll()
+                Button {
+                } label: {
+                    Text("Cancel")
+                }
+            })
+            .toolbar {
+                ToolbarItem(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button {
+                            UIApplication.shared.endEditing()
+                        } label: {
+                            Text("閉じる")
                         }
-                    } label: {
-                        Text("OK")
                         
                     }
-                    Button {
-                    } label: {
-                        Text("Cancel")
-                    }
-                })
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        HStack {
-                            Spacer()
-                            Button {
-                                UIApplication.shared.endEditing()
-                            } label: {
-                                Text("閉じる")
-                            }
-                            
-                        }
-                    }
                 }
-                .padding(.horizontal, 16)
-                if let type = isShowToastType {
-                    VStack {
-                        ToastView(toastType: type)
-                        Spacer()
-                    }
-                    .padding()
+            }
+            .padding(.horizontal, 16)
+            if let type = isShowToastType {
+                VStack {
+                    ToastView(toastType: type)
+                    Spacer()
+                }
+                .padding()
                 }
             }
         }
@@ -322,24 +351,27 @@ struct ColorCheckerScreen: View {
         )
     }
 }
-
-extension ColorCheckerScreen {
-    private var inputColorCheckerView: some View {
-        return VStack {
-            Text("")
+    
+    extension ColorCheckerScreen {
+        private var inputColorCheckerView: some View {
+            return VStack {
+                Text("")
+            }
         }
     }
-}
-
-extension UIApplication {
-    func endEditing(_ force: Bool = true) {
-        self.sendAction(#selector(UIResponder.resignFirstResponder),
-                        to: nil, from: nil, for: nil)
+    
+    extension UIApplication {
+        func endEditing(_ force: Bool = true) {
+            self.sendAction(#selector(UIResponder.resignFirstResponder),
+                            to: nil, from: nil, for: nil)
+        }
     }
-}
-
-#Preview {
-    let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
-    ColorCheckerScreen()
+    
+    #Preview {
+        let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
+        let viewModel = ColorCheckerViewModel()
+        ColorCheckerScreen(
+            onEvent: { viewModel.onEvent(event: $0) },
+            state: viewModel.state)
         .environmentObject(appSetting)
-}
+    }
