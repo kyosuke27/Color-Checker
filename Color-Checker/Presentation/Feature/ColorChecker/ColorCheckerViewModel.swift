@@ -7,7 +7,7 @@ class ColorCheckerViewModel: ObservableObject {
     private let TAG: String = "ColorCheckerViewModel"
     
     init() {
-        self.state = ColorCheckerState(red: 0, green: 0, blue: 0, opacity: 0, memoText: "")
+        self.state = ColorCheckerState(red: 0, green: 0, blue: 0, opacity: 0.5, memoText: "")
     }
     
     func onEvent(event: ColorCheckerEvent) {
@@ -16,18 +16,36 @@ class ColorCheckerViewModel: ObservableObject {
             print("hello")
             
         case .clearAll:
-            print("hello")
+            clearAll()
             
         case let .changeColor(colorSettingType, value):
             updateColor(type: colorSettingType, value: value)
             
+        case let .changeMemoText(text):
+            changeMemoText(text: text)
+
         case let .changeOpacity(value):
             changeOpacity(value: value)
+
+        case .saveData:
+            print("saveData")
         }
+        
+    }
+    
+    private func changeMemoText(text: String) {
+        state.memoText = text
+    }
+    
+    private func clearAll() {
+        state.red = 0
+        state.green = 0
+        state.blue = 0
+        state.opacity = 0.5
+        state.memoText = ""
     }
         
         private func updateColor(type: ColorSettingType, value: String) {
-            print("\(TAG) : 🟩start updateColor")
             switch type {
             case .red:
                 state.red = stringToDouble(value: value)
@@ -40,7 +58,7 @@ class ColorCheckerViewModel: ObservableObject {
             }
         }
         
-        private func changeOpacity(value:Double){
+        private func changeOpacity(value: Double) {
             state.opacity = value
         }
         

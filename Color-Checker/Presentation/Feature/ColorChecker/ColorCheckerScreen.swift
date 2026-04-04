@@ -201,7 +201,18 @@ struct ColorCheckerScreen: View {
                     }
                     ColorArea(color: $color, height: 180)
                     VStack {
-                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                        // メモ入力欄
+                        BaseTextField(
+                            inputString:
+                                Binding<String>(
+                                    get: {
+                                        state.memoText
+                                    },
+                                    set: {newValue in
+                                        onEvent(.changeMemoText(newValue))
+                                    }
+                                ),
+                            width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
@@ -226,10 +237,10 @@ struct ColorCheckerScreen: View {
                         Text("A : \(String(format: "%.2f", opacity))")
                             .foregroundStyle(Color.extendedColors.base.baseFontColor)
                         Slider(value: Binding<Double>(
-                            get:{
+                            get: {
                                 state.opacity
                             },
-                            set:{ newValue in
+                            set: { newValue in
                                 onEvent(.changeOpacity(newValue))
                             }
                         ), in: 0...1)
@@ -255,6 +266,7 @@ struct ColorCheckerScreen: View {
                         })
                         BaseButton(text: "リセット", width: 180, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
                             initialInput()
+                            onEvent(.clearAll)
                         })
                     }
                     HStack {
