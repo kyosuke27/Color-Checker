@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 
 struct ColorCheckerState {
-    var red: String
-    var green: String
-    var blue: String
-    var color: Color
+    var red: Int
+    var green: Int
+    var blue: Int
     var opacity: Double
+    var memoText: String
 }

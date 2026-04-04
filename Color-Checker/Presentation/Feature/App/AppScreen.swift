@@ -6,10 +6,11 @@ struct AppScreen: View {
     @State var activeTab: TabData = .home
     @EnvironmentObject var appSettings: AppSettings
     @EnvironmentObject var interstitialViewModel: InterstitialViewModel
+    @StateObject var colorCheckerViewModel: ColorCheckerViewModel = ColorCheckerViewModel()
     var body: some View {
         VStack {
             TabView(selection: $activeTab) {
-                ColorCheckerScreen()
+                ColorCheckerScreen(onEvent: { colorCheckerViewModel.onEvent(event: $0) }, state: colorCheckerViewModel.state)
                     .tag(TabData.home)
                 // デフォルトのtabBarは非表示にする
                     .toolbar(.hidden, for: .tabBar)
