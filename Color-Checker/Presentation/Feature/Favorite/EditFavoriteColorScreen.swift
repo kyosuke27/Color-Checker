@@ -7,12 +7,17 @@ struct EditFavoriteColorScreen: View {
     @State var red: String
     @State var green: String
     @State var blue: String
+    @State var redSlider: Double
+    @State var greenSlider: Double
+    @State var blueSlider: Double
     @State var color: Color = .white
     @State var opacity: Float = 1.0
     @State var isShowToastType: ToastType?
     @State var memoText: String = ""
     @State var tagSelectedIndex: String = ""
     @State var tagData: [Tag] = []
+    @State var checkerType: ColorCheckerType = .Input
+    @State var isResetting: Bool = false
     @EnvironmentObject var appSettitngs: AppSettings
     
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
@@ -24,6 +29,10 @@ struct EditFavoriteColorScreen: View {
         self._red = State(initialValue: String(selectedColor.red))
         self._green = State(initialValue: String(selectedColor.green))
         self._blue = State(initialValue: String(selectedColor.blue))
+        // Slider
+        self._redSlider = State(initialValue: Double(selectedColor.red))
+        self._greenSlider = State(initialValue: Double(selectedColor.green))
+        self._blueSlider = State(initialValue: Double(selectedColor.blue))
         self._tagSelectedIndex = State(initialValue: String(selectedColor.tagId))
 
         // Color と opacity を初期化
@@ -50,6 +59,9 @@ struct EditFavoriteColorScreen: View {
         let calcG = clampTo255(colorNum: green)
         let calcB = clampTo255(colorNum: blue)
         return Color.rgba(r: Double(calcR), g: Double(calcG), b: Double(calcB), a: Double(opacity))
+    }
+    private func RGBtoColor(r: Double, g: Double, b: Double) -> Color {
+        return Color.rgba(r: r, g: g, b: b, a: Double(opacity))
     }
 
     private func RGBtoHex() -> String {
@@ -78,10 +90,18 @@ struct EditFavoriteColorScreen: View {
 
     private func updateColor() {
         // Get Favorite Colors Data
+        
         var colorsData: [ColorData] = reposiroty.getColor()
         // Add New Favorite Data
-        let saveColorData: ColorData = ColorData(id: UUID().uuidString, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: tagSelectedIndex)
-        if let index = colorsData.firstIndex(where: { $0.id == selectedColor.id }) {
+        let saveColorData: ColorData
+        if checkerType == .Input {
+            saveColorData = ColorData(id: selectedColor.id, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: tagSelectedIndex)
+   
+        } else {
+            saveColorData = ColorData(id: selectedColor.id, red: Int(redSlider), green: Int(greenSlider), blue: Int(blueSlider), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: tagSelectedIndex)
+  
+        }
+                if let index = colorsData.firstIndex(where: { $0.id == selectedColor.id }) {
             colorsData[index] = saveColorData
             reposiroty.saveColor(colorsData)
             return
@@ -120,109 +140,144 @@ struct EditFavoriteColorScreen: View {
     }
 
     var body: some View {
-        ZStack {
-            VStack(spacing: 16) {
-                RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
-                ColorArea(color: $color, height: 180)
-                VStack {
-                    BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
-                    HStack {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(tagData) { tag in
-                                    TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id }, onDeleteTap: { tagReposiroty.delete(tag)
-                                        tagData = tagReposiroty.readAll()
-                                    })
+        ScrollView {
+            ZStack {
+                VStack(spacing: 8) {
+                    Picker("Screentype", selection: $checkerType) {
+                        Text("Input")
+                            .tag(ColorCheckerType.Input)
+                        Text("Slider")
+                            .tag(ColorCheckerType.Slider)
+                    }
+                    .pickerStyle(.segmented)
+                    if checkerType == .Input {
+                        RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
+                            .padding(.top, 12)
+                    } else if checkerType == .Slider {
+                        VStack {
+                            SliderView(redSlider: $redSlider, greenSlider: $greenSlider, blueSlider: $blueSlider)
+                            
+                        }
+                        .onChange(of: [redSlider, greenSlider, blueSlider]) { _ in
+                            // isResettingがtrueの際に呼び出される
+                            guard !isResetting else {
+                                isResetting = false
+                                return
+                            }
+                            print("isResetting \(isResetting)")
+                            print("red: \(redSlider) green: \(greenSlider) blue: \(blueSlider)")
+                            self.color = RGBtoColor(r: redSlider, g: greenSlider, b: blueSlider)
+                        }
+                    }
+                    ColorArea(color: $color, height: 180)
+                    VStack {
+                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                        HStack {
+                            ScrollView(.horizontal) {
+                                HStack {
+                                    ForEach(tagData) { tag in
+                                        TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id }, onDeleteTap: { tagReposiroty.delete(tag)
+                                            tagData = tagReposiroty.readAll()
+                                        })
+                                    }
                                 }
                             }
+                            .scrollIndicators(.hidden)
                         }
-                        .scrollIndicators(.hidden)
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity)
-                }
-                HStack {
-                    Text("A : \(String(format: "%.2f", opacity))")
-                        .foregroundStyle(Color.extendedColors.base.baseFontColor)
-                    Slider(value: $opacity, in: 0...1)
-                        .onChange(of: opacity) { newValue in
-                            opacity = rounded2(value: newValue)
-                            color = RGBtoColor()
-                        }
-                }
-                HStack {
-                    BaseButton(text: "カラー表示", width: 360, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
-                        if let valid = isValidRGB(red: red, green: green, blue: blue) {
-                            self.isShowToastType = .error(valid)
-                            Task {
-                                try await Task.sleep(nanoseconds: 3_000_000_000)
-                                self.isShowToastType = nil
-                            }
-                            return
-                        } else {
-                            color = RGBtoColor()
-                        }
-                    })
-                }
-                HStack {
-                    BaseButton(text: "更新", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
-                        if let valid = isValidRGB(red: red, green: green, blue: blue) {
-                            self.isShowToastType = .error(valid)
-                            Task {
-                                try await Task.sleep(nanoseconds: 3_000_000_000)
-                                self.isShowToastType = nil
-                            }
-                            return
-                        }
-                        if let valid = isValidMessage(messageText: memoText) {
-                            self.isShowToastType = .error(valid)
-                            Task {
-                                try await Task.sleep(nanoseconds: 3_000_000_000)
-                                self.isShowToastType = nil
-                            }
-                            return
-                        }
-                        updateColor()
-                        self.isShowToastType = .update
-                        Task {
-                            try await Task.sleep(nanoseconds: 3_000_000_000)
-                            self.isShowToastType = nil
-                        }
-                    })
-                }
-                Spacer()
-
-            }
-            .onAppear {
-                tagData = tagReposiroty.readAll()
-            }
-            .toolbar {
-                ToolbarItem(placement: .keyboard) {
                     HStack {
-                        Spacer()
-                        Button {
-                            UIApplication.shared.endEditing()
-                        } label: {
-                            Text("閉じる")
+                        Text("A : \(String(format: "%.2f", opacity))")
+                            .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                        Slider(value: $opacity, in: 0...1)
+                            .onChange(of: opacity) { newValue in
+                                opacity = rounded2(value: newValue)
+                                color = RGBtoColor()
+                            }
+                    }
+                    HStack {
+                        BaseButton(text: "カラー表示", width: 360, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
+                            if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                                self.isShowToastType = .error(valid)
+                                Task {
+                                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                                    self.isShowToastType = nil
+                                }
+                                return
+                            } else {
+                                color = RGBtoColor()
+                            }
+                        })
+                    }
+                    HStack {
+                        BaseButton(text: "更新", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
+                            if checkerType == .Input {
+                                if let valid = isValidRGB(red: red, green: green, blue: blue) {
+                                    self.isShowToastType = .error(valid)
+                                    Task {
+                                        try await Task.sleep(nanoseconds: 3_000_000_000)
+                                        self.isShowToastType = nil
+                                    }
+                                    return
+                                }
+                                if let valid = isValidMessage(messageText: memoText) {
+                                    self.isShowToastType = .error(valid)
+                                    Task {
+                                        try await Task.sleep(nanoseconds: 3_000_000_000)
+                                        self.isShowToastType = nil
+                                    }
+                                    return
+                                }
+                            }
+                            updateColor()
+                            self.isShowToastType = .update
+                            Task {
+                                try await Task.sleep(nanoseconds: 3_000_000_000)
+                                self.isShowToastType = nil
+                            }
+                        })
+                    }
+                    Spacer()
+                    
+                }
+                .onAppear {
+                    tagData = tagReposiroty.readAll()
+                }
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        HStack {
+                            Spacer()
+                            Button {
+                                UIApplication.shared.endEditing()
+                            } label: {
+                                Text("閉じる")
+                            }
+                            
                         }
-
                     }
                 }
-            }
-            .padding(.horizontal, 16)
-            .background(
-                Image(appSettitngs.themeColor.stringValue)
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-            )
-            if let type = isShowToastType {
-                VStack {
-                    ToastView(toastType: type)
-                    Spacer()
+                .padding(.horizontal, 16)
+                .background(
+                    Image(appSettitngs.themeColor.stringValue)
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+                )
+                if let type = isShowToastType {
+                    VStack {
+                        ToastView(toastType: type)
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
             }
         }
+        .background(
+            Image(appSettitngs.themeColor.stringValue)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+        )
     }
 }
 
