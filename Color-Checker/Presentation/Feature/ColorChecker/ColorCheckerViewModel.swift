@@ -4,10 +4,14 @@ import SwiftUI
 
 class ColorCheckerViewModel: ObservableObject {
     @Published var state: ColorCheckerState
+    // viewModel
+    let interstitialViewModel: InterstitialViewModel
+    // reposiroty
+    let favoriteColorRepository: FavoriteColorRepository = FavoriteColorRepositoryImpl()
+    // log const
     private let TAG: String = "ColorCheckerViewModel"
-    let favoriteColorRepository:FavoriteColorRepository = FavoriteColorRepositoryImpl()
-    
-    init() {
+
+    init(interStitialViewModel: InterstitialViewModel) {
         self.state = ColorCheckerState(
             red: 0,
             green: 0,
@@ -15,8 +19,11 @@ class ColorCheckerViewModel: ObservableObject {
             opacity: 0.5,
             memoText: "",
             isShowToast: false,
-            errorMessage: ""
+            errorMessage: "",
+            colorCheckerType: .Slider,
+            tagData: Tag(id: "", tagName: "")
         )
+        self.interstitialViewModel = interStitialViewModel
     }
     
     func onEvent(event: ColorCheckerEvent) {
@@ -28,7 +35,7 @@ class ColorCheckerViewModel: ObservableObject {
             clearAll()
             
         case let .changeColor(colorSettingType, value):
-            updateColor(type: colorSettingType, value: value)
+            changeColor(type: colorSettingType, value: value)
 
         case let .changeMemoText(text):
             changeMemoText(text: text)
@@ -42,19 +49,9 @@ class ColorCheckerViewModel: ObservableObject {
         
     }
     
-    private func changeMemoText(text: String) {
-        state.memoText = text
-    }
+    // MARK: Event Function
     
-    private func clearAll() {
-        state.red = 0
-        state.green = 0
-        state.blue = 0
-        state.opacity = 0.5
-        state.memoText = ""
-    }
-        
-        private func updateColor(type: ColorSettingType, value: Int) {
+    private func changeColor(type: ColorSettingType, value: Int) {
             switch type {
             case .red:
                 state.red = value
@@ -66,6 +63,18 @@ class ColorCheckerViewModel: ObservableObject {
                 state.blue = value
             }
         }
+    
+    private func changeMemoText(text: String) {
+        state.memoText = text
+    }
+    
+    private func clearAll() {
+        state.red = 0
+        state.green = 0
+        state.blue = 0
+        state.opacity = 0.5
+        state.memoText = ""
+    }
         
         private func changeOpacity(value: Double) {
             state.opacity = value
@@ -81,8 +90,8 @@ class ColorCheckerViewModel: ObservableObject {
         }
         
         // 少数第二位の値を返す
-        private func rounded2(value: Float) -> Float {
-            return (value * 100).rounded() / 100
+        private func rounded2(value: Double) -> Float {
+            return Float((value * 100).rounded() / 100)
         }
         
         // 文字列の数字を0~255の数値に変換
@@ -156,4 +165,22 @@ class ColorCheckerViewModel: ObservableObject {
             return nil
         }
     
+    private func saveColor() {
+        var colorsData = favoriteColorRepository.getColor()
+        // Add New Favorite Data
+        let saveColorData = ColorData(
+            id: UUID().uuidString,
+            red: clampTo255(colorNum: state.red),
+            green: clampTo255(colorNum: state.green),
+            blue: clampTo255(colorNum: state.blue),
+            alpha: rounded2(value: state.opacity),
+            hexColor: RGBtoHex(r: state.red, g: state.green, b: state.blue),
+            memo: state.memoText,
+            tagId: state.tagData.id
+        )
+        colorsData.append(saveColorData)
+        // Save Favorite Colors Data
+        favoriteColorRepository.saveColor(colorsData)
+        self.interstitialViewModel.showAd()
     }
+}

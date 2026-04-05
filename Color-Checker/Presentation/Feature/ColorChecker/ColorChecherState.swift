@@ -9,4 +9,6 @@ struct ColorCheckerState {
     var memoText: String
     var isShowToast: Bool
     var errorMessage: String
+    var colorCheckerType: ColorCheckerType
+    var tagData: Tag
 }

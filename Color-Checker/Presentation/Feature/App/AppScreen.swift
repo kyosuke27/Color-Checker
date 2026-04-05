@@ -6,7 +6,10 @@ struct AppScreen: View {
     @State var activeTab: TabData = .home
     @EnvironmentObject var appSettings: AppSettings
     @EnvironmentObject var interstitialViewModel: InterstitialViewModel
-    @StateObject var colorCheckerViewModel: ColorCheckerViewModel = ColorCheckerViewModel()
+    @StateObject var colorCheckerViewModel: ColorCheckerViewModel
+    init() {
+        self._colorCheckerViewModel = StateObject(wrappedValue: ColorCheckerViewModel(interStitialViewModel: interstitialViewModel))
+    }
     var body: some View {
         VStack {
             TabView(selection: $activeTab) {
