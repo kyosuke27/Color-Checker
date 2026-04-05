@@ -3,7 +3,7 @@ import Foundation
 enum ColorCheckerEvent {
     case showColor
     // 色変更
-    case changeColor(ColorSettingType, String)
+    case changeColor(ColorSettingType, Int)
     // 透明度変更
     case changeOpacity(Double)
     // メモ入力

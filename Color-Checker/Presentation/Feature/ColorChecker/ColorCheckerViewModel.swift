@@ -5,9 +5,18 @@ import SwiftUI
 class ColorCheckerViewModel: ObservableObject {
     @Published var state: ColorCheckerState
     private let TAG: String = "ColorCheckerViewModel"
+    let favoriteColorRepository:FavoriteColorRepository = FavoriteColorRepositoryImpl()
     
     init() {
-        self.state = ColorCheckerState(red: 0, green: 0, blue: 0, opacity: 0.5, memoText: "")
+        self.state = ColorCheckerState(
+            red: 0,
+            green: 0,
+            blue: 0,
+            opacity: 0.5,
+            memoText: "",
+            isShowToast: false,
+            errorMessage: ""
+        )
     }
     
     func onEvent(event: ColorCheckerEvent) {
@@ -20,13 +29,13 @@ class ColorCheckerViewModel: ObservableObject {
             
         case let .changeColor(colorSettingType, value):
             updateColor(type: colorSettingType, value: value)
-            
+
         case let .changeMemoText(text):
             changeMemoText(text: text)
 
         case let .changeOpacity(value):
             changeOpacity(value: value)
-
+        
         case .saveData:
             print("saveData")
         }
@@ -45,16 +54,16 @@ class ColorCheckerViewModel: ObservableObject {
         state.memoText = ""
     }
         
-        private func updateColor(type: ColorSettingType, value: String) {
+        private func updateColor(type: ColorSettingType, value: Int) {
             switch type {
             case .red:
-                state.red = stringToDouble(value: value)
+                state.red = value
                 
             case .green:
-                state.green = stringToDouble(value: value)
+                state.green = value
                 
             case .blue:
-                state.blue = stringToDouble(value: value)
+                state.blue = value
             }
         }
         
@@ -62,9 +71,6 @@ class ColorCheckerViewModel: ObservableObject {
             state.opacity = value
         }
         
-        private func stringToDouble(value: String) -> Int {
-            return Int(value) ?? 0
-        }
         private func RGBtoHex(r: Int, g: Int, b: Int) -> String {
             // 2桁の16進数表記にする
             // %: フォーマット指定
@@ -120,4 +126,34 @@ class ColorCheckerViewModel: ObservableObject {
             state.blue = 0
             state.memoText = ""
         }
+        
+        // MARK: エラーチェック
+    
+        // 入力されたRGBチェック
+        private func checkRGB(red: String, green: String, blue: String) -> String? {
+            let UPPER_LIMIT = 255
+            let LOWER_LIMIT = 0
+            if  state.red > UPPER_LIMIT || state.green > UPPER_LIMIT || state.blue > UPPER_LIMIT {
+                let message = "入力値は255以下にしてください。"
+                return message
+            }
+            if state.red < LOWER_LIMIT || state.green < LOWER_LIMIT || state.blue < LOWER_LIMIT {
+                let message = "入力値は0以上にしてください。"
+                return message
+            }
+            
+            return nil
+        }
+    
+        // メッセージの長さをチェック
+        private func checkMessageLimit(messageText: String) -> String? {
+            let MESSAGE_LIMIT = 20
+            
+            if state.memoText.count > MESSAGE_LIMIT {
+                let message = "入力値は20文字以下にしてください。"
+                return message
+            }
+            return nil
+        }
+    
     }

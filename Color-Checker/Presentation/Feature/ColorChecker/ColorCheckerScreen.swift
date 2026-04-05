@@ -133,17 +133,6 @@ struct ColorCheckerScreen: View {
         self.newTagText = ""
         self.opacity = 1.0
         self.color = .white
-        print("color \(color)")
-        print("initialInput \(isResetting)")
-    }
-    
-    private func isCheckDuplicate() -> String? {
-        let data = reposiroty.getColor()
-        let hexColor = RGBtoHex()
-        if data.contains(where: { $0.hexColor == hexColor && $0.alpha == opacity }) {
-            return "同じ色は登録できません"
-        }
-        return nil
     }
     
     var body: some View {
@@ -165,19 +154,19 @@ struct ColorCheckerScreen: View {
                             red: Binding<String>(
                                 get: { String(state.red) },
                                 set: { newValue in
-                                    onEvent(.changeColor(.red, newValue))
+                                    onEvent(.changeColor(.red, newValue.stringToInt()))
                                 }
                             ),
                             green: Binding<String>(
                                 get: { String(state.green) },
                                 set: { newValue in
-                                    onEvent(.changeColor(.green, newValue))
+                                    onEvent(.changeColor(.green, newValue.stringToInt()))
                                 }
                             ),
                             blue: Binding<String>(
                                 get: { String(state.blue) },
                                 set: { newValue in
-                                    onEvent(.changeColor(.blue, newValue))
+                                    onEvent(.changeColor(.blue, newValue.stringToInt()))
                                 }
                             ),
                             isShowToastType: $isShowToastType
@@ -185,7 +174,32 @@ struct ColorCheckerScreen: View {
                         .padding(.top, 12)
                     } else if checkerType == .Slider {
                         VStack {
-                            SliderView(redSlider: $redSldier, greenSlider: $greenSlider, blueSlider: $blueSlider)
+                            SliderView(
+                                redSlider: Binding<Double>(
+                                    get: {
+                                        state.red.intToDouble()
+                                    },
+                                    set: {newValue in
+                                        onEvent(.changeColor(ColorSettingType.red, newValue.doubleToInt()))
+                                    }
+                                ),
+                                greenSlider: Binding<Double>(
+                                    get: {
+                                        state.green.intToDouble()
+                                    },
+                                    set: {newValue in
+                                        onEvent(.changeColor(ColorSettingType.green, newValue.doubleToInt()))
+                                    }
+                                ),
+                                blueSlider: Binding<Double>(
+                                    get: {
+                                        state.blue.intToDouble()
+                                    },
+                                    set: {newValue in
+                                        onEvent(.changeColor(ColorSettingType.blue, newValue.doubleToInt()))
+                                    }
+                                )
+                            )
                             
                         }
                         .onChange(of: [redSldier, greenSlider, blueSlider]) { _ in
@@ -281,14 +295,6 @@ struct ColorCheckerScreen: View {
                                     return
                                 }
                                 if let valid = isValidMessage(messageText: memoText) {
-                                    self.isShowToastType = .error(valid)
-                                    Task {
-                                        try await Task.sleep(nanoseconds: 3_000_000_000)
-                                        self.isShowToastType = nil
-                                    }
-                                    return
-                                }
-                                if let valid = isCheckDuplicate() {
                                     self.isShowToastType = .error(valid)
                                     Task {
                                         try await Task.sleep(nanoseconds: 3_000_000_000)
