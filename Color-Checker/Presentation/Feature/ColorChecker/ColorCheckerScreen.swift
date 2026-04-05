@@ -3,16 +3,8 @@ import UIKit
 import GoogleMobileAds
 
 struct ColorCheckerScreen: View {
-    @State var isSelectedIndex: String = ""
-    @State var inputTagAlert: Bool = false
-    @State var newTagText: String = ""
-    @State var tagData: [Tag] = []
-    @State var isResetting = false
-    @State var checkerType: ColorCheckerType = .Slider
     @EnvironmentObject var appSettitngs: AppSettings
     @EnvironmentObject var interstitialViewModel: InterstitialViewModel
-    let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
-    let tagReposiroty: TagRepository = TagRepositoryImpl()
     let onEvent: (ColorCheckerEvent) -> Void
     var state: ColorCheckerState
     
@@ -20,17 +12,22 @@ struct ColorCheckerScreen: View {
         ScrollView {
             ZStack {
                 VStack(spacing: 8) {
-                    Picker("Screentype", selection: $checkerType) {
+                    Picker("Screentype",
+                           selection: Binding<ColorCheckerType>(
+                            get: { state.colorCheckerType },
+                            set: {newValue in
+                                print("newValue \(newValue)")
+                                onEvent(.changePickerType(newValue))
+                            }
+                           )
+                    ) {
                         Text("Slider")
                             .tag(ColorCheckerType.Slider)
                         Text("Input")
                             .tag(ColorCheckerType.Input)
                     }
                     .pickerStyle(.segmented)
-                    .onChange(of: checkerType) { newValue in
-                        print("newValue \(newValue)")
-                    }
-                    if checkerType == .Input {
+                    if state.colorCheckerType == .Input {
                         RGBRow(
                             red: Binding<String>(
                                 get: { String(state.red) },
@@ -58,7 +55,7 @@ struct ColorCheckerScreen: View {
                             )
                         )
                         .padding(.top, 12)
-                    } else if checkerType == .Slider {
+                    } else if state.colorCheckerType == .Slider {
                         VStack {
                             SliderView(
                                 redSlider: Binding<Double>(
@@ -116,18 +113,27 @@ struct ColorCheckerScreen: View {
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach(tagData) { tag in
-                                        TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: { isSelectedIndex = tag.id }, onDeleteTap: {
-                                            tagReposiroty.delete(tag)
-                                            tagData = tagReposiroty.readAll()
-                                        }
+                                    ForEach(state.tagsData) { tag in
+                                        TagView(
+                                            isSelectedIndex: Binding<String>(
+                                                get: { state.isSelectedTagId },
+                                                set: { _ in }
+                                            ),
+                                            index: tag.id,
+                                            text: tag.tagName,
+                                            onTap: {
+                                                onEvent(.selectTagId(tag.id))
+                                            },
+                                            onDeleteTap: {
+                                                onEvent(.deleteTag(tag))
+                                            }
                                         )
                                     }
                                 }
                             }
                             .scrollIndicators(.hidden)
                             BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
-                                inputTagAlert = true
+                                onEvent(.changeTagModal)
                             })
                             
                         }
@@ -158,25 +164,32 @@ struct ColorCheckerScreen: View {
                     Spacer()
                 }
                 .onAppear {
-                    tagData = tagReposiroty.readAll()
-                    Task {
-                        await interstitialViewModel.loadAd()
-                    }
+                    onEvent(.onAppear)
                 }
-                .alert("タグ入力", isPresented: $inputTagAlert, actions: {
-                    TextField("タグを入力", text: $newTagText)
+                .alert("タグ入力",
+                       isPresented: Binding<Bool>(
+                        get: { state.isTagModal },
+                        set: { _ in onEvent(.changeTagModal) }
+                       ),
+                       actions: {
+                    TextField("タグを入力",
+                              text: Binding<String>(
+                                get: {
+                                    state.tagName
+                                },
+                                set: {newValue in
+                                    onEvent(.changeTagText(newValue))
+                                }
+                              )
+                    )
                     Button {
-                        if !newTagText.isEmpty {
-                            let tag = Tag(id: UUID().uuidString, tagName: newTagText)
-                            self.tagData.append(tag)
-                            tagReposiroty.save(tagData)
-                            self.tagData = tagReposiroty.readAll()
-                        }
+                        onEvent(.saveTag)
+                        onEvent(.changeTagModal)
                     } label: {
                         Text("OK")
-                        
                     }
                     Button {
+                        onEvent(.changeTagModal)
                     } label: {
                         Text("Cancel")
                     }

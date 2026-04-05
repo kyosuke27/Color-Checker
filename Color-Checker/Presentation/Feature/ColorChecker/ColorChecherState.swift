@@ -9,7 +9,10 @@ struct ColorCheckerState {
     var memoText: String
     var toastType: ToastType?
     var colorCheckerType: ColorCheckerType
-    var tagData: Tag
+    var isTagModal: Bool
+    var tagName: String
+    var tagsData: [Tag]
+    var isSelectedTagId: String
     
     var color: Color {
         get {

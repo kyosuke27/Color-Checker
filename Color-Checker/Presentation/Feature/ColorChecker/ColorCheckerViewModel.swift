@@ -8,6 +8,7 @@ class ColorCheckerViewModel: ObservableObject {
     let interstitialViewModel: InterstitialViewModel
     // reposiroty
     let favoriteColorRepository: FavoriteColorRepository = FavoriteColorRepositoryImpl()
+    let tagRepository: TagRepository = TagRepositoryImpl()
     // log const
     private let TAG: String = "ColorCheckerViewModel"
 
@@ -20,13 +21,19 @@ class ColorCheckerViewModel: ObservableObject {
             memoText: "",
             toastType: nil,
             colorCheckerType: .Slider,
-            tagData: Tag(id: "", tagName: "")
+            isTagModal: false,
+            tagName: "",
+            tagsData: [],
+            isSelectedTagId: "",
         )
         self.interstitialViewModel = interStitialViewModel
     }
     
     func onEvent(event: ColorCheckerEvent) {
         switch event {
+        case .onAppear:
+            onAppear()
+
         case .clearAll:
             clearAll()
             
@@ -42,16 +49,35 @@ class ColorCheckerViewModel: ObservableObject {
         case let .changeToastType(type):
             changeToastType(type: type)
         
+        case .changeTagModal:
+            changeShowTagModal()
+        
+        case let .changeTagText(text):
+            changeTagNameText(tagNameText: text)
+
+        case let .selectTagId(tagId):
+            selectedTagId(tagId: tagId)
+
+        case let .changePickerType(type):
+            changePickerType(type: type)
+
         case .saveData:
             saveColor()
 
         case .saveTag:
-            print("saveTag")
+            saveTag()
+
+        case let .deleteTag(tag):
+            deleteTag(tag: tag)
         }
         
     }
     
     // MARK: Event Function
+    
+    private func onAppear() {
+        state.tagsData = tagRepository.readAll()
+    }
     
     private func changeColor(type: ColorSettingType, value: Int) {
             switch type {
@@ -72,6 +98,22 @@ class ColorCheckerViewModel: ObservableObject {
     
     private func changeToastType(type: ToastType?) {
         state.toastType = type
+    }
+    
+    private func changeTagNameText(tagNameText: String) {
+        state.tagName = tagNameText
+    }
+    
+    private func changeShowTagModal() {
+        state.isTagModal.toggle()
+    }
+    
+    private func selectedTagId(tagId: String) {
+        state.isSelectedTagId = tagId
+    }
+    
+    private func changePickerType(type: ColorCheckerType) {
+        state.colorCheckerType = type
     }
     
     private func clearAll() {
@@ -113,7 +155,7 @@ class ColorCheckerViewModel: ObservableObject {
             }
             return colorNum
         }
-        
+    
         // RGBAを入力してColorを返す
         private func RGBtoColor(red: Int, green: Int, blue: Int, opacity: Double) -> Color {
             let calcR = clampTo255(colorNum: red)
@@ -201,7 +243,7 @@ class ColorCheckerViewModel: ObservableObject {
             alpha: rounded2(value: state.opacity),
             hexColor: RGBtoHex(r: state.red, g: state.green, b: state.blue),
             memo: state.memoText,
-            tagId: state.tagData.id
+            tagId: state.isSelectedTagId
         )
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
@@ -209,5 +251,25 @@ class ColorCheckerViewModel: ObservableObject {
         state.toastType = .success
         delayChangeToastNil()
         self.interstitialViewModel.showAd()
+    }
+    
+    private func saveTag() {
+        if state.tagName.isEmpty {
+            return
+        }
+        // Create Tag
+        let tag = Tag(id: UUID().uuidString, tagName: state.tagName)
+        state.tagsData.append(tag)
+        print("state.tagsData \(state.tagsData)")
+        tagRepository.save(state.tagsData)
+        state.tagsData = tagRepository.readAll()
+    }
+    
+    private func deleteTag(tag: Tag?) {
+        guard let deleteTag = tag else {
+            return
+        }
+        tagRepository.delete(deleteTag)
+        state.tagsData = tagRepository.readAll()
     }
 }
