@@ -226,21 +226,6 @@ struct ColorCheckerScreen: View {
     }
 }
 
-extension ColorCheckerScreen {
-    private var inputColorCheckerView: some View {
-        return VStack {
-            Text("")
-        }
-    }
-}
-
-extension UIApplication {
-    func endEditing(_ force: Bool = true) {
-        self.sendAction(#selector(UIResponder.resignFirstResponder),
-                        to: nil, from: nil, for: nil)
-    }
-}
-
 #Preview {
     let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
     let interstitialViewModel = InterstitialViewModel()
