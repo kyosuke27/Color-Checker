@@ -5,11 +5,11 @@ struct SliderView: View {
     @Binding var greenSlider: Double
     @Binding var blueSlider: Double
     var body: some View {
-        Slider(value: $redSlider, in: 0...256, step: 1)
+        Slider(value: $redSlider, in: 0...255, step: 1)
             .tint(.red)
-        Slider(value: $greenSlider, in: 0...256, step: 1)
+        Slider(value: $greenSlider, in: 0...255, step: 1)
             .tint(.green)
-        Slider(value: $blueSlider, in: 0...256, step: 1)
+        Slider(value: $blueSlider, in: 0...255, step: 1)
             .tint(.blue)
     }
 }
