@@ -7,8 +7,8 @@ struct AppScreen: View {
     @EnvironmentObject var appSettings: AppSettings
     @EnvironmentObject var interstitialViewModel: InterstitialViewModel
     @StateObject var colorCheckerViewModel: ColorCheckerViewModel
-    init() {
-        self._colorCheckerViewModel = StateObject(wrappedValue: ColorCheckerViewModel(interStitialViewModel: interstitialViewModel))
+    init(colorCheckerViewModel: ColorCheckerViewModel) {
+        self._colorCheckerViewModel = StateObject(wrappedValue: colorCheckerViewModel)
     }
     var body: some View {
         VStack {
@@ -109,5 +109,7 @@ struct TabItem: View {
 }
 
 #Preview {
-    AppScreen()
+    let interStitialViewModel: InterstitialViewModel = InterstitialViewModel()
+    let colorCheckerViewModel: ColorCheckerViewModel = ColorCheckerViewModel(interStitialViewModel: interStitialViewModel)
+    AppScreen(colorCheckerViewModel: colorCheckerViewModel)
 }

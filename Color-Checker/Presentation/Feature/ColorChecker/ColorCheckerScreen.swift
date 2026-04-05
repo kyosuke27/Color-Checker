@@ -386,7 +386,8 @@ struct ColorCheckerScreen: View {
     
     #Preview {
         let appSetting = AppSettings(id: "1234", themeColor: SettingImageType.blueColor)
-        let viewModel = ColorCheckerViewModel()
+        let interstitialViewModel = InterstitialViewModel()
+        let viewModel = ColorCheckerViewModel(interStitialViewModel: interstitialViewModel)
         ColorCheckerScreen(
             onEvent: { viewModel.onEvent(event: $0) },
             state: viewModel.state)
