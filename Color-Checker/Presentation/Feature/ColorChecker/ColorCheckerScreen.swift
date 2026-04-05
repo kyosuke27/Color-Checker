@@ -20,10 +20,9 @@ struct ColorCheckerScreen: View {
     @State var isResetting = false
     @State var checkerType: ColorCheckerType = .Slider
     @EnvironmentObject var appSettitngs: AppSettings
-    @EnvironmentObject var initializeViewModel: InterstitialViewModel
+    @EnvironmentObject var interstitialViewModel: InterstitialViewModel
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
     let tagReposiroty: TagRepository = TagRepositoryImpl()
-    let interstitialViewModle: InterstitialViewModel = InterstitialViewModel()
     let onEvent: (ColorCheckerEvent) -> Void
     var state: ColorCheckerState
     
@@ -85,7 +84,7 @@ struct ColorCheckerScreen: View {
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         reposiroty.saveColor(colorsData)
-        interstitialViewModle.showAd()
+        interstitialViewModel.showAd()
     }
     
     private func getColor() {
@@ -317,7 +316,7 @@ struct ColorCheckerScreen: View {
             .onAppear {
                 tagData = tagReposiroty.readAll()
                 Task {
-                    await interstitialViewModle.loadAd()
+                    await interstitialViewModel.loadAd()
                 }
             }
             .alert("タグ入力", isPresented: $inputTagAlert, actions: {
