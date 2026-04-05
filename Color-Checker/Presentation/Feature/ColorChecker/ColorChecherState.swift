@@ -11,4 +11,10 @@ struct ColorCheckerState {
     var errorMessage: String
     var colorCheckerType: ColorCheckerType
     var tagData: Tag
+    
+    var color: Color {
+        get {
+            return Color.rgba(r: red.intToDouble(), g: green.intToDouble(), b: blue.intToDouble(), a: opacity)
+        }
+    }
 }

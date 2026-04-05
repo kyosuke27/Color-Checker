@@ -16,7 +16,7 @@ class ColorCheckerViewModel: ObservableObject {
             red: 0,
             green: 0,
             blue: 0,
-            opacity: 0.5,
+            opacity: 1.0,
             memoText: "",
             isShowToast: false,
             errorMessage: "",

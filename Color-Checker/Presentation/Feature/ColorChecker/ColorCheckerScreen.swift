@@ -201,18 +201,18 @@ struct ColorCheckerScreen: View {
                             )
                             
                         }
-                        .onChange(of: [redSldier, greenSlider, blueSlider]) { _ in
-                            // isResettingがtrueの際に呼び出される
-                            guard !isResetting else {
-                                isResetting = false
-                                return
-                            }
-                            print("isResetting \(isResetting)")
-                            print("red: \(redSldier) green: \(greenSlider) blue: \(blueSlider)")
-                            self.color = RGBtoColor(r: redSldier, g: greenSlider, b: blueSlider)
-                        }
                     }
-                    ColorArea(color: $color, height: 180)
+                    ColorArea(
+                        color:
+                            Binding<Color>(
+                                get: {
+                                    state.color
+                                },
+                                set: {_ in
+                                    
+                                }
+                            ), height: 180
+                    )
                     VStack {
                         // メモ入力欄
                         BaseTextField(
