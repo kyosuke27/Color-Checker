@@ -18,8 +18,7 @@ class ColorCheckerViewModel: ObservableObject {
             blue: 0,
             opacity: 1.0,
             memoText: "",
-            isShowToast: false,
-            errorMessage: "",
+            toastType: nil,
             colorCheckerType: .Slider,
             tagData: Tag(id: "", tagName: "")
         )
@@ -28,9 +27,6 @@ class ColorCheckerViewModel: ObservableObject {
     
     func onEvent(event: ColorCheckerEvent) {
         switch event {
-        case .showColor:
-            print("hello")
-            
         case .clearAll:
             clearAll()
             
@@ -43,8 +39,14 @@ class ColorCheckerViewModel: ObservableObject {
         case let .changeOpacity(value):
             changeOpacity(value: value)
         
+        case let .changeToastType(type):
+            changeToastType(type: type)
+        
         case .saveData:
-            print("saveData")
+            saveColor()
+
+        case .saveTag:
+            print("saveTag")
         }
         
     }
@@ -66,6 +68,10 @@ class ColorCheckerViewModel: ObservableObject {
     
     private func changeMemoText(text: String) {
         state.memoText = text
+    }
+    
+    private func changeToastType(type: ToastType?) {
+        state.toastType = type
     }
     
     private func clearAll() {
@@ -139,7 +145,7 @@ class ColorCheckerViewModel: ObservableObject {
         // MARK: エラーチェック
     
         // 入力されたRGBチェック
-        private func checkRGB(red: String, green: String, blue: String) -> String? {
+        private func checkRGB(red: Int, green: Int, blue: Int) -> String? {
             let UPPER_LIMIT = 255
             let LOWER_LIMIT = 0
             if  state.red > UPPER_LIMIT || state.green > UPPER_LIMIT || state.blue > UPPER_LIMIT {
@@ -165,7 +171,26 @@ class ColorCheckerViewModel: ObservableObject {
             return nil
         }
     
+    private func delayChangeToastNil() {
+        Task {
+            try await Task.sleep(nanoseconds: 3_000_000_000)
+            changeToastType(type: nil)
+        }
+    }
+    
     private func saveColor() {
+        // RGB範囲チェック
+        if let valid = checkRGB(red: state.red, green: state.green, blue: state.blue) {
+            state.toastType = .error(valid)
+            delayChangeToastNil()
+            return
+        }
+        // メッセージの長さをチェック
+        if let valid = checkMessageLimit(messageText: state.memoText) {
+            state.toastType = .error(valid)
+            delayChangeToastNil()
+            return
+        }
         var colorsData = favoriteColorRepository.getColor()
         // Add New Favorite Data
         let saveColorData = ColorData(
@@ -181,6 +206,8 @@ class ColorCheckerViewModel: ObservableObject {
         colorsData.append(saveColorData)
         // Save Favorite Colors Data
         favoriteColorRepository.saveColor(colorsData)
+        state.toastType = .success
+        delayChangeToastNil()
         self.interstitialViewModel.showAd()
     }
 }

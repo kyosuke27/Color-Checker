@@ -7,8 +7,7 @@ struct ColorCheckerState {
     var blue: Int
     var opacity: Double
     var memoText: String
-    var isShowToast: Bool
-    var errorMessage: String
+    var toastType: ToastType?
     var colorCheckerType: ColorCheckerType
     var tagData: Tag
     
