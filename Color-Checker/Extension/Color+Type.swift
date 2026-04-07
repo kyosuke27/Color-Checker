@@ -1,6 +1,50 @@
 import Foundation
 import SwiftUI
 
+struct defaultTheme: Theme {
+    let id: String = "Background"
+    let fontColor: Color = Color("Light")
+    let borderColor: Color = Color("DarkBorder")
+    let borderButtonColor: Color = Color("Light")
+    let textBackgroundColor: Color = Color("DarkBorder")
+    let textFildIconColor: Color = Color("Light")
+    let registerButtonBackgroundColor: Color = Color("DarkLightPurple")
+    let registerButtonFontColor: Color = Color("Light")
+}
+
+struct blueTheme: Theme {
+    let id: String = "BlueColor"
+    let fontColor: Color = Color("Light")
+    let borderColor: Color = Color("DarkBorder")
+    let borderButtonColor: Color = Color("Light")
+    let textBackgroundColor: Color = Color("DarkBorder")
+    let textFildIconColor: Color = Color("Light")
+    let registerButtonBackgroundColor: Color = Color("DarkLightPurple")
+    let registerButtonFontColor: Color = Color("Light")
+}
+
+struct darkColorTheme: Theme {
+    let id: String = "DarkColor"
+    let fontColor: Color = Color("Light")
+    let borderButtonColor: Color = Color("Light")
+    let borderColor: Color = Color("DarkBorder")
+    let textBackgroundColor: Color = Color("DarkBorder")
+    let textFildIconColor: Color = Color("Light")
+    let registerButtonBackgroundColor: Color = Color("DarkLightPurple")
+    let registerButtonFontColor: Color = Color("Light")
+}
+
+struct LightColorTheme: Theme {
+    let id: String = "LightColor"
+    let fontColor: Color = Color("LightBlack")
+    let borderButtonColor: Color = Color("Light")
+    let borderColor: Color = Color("LightBrawn")
+    let textBackgroundColor: Color = Color("Light")
+    let textFildIconColor: Color = Color("Brawn")
+    let registerButtonBackgroundColor: Color = Color("PastelLightBlue")
+    let registerButtonFontColor: Color = Color("Light")
+}
+
 struct Component {
     let borderColor: Color
     let compBackground: Color

@@ -64,7 +64,7 @@ struct FavoriteColorScreen: View {
             }
             .padding()
             .background {
-                    Image(appSettings.themeColor.stringValue)
+                Image(appSettings.themeColor.stringValue.id)
                         .resizable()
                         .scaledToFill()
                         .ignoresSafeArea()

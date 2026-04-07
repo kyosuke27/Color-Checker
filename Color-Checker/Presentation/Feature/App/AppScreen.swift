@@ -35,7 +35,7 @@ struct AppScreen: View {
             )
         }
         .background {
-            Image(appSettings.themeColor.stringValue)
+            Image(appSettings.themeColor.stringValue.id)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()

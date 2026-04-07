@@ -21,12 +21,14 @@ struct ColorCheckerScreen: View {
                             }
                            )
                     ) {
-                        Text("Slider")
+                        Image(systemName: "slider.horizontal.3")
                             .tag(ColorCheckerType.Slider)
-                        Text("Input")
+                        Image(systemName: "numbers.rectangle")
                             .tag(ColorCheckerType.Input)
                     }
+                    .background(.black)
                     .pickerStyle(.segmented)
+                    .cornerRadius(16)
                     if state.colorCheckerType == .Input {
                         RGBRow(
                             red: Binding<String>(
@@ -52,7 +54,9 @@ struct ColorCheckerScreen: View {
                                 set: {newValue in
                                     onEvent(.changeToastType(newValue))
                                 }
-                            )
+                            ),
+                            borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                            background: appSettitngs.themeColor.stringValue.textBackgroundColor
                         )
                         .padding(.top, 12)
                     } else if state.colorCheckerType == .Slider {
@@ -109,7 +113,14 @@ struct ColorCheckerScreen: View {
                                         onEvent(.changeMemoText(newValue))
                                     }
                                 ),
-                            width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                            width: .infinity,
+                            height: 0,
+                            type: .imageTextField,
+                            image: Image(systemName: "bubble.left"),
+                            imageColor: appSettitngs.themeColor.stringValue.textFildIconColor,
+                            borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                            backgroundColor: appSettitngs.themeColor.stringValue.textBackgroundColor
+                        )
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
@@ -132,7 +143,7 @@ struct ColorCheckerScreen: View {
                                 }
                             }
                             .scrollIndicators(.hidden)
-                            BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
+                            BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonFontColor, onTap: {
                                 onEvent(.changeTagModal)
                             })
                             
@@ -141,7 +152,7 @@ struct ColorCheckerScreen: View {
                     }
                     HStack {
                         Text("A : \(String(format: "%.2f", state.opacity))")
-                            .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                            .foregroundStyle(appSettitngs.themeColor.stringValue.fontColor)
                         Slider(value: Binding<Double>(
                             get: {
                                 state.opacity
@@ -152,12 +163,12 @@ struct ColorCheckerScreen: View {
                         ), in: 0...1)
                     }
                     HStack {
-                        BaseButton(text: "リセット", width: 360, bodyColor: Color.extendedColors.component.buttonBackground, onTap: {
+                        BaseButton(text: "リセット", width: 360, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonFontColor, onTap: {
                             onEvent(.clearAll)
                         })
                     }
                     HStack {
-                        BaseButton(text: "保存", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
+                        BaseButton(text: "保存", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonFontColor, onTap: {
                             onEvent(.saveData)
                         })
                     }
@@ -218,7 +229,7 @@ struct ColorCheckerScreen: View {
             }
         }
         .background(
-            Image(appSettitngs.themeColor.stringValue)
+            Image(appSettitngs.themeColor.stringValue.id)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
