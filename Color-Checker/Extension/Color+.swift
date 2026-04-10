@@ -1,15 +1,38 @@
 import Foundation
 import SwiftUI
 
+public struct ResetButtonColor {
+    let resetButtonFontColor: Color
+    let resetButtonBackground: Color
+}
+
+public struct RegisterButtonColor {
+    let registerButtonBackgroundColor: Color
+    let registerButtonFontColor: Color
+}
+
+public struct TextFieldColor {
+    let textBackgroundColor: Color
+    let textFieldIconColor: Color
+}
+
 struct defaultTheme: Theme {
     let id: String = "Background"
     let fontColor: Color = Color("Light")
     let borderColor: Color = Color("DarkBorder")
     let borderButtonColor: Color = Color("Light")
-    let textBackgroundColor: Color = Color("DarkBorder")
-    let textFildIconColor: Color = Color("Light")
-    let registerButtonBackgroundColor: Color = Color("DarkLightPurple")
-    let registerButtonFontColor: Color = Color("Light")
+    let textFieldColor: TextFieldColor = TextFieldColor(
+        textBackgroundColor: Color("DarkBorder"),
+        textFieldIconColor: Color("Light")
+    )
+    let resetButtonColor: ResetButtonColor = ResetButtonColor(
+        resetButtonFontColor: Color("LightBlack"),
+        resetButtonBackground: Color("LightBrawn")
+    )
+    let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
+        registerButtonBackgroundColor: Color("DarkLightPurple"),
+        registerButtonFontColor: Color("Light")
+    )
 }
 
 struct blueTheme: Theme {
@@ -17,10 +40,18 @@ struct blueTheme: Theme {
     let fontColor: Color = Color("Light")
     let borderColor: Color = Color("DarkBorder")
     let borderButtonColor: Color = Color("Light")
-    let textBackgroundColor: Color = Color("DarkBorder")
-    let textFildIconColor: Color = Color("Light")
-    let registerButtonBackgroundColor: Color = Color("DarkLightPurple")
-    let registerButtonFontColor: Color = Color("Light")
+    let textFieldColor: TextFieldColor = TextFieldColor(
+        textBackgroundColor: Color("DarkBorder"),
+        textFieldIconColor: Color("Light")
+    )
+    let resetButtonColor: ResetButtonColor = ResetButtonColor(
+        resetButtonFontColor: Color("LightBlack"),
+        resetButtonBackground: Color("LightBrawn")
+    )
+    let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
+        registerButtonBackgroundColor: Color("DarkLightPurple"),
+        registerButtonFontColor: Color("Light")
+    )
 }
 
 struct darkColorTheme: Theme {
@@ -28,10 +59,18 @@ struct darkColorTheme: Theme {
     let fontColor: Color = Color("Light")
     let borderButtonColor: Color = Color("Light")
     let borderColor: Color = Color("DarkBorder")
-    let textBackgroundColor: Color = Color("DarkBorder")
-    let textFildIconColor: Color = Color("Light")
-    let registerButtonBackgroundColor: Color = Color("DarkLightPurple")
-    let registerButtonFontColor: Color = Color("Light")
+    let textFieldColor: TextFieldColor = TextFieldColor(
+        textBackgroundColor: Color("DarkBorder"),
+        textFieldIconColor: Color("Light")
+    )
+    let resetButtonColor: ResetButtonColor = ResetButtonColor(
+        resetButtonFontColor: Color("DarkBlack"),
+        resetButtonBackground: Color("LightBrawn")
+    )
+    let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
+        registerButtonBackgroundColor: Color("DarkLightPurple"),
+        registerButtonFontColor: Color("Light")
+    )
 }
 
 struct LightColorTheme: Theme {
@@ -39,10 +78,18 @@ struct LightColorTheme: Theme {
     let fontColor: Color = Color("LightBlack")
     let borderButtonColor: Color = Color("Light")
     let borderColor: Color = Color("LightBrawn")
-    let textBackgroundColor: Color = Color("Light")
-    let textFildIconColor: Color = Color("Brawn")
-    let registerButtonBackgroundColor: Color = Color("PastelLightBlue")
-    let registerButtonFontColor: Color = Color("Light")
+    let textFieldColor: TextFieldColor = TextFieldColor(
+        textBackgroundColor: Color("Light"),
+        textFieldIconColor: Color("Brawn")
+    )
+    let resetButtonColor: ResetButtonColor = ResetButtonColor(
+        resetButtonFontColor: Color("LightBlack"),
+        resetButtonBackground: Color("LightBrawn")
+    )
+    let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
+        registerButtonBackgroundColor: Color("PastelLightBlue"),
+        registerButtonFontColor: Color("Light")
+    )
 }
 
 struct Component {

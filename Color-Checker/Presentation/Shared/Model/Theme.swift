@@ -6,8 +6,7 @@ protocol Theme {
     var fontColor: Color { get }
     var borderColor: Color {get}
     var borderButtonColor: Color {get}
-    var textBackgroundColor: Color {get}
-    var textFildIconColor: Color {get}
-    var registerButtonBackgroundColor: Color {get}
-    var registerButtonFontColor: Color {get}
+    var textFieldColor: TextFieldColor {get}
+    var resetButtonColor: ResetButtonColor {get}
+    var registerButtonColor: RegisterButtonColor {get}
 }
