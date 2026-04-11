@@ -18,7 +18,6 @@ public struct TextFieldColor {
 
 public struct TagColor {
     let tagBackground: Color
-    let tagSelectBackground: Color
     let tagDeleteButtonBackgroundColor: Color
 }
 
@@ -41,7 +40,6 @@ struct defaultTheme: Theme {
     )
     let tagColor: TagColor = TagColor(
         tagBackground: Color("DarkTagBackground"),
-        tagSelectBackground: Color("DarkSelectTagBackground"),
         tagDeleteButtonBackgroundColor: .white.opacity(0.1)
     )
 }
@@ -65,7 +63,6 @@ struct blueTheme: Theme {
     )
     let tagColor: TagColor = TagColor(
         tagBackground: Color("DarkTagBackground"),
-        tagSelectBackground: Color("DarkSelectTagBackground"),
         tagDeleteButtonBackgroundColor: .white.opacity(0.1)
     )
 }
@@ -89,7 +86,6 @@ struct darkColorTheme: Theme {
     )
     let tagColor: TagColor = TagColor(
         tagBackground: Color("DarkTagBackground"),
-        tagSelectBackground: Color("DarkSelectTagBackground"),
         tagDeleteButtonBackgroundColor: .white.opacity(0.1)
     )
 }
@@ -113,7 +109,6 @@ struct LightColorTheme: Theme {
     )
     let tagColor: TagColor = TagColor(
         tagBackground: Color("LightTagBackground"),
-        tagSelectBackground: Color("LightSelectTagBackground"),
         tagDeleteButtonBackgroundColor: Color("LightDeleteTagBackground")
     )
 }

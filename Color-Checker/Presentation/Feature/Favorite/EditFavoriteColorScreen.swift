@@ -180,12 +180,8 @@ struct EditFavoriteColorScreen: View {
                                     ForEach(tagData) { tag in
                                         TagView(
                                             isSelectedIndex: $tagSelectedIndex,
-                                            index: tag.id,
-                                            text: tag.tagName,
-                                            tagDeleteBackground: appSettitngs.themeColor.stringValue.tagColor.tagDeleteButtonBackgroundColor,
-                                            background: appSettitngs.themeColor.stringValue.tagColor.tagBackground,
-                                            selectedBackground: appSettitngs.themeColor.stringValue.tagColor.tagSelectBackground,
-                                            textFontColor: appSettitngs.themeColor.stringValue.fontColor,
+                                            themeColor: appSettitngs.themeColor.stringValue,
+                                            tag: tag,
                                             onTap: { tagSelectedIndex = tag.id },
                                             onDeleteTap: { tagReposiroty.delete(tag)
                                             tagData = tagReposiroty.readAll()

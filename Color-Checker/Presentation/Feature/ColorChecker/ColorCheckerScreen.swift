@@ -130,12 +130,8 @@ struct ColorCheckerScreen: View {
                                                 get: { state.isSelectedTagId },
                                                 set: { _ in }
                                             ),
-                                            index: tag.id,
-                                            text: tag.tagName,
-                                            tagDeleteBackground: appSettitngs.themeColor.stringValue.tagColor.tagDeleteButtonBackgroundColor,
-                                            background: appSettitngs.themeColor.stringValue.tagColor.tagBackground,
-                                            selectedBackground: appSettitngs.themeColor.stringValue.tagColor.tagSelectBackground,
-                                            textFontColor: appSettitngs.themeColor.stringValue.fontColor,
+                                            themeColor: appSettitngs.themeColor.stringValue,
+                                            tag: tag,
                                             onTap: {
                                                 onEvent(.selectTagId(tag.id))
                                             },
@@ -143,6 +139,7 @@ struct ColorCheckerScreen: View {
                                                 onEvent(.deleteTag(tag))
                                             },
                                         )
+                                        .padding(.vertical, 4)
                                     }
                                 }
                             }

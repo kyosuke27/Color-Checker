@@ -18,16 +18,11 @@ struct FavoriteColorScreen: View {
                             ForEach(tagData) { tag in
                                 TagView(
                                     isSelectedIndex: $isSelectedIndex,
-                                    index: tag.id,
-                                    text: tag.tagName,
-                                    tagDeleteBackground: appSettings.themeColor.stringValue.tagColor.tagDeleteButtonBackgroundColor,
-                                    background: appSettings.themeColor.stringValue.tagColor.tagBackground,
-                                    selectedBackground: appSettings.themeColor.stringValue.tagColor.tagSelectBackground,
-                                    textFontColor: appSettings.themeColor.stringValue.fontColor,
+                                    themeColor: appSettings.themeColor.stringValue,
+                                    tag: tag,
                                     onTap: {
                                     if isSelectedIndex.isEmpty {
                                         self.isSelectedIndex = tag.id
-                                        print("tag.id \(tag.id)")
                                     } else {
                                         self.isSelectedIndex = ""
                                     }
