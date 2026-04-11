@@ -16,7 +16,15 @@ struct FavoriteColorScreen: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(tagData) { tag in
-                                TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: {
+                                TagView(
+                                    isSelectedIndex: $isSelectedIndex,
+                                    index: tag.id,
+                                    text: tag.tagName,
+                                    tagDeleteBackground: appSettings.themeColor.stringValue.tagColor.tagDeleteButtonBackgroundColor,
+                                    background: appSettings.themeColor.stringValue.tagColor.tagBackground,
+                                    selectedBackground: appSettings.themeColor.stringValue.tagColor.tagSelectBackground,
+                                    textFontColor: appSettings.themeColor.stringValue.fontColor,
+                                    onTap: {
                                     if isSelectedIndex.isEmpty {
                                         self.isSelectedIndex = tag.id
                                         print("tag.id \(tag.id)")

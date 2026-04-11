@@ -16,9 +16,15 @@ public struct TextFieldColor {
     let textFieldIconColor: Color
 }
 
+public struct TagColor {
+    let tagBackground: Color
+    let tagSelectBackground: Color
+    let tagDeleteButtonBackgroundColor: Color
+}
+
 struct defaultTheme: Theme {
     let id: String = "Background"
-    let fontColor: Color = Color("Light")
+    let fontColor: Color = Color("DarkBaseFont")
     let borderColor: Color = Color("DarkBorder")
     let borderButtonColor: Color = Color("Light")
     let textFieldColor: TextFieldColor = TextFieldColor(
@@ -32,12 +38,17 @@ struct defaultTheme: Theme {
     let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
         registerButtonBackgroundColor: Color("DarkLightPurple"),
         registerButtonFontColor: Color("Light")
+    )
+    let tagColor: TagColor = TagColor(
+        tagBackground: Color("DarkTagBackground"),
+        tagSelectBackground: Color("DarkSelectTagBackground"),
+        tagDeleteButtonBackgroundColor: .white.opacity(0.1)
     )
 }
 
 struct blueTheme: Theme {
     let id: String = "BlueColor"
-    let fontColor: Color = Color("Light")
+    let fontColor: Color = Color("DarkBaseFont")
     let borderColor: Color = Color("DarkBorder")
     let borderButtonColor: Color = Color("Light")
     let textFieldColor: TextFieldColor = TextFieldColor(
@@ -52,11 +63,16 @@ struct blueTheme: Theme {
         registerButtonBackgroundColor: Color("DarkLightPurple"),
         registerButtonFontColor: Color("Light")
     )
+    let tagColor: TagColor = TagColor(
+        tagBackground: Color("DarkTagBackground"),
+        tagSelectBackground: Color("DarkSelectTagBackground"),
+        tagDeleteButtonBackgroundColor: .white.opacity(0.1)
+    )
 }
 
 struct darkColorTheme: Theme {
     let id: String = "DarkColor"
-    let fontColor: Color = Color("Light")
+    let fontColor: Color = Color("DarkBaseFont")
     let borderButtonColor: Color = Color("Light")
     let borderColor: Color = Color("DarkBorder")
     let textFieldColor: TextFieldColor = TextFieldColor(
@@ -71,11 +87,16 @@ struct darkColorTheme: Theme {
         registerButtonBackgroundColor: Color("DarkLightPurple"),
         registerButtonFontColor: Color("Light")
     )
+    let tagColor: TagColor = TagColor(
+        tagBackground: Color("DarkTagBackground"),
+        tagSelectBackground: Color("DarkSelectTagBackground"),
+        tagDeleteButtonBackgroundColor: .white.opacity(0.1)
+    )
 }
 
 struct LightColorTheme: Theme {
     let id: String = "LightColor"
-    let fontColor: Color = Color("LightBlack")
+    let fontColor: Color = Color("BaseFontLight")
     let borderButtonColor: Color = Color("Light")
     let borderColor: Color = Color("LightBrawn")
     let textFieldColor: TextFieldColor = TextFieldColor(
@@ -83,12 +104,17 @@ struct LightColorTheme: Theme {
         textFieldIconColor: Color("Brawn")
     )
     let resetButtonColor: ResetButtonColor = ResetButtonColor(
-        resetButtonFontColor: Color("LightBlack"),
+        resetButtonFontColor: Color("BaseFontLight"),
         resetButtonBackground: Color("LightBrawn")
     )
     let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
         registerButtonBackgroundColor: Color("PastelLightBlue"),
         registerButtonFontColor: Color("Light")
+    )
+    let tagColor: TagColor = TagColor(
+        tagBackground: Color("LightTagBackground"),
+        tagSelectBackground: Color("LightSelectTagBackground"),
+        tagDeleteButtonBackgroundColor: Color("LightDeleteTagBackground")
     )
 }
 

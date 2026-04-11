@@ -132,12 +132,16 @@ struct ColorCheckerScreen: View {
                                             ),
                                             index: tag.id,
                                             text: tag.tagName,
+                                            tagDeleteBackground: appSettitngs.themeColor.stringValue.tagColor.tagDeleteButtonBackgroundColor,
+                                            background: appSettitngs.themeColor.stringValue.tagColor.tagBackground,
+                                            selectedBackground: appSettitngs.themeColor.stringValue.tagColor.tagSelectBackground,
+                                            textFontColor: appSettitngs.themeColor.stringValue.fontColor,
                                             onTap: {
                                                 onEvent(.selectTagId(tag.id))
                                             },
                                             onDeleteTap: {
                                                 onEvent(.deleteTag(tag))
-                                            }
+                                            },
                                         )
                                     }
                                 }
@@ -163,7 +167,12 @@ struct ColorCheckerScreen: View {
                         ), in: 0...1)
                     }
                     HStack {
-                        BaseButton(text: "リセット", width: 360, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
+                        BaseButton(
+                            text: "リセット",
+                            width: 360,
+                            bodyColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonBackground,
+                            borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                            fontColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonFontColor, onTap: {
                             onEvent(.clearAll)
                         })
                     }

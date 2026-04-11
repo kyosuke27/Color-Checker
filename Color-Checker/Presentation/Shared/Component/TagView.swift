@@ -4,6 +4,10 @@ struct TagView: View {
     @Binding var isSelectedIndex: String
     let index: String
     let text: String
+    let tagDeleteBackground: Color
+    let background: Color
+    let selectedBackground: Color
+    let textFontColor: Color
     let onTap: () -> Void
     
     let onDeleteTap: () -> Void
@@ -15,14 +19,14 @@ struct TagView: View {
     var body: some View {
         HStack(spacing: 8) {
             Text(text)
-                .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                .foregroundStyle(textFontColor)
             Button {
                 // アクション
                 onDeleteTap()
             } label: {
                 Image(systemName: "xmark")
                     .resizable()
-                    .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                    .foregroundStyle(textFontColor)
                     .frame(width: 6, height: 6)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 6)
@@ -38,7 +42,7 @@ struct TagView: View {
         .padding(.leading, 8)
         .padding(.trailing, 2)
         .padding(.vertical, 8)
-        .background(isSelected ? Color.extendedColors.component.compSelectBackground : Color.extendedColors.component.compBackground)
+        .background(isSelected ? selectedBackground : background)
         .cornerRadius(8)
         .overlay {
             RoundedRectangle(cornerRadius: 8)
@@ -58,7 +62,17 @@ private struct TagViewPreviewContainer: View {
     var body: some View {
         let indexs = ["1", "2", "3"]
         ForEach(indexs.indices, id: \.self) {index in
-            TagView(isSelectedIndex: $selectedIndex, index: indexs[index], text: "#Sample", onTap: { selectedIndex = indexs[index] }, onDeleteTap: {})
+            TagView(
+                isSelectedIndex: $selectedIndex,
+                index: indexs[index],
+                text: "#Sample",
+                tagDeleteBackground: .black.opacity(0.1),
+                background: .black,
+                selectedBackground: .white.opacity(0.8),
+                textFontColor: .white,
+                onTap: { selectedIndex = indexs[index] },
+                onDeleteTap: {}
+            )
         }
     }
 }

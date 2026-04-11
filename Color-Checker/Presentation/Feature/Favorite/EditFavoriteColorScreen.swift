@@ -178,7 +178,16 @@ struct EditFavoriteColorScreen: View {
                             ScrollView(.horizontal) {
                                 HStack {
                                     ForEach(tagData) { tag in
-                                        TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id }, onDeleteTap: { tagReposiroty.delete(tag)
+                                        TagView(
+                                            isSelectedIndex: $tagSelectedIndex,
+                                            index: tag.id,
+                                            text: tag.tagName,
+                                            tagDeleteBackground: appSettitngs.themeColor.stringValue.tagColor.tagDeleteButtonBackgroundColor,
+                                            background: appSettitngs.themeColor.stringValue.tagColor.tagBackground,
+                                            selectedBackground: appSettitngs.themeColor.stringValue.tagColor.tagSelectBackground,
+                                            textFontColor: appSettitngs.themeColor.stringValue.fontColor,
+                                            onTap: { tagSelectedIndex = tag.id },
+                                            onDeleteTap: { tagReposiroty.delete(tag)
                                             tagData = tagReposiroty.readAll()
                                         })
                                     }

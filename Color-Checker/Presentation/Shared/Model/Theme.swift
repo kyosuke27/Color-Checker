@@ -9,4 +9,5 @@ protocol Theme {
     var textFieldColor: TextFieldColor {get}
     var resetButtonColor: ResetButtonColor {get}
     var registerButtonColor: RegisterButtonColor {get}
+    var tagColor: TagColor {get}
 }
