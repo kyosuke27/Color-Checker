@@ -56,7 +56,7 @@ struct ColorCheckerScreen: View {
                                 }
                             ),
                             borderColor: appSettitngs.themeColor.stringValue.borderColor,
-                            background: appSettitngs.themeColor.stringValue.textBackgroundColor
+                            background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor
                         )
                         .padding(.top, 12)
                     } else if state.colorCheckerType == .Slider {
@@ -117,9 +117,9 @@ struct ColorCheckerScreen: View {
                             height: 0,
                             type: .imageTextField,
                             image: Image(systemName: "bubble.left"),
-                            imageColor: appSettitngs.themeColor.stringValue.textFildIconColor,
+                            imageColor: appSettitngs.themeColor.stringValue.textFieldColor.textFieldIconColor,
                             borderColor: appSettitngs.themeColor.stringValue.borderColor,
-                            backgroundColor: appSettitngs.themeColor.stringValue.textBackgroundColor
+                            backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor
                         )
                         HStack {
                             ScrollView(.horizontal) {
@@ -143,7 +143,7 @@ struct ColorCheckerScreen: View {
                                 }
                             }
                             .scrollIndicators(.hidden)
-                            BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonFontColor, onTap: {
+                            BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                                 onEvent(.changeTagModal)
                             })
                             
@@ -163,12 +163,12 @@ struct ColorCheckerScreen: View {
                         ), in: 0...1)
                     }
                     HStack {
-                        BaseButton(text: "リセット", width: 360, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonFontColor, onTap: {
+                        BaseButton(text: "リセット", width: 360, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                             onEvent(.clearAll)
                         })
                     }
                     HStack {
-                        BaseButton(text: "保存", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonFontColor, onTap: {
+                        BaseButton(text: "保存", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                             onEvent(.saveData)
                         })
                     }

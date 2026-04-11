@@ -152,7 +152,7 @@ struct EditFavoriteColorScreen: View {
                     .pickerStyle(.segmented)
                     if checkerType == .Input {
                         RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType,
-                               borderColor: appSettitngs.themeColor.stringValue.borderColor, background: appSettitngs.themeColor.stringValue.textBackgroundColor
+                               borderColor: appSettitngs.themeColor.stringValue.borderColor, background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor
                         )
                         .padding(.top, 12)
                     } else if checkerType == .Slider {
@@ -173,7 +173,7 @@ struct EditFavoriteColorScreen: View {
                     }
                     ColorArea(color: $color, height: 180)
                     VStack {
-                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textBackgroundColor)
+                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor)
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
