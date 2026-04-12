@@ -21,18 +21,23 @@ public struct TagColor {
     let tagDeleteButtonBackgroundColor: Color
 }
 
+public struct TagButton {
+    let tagButtonColor: Color
+    let tagFont: Color
+}
+
 struct defaultTheme: Theme {
     let id: String = "Background"
     let fontColor: Color = Color("DarkBaseFont")
-    let borderColor: Color = Color("DarkBorder")
+    let borderColor: Color = Color("DarkBorderColor")
     let borderButtonColor: Color = Color("Light")
     let textFieldColor: TextFieldColor = TextFieldColor(
-        textBackgroundColor: Color("DarkBorder"),
+        textBackgroundColor: Color("DarkTextFieldBackground"),
         textFieldIconColor: Color("Light")
     )
     let resetButtonColor: ResetButtonColor = ResetButtonColor(
         resetButtonFontColor: Color("LightBlack"),
-        resetButtonBackground: Color("LightBrawn")
+        resetButtonBackground: Color("DarkDeleteTagBackground")
     )
     let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
         registerButtonBackgroundColor: Color("DarkLightPurple"),
@@ -41,21 +46,27 @@ struct defaultTheme: Theme {
     let tagColor: TagColor = TagColor(
         tagBackground: Color("DarkTagBackground"),
         tagDeleteButtonBackgroundColor: .white.opacity(0.1)
+    )
+    let tagButtonColor: TagButton = TagButton(
+        // 同色なので流用
+        tagButtonColor: Color("DarkDeleteTagBackground"),
+        // Fontとborderは同じ色に設定する
+        tagFont: Color("Light")
     )
 }
 
 struct blueTheme: Theme {
     let id: String = "BlueColor"
     let fontColor: Color = Color("DarkBaseFont")
-    let borderColor: Color = Color("DarkBorder")
+    let borderColor: Color = Color("DarkBorderColor")
     let borderButtonColor: Color = Color("Light")
     let textFieldColor: TextFieldColor = TextFieldColor(
-        textBackgroundColor: Color("DarkBorder"),
+        textBackgroundColor: Color("DarkTextFieldBackground"),
         textFieldIconColor: Color("Light")
     )
     let resetButtonColor: ResetButtonColor = ResetButtonColor(
         resetButtonFontColor: Color("LightBlack"),
-        resetButtonBackground: Color("LightBrawn")
+        resetButtonBackground: Color("DarkDeleteTagBackground")
     )
     let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
         registerButtonBackgroundColor: Color("DarkLightPurple"),
@@ -64,6 +75,13 @@ struct blueTheme: Theme {
     let tagColor: TagColor = TagColor(
         tagBackground: Color("DarkTagBackground"),
         tagDeleteButtonBackgroundColor: .white.opacity(0.1)
+    )
+    let tagButtonColor: TagButton = TagButton(
+        // 同色なので流用
+        tagButtonColor: Color("DarkDeleteTagBackground"),
+        // Fontとborderは同じ色に設定する
+        tagFont: Color("Light")
+
     )
 }
 
@@ -71,14 +89,14 @@ struct darkColorTheme: Theme {
     let id: String = "DarkColor"
     let fontColor: Color = Color("DarkBaseFont")
     let borderButtonColor: Color = Color("Light")
-    let borderColor: Color = Color("DarkBorder")
+    let borderColor: Color = Color("DarkBorderColor")
     let textFieldColor: TextFieldColor = TextFieldColor(
-        textBackgroundColor: Color("DarkBorder"),
+        textBackgroundColor: Color("DarkTextFieldBackground"),
         textFieldIconColor: Color("Light")
     )
     let resetButtonColor: ResetButtonColor = ResetButtonColor(
         resetButtonFontColor: Color("DarkBlack"),
-        resetButtonBackground: Color("LightBrawn")
+        resetButtonBackground: Color("DarkDeleteTagBackground")
     )
     let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
         registerButtonBackgroundColor: Color("DarkLightPurple"),
@@ -88,19 +106,25 @@ struct darkColorTheme: Theme {
         tagBackground: Color("DarkTagBackground"),
         tagDeleteButtonBackgroundColor: .white.opacity(0.1)
     )
+    let tagButtonColor: TagButton = TagButton(
+        // 同色なので流用
+        tagButtonColor: Color("DarkDeleteTagBackground"),
+        // Fontとborderは同じ色に設定する
+        tagFont: Color("Light")
+    )
 }
 
 struct LightColorTheme: Theme {
     let id: String = "LightColor"
-    let fontColor: Color = Color("BaseFontLight")
-    let borderButtonColor: Color = Color("Light")
+    let fontColor: Color = Color("BaseLight")
+    let borderButtonColor: Color = Color("BaseLight")
     let borderColor: Color = Color("LightBrawn")
     let textFieldColor: TextFieldColor = TextFieldColor(
         textBackgroundColor: Color("Light"),
         textFieldIconColor: Color("Brawn")
     )
     let resetButtonColor: ResetButtonColor = ResetButtonColor(
-        resetButtonFontColor: Color("BaseFontLight"),
+        resetButtonFontColor: Color("BaseLight"),
         resetButtonBackground: Color("LightBrawn")
     )
     let registerButtonColor: RegisterButtonColor = RegisterButtonColor(
@@ -110,6 +134,12 @@ struct LightColorTheme: Theme {
     let tagColor: TagColor = TagColor(
         tagBackground: Color("LightTagBackground"),
         tagDeleteButtonBackgroundColor: Color("LightDeleteTagBackground")
+    )
+    let tagButtonColor: TagButton = TagButton(
+        // 同色なので流用
+        tagButtonColor: Color("LightBrawn"),
+        // Fontとborderは同じ色に設定する
+        tagFont: Color("Brawn")
     )
 }
 

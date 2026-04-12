@@ -17,7 +17,9 @@ struct BaseButton: View {
                 .foregroundStyle(fontColor)
             // ボタンの背景
                 .background(
-                    RoundedRectangle(cornerRadius: cornerAmount).fill(bodyColor)
+                    RoundedRectangle(cornerRadius: cornerAmount)
+                        .fill(bodyColor)
+                        .shadow(color: borderColor.opacity(0.8), radius: 2, x: 2, y: 2)
                 )
         }
         .overlay(

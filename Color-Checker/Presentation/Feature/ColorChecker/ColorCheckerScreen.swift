@@ -144,9 +144,15 @@ struct ColorCheckerScreen: View {
                                 }
                             }
                             .scrollIndicators(.hidden)
-                            BaseButton(text: "＋", width: 40, bodyColor: Color.extendedColors.component.buttonBackground, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
-                                onEvent(.changeTagModal)
-                            })
+                            BaseButton(text: "＋",
+                                       width: 40,
+                                       bodyColor: appSettitngs.themeColor.stringValue.tagButtonColor.tagButtonColor,
+                                       borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                                       fontColor: appSettitngs.themeColor.stringValue.fontColor,
+                                       onTap: {
+                                            onEvent(.changeTagModal)
+                                        }
+                            )
                             
                         }
                         .frame(maxWidth: .infinity)
@@ -169,7 +175,8 @@ struct ColorCheckerScreen: View {
                             width: 360,
                             bodyColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonBackground,
                             borderColor: appSettitngs.themeColor.stringValue.borderColor,
-                            fontColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonFontColor, onTap: {
+                            fontColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonFontColor,
+                            onTap: {
                             onEvent(.clearAll)
                         })
                     }

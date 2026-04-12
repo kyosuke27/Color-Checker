@@ -28,7 +28,6 @@ struct BaseTextField: View {
         self.imageColor = imageColor
         self.borderColor = borderColor
         self.backgroundColor = backgroundColor
-        print("imageColor \(imageColor)")
     }
     
     var body: some View {
@@ -51,16 +50,13 @@ struct BaseTextField: View {
             TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
-                .background(backgroundColor.opacity(0.9))
-                .cornerRadius(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(backgroundColor.opacity(0.9))
+                )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8).stroke(borderColor, lineWidth: 1)
-                        .shadow(
-                            color: borderColor.opacity(0.15),
-                            radius: 8,
-                            x: 0,
-                            y: 4
-                        )
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(borderColor, lineWidth: 1)
                 )
                 .keyboardType(.default)
                 .submitLabel(.done)
@@ -76,16 +72,13 @@ struct BaseTextField: View {
             TextField("0", text: $inputString, prompt: Text("0").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
-                .background(backgroundColor.opacity(0.9))
-                .cornerRadius(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(backgroundColor.opacity(0.9))
+                )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8).stroke(borderColor, lineWidth: 1)
-                        .shadow(
-                            color: borderColor.opacity(0.15),
-                            radius: 8,
-                            x: 0,
-                            y: 4
-                        )
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(borderColor, lineWidth: 1)
                 )
                 .keyboardType(.numberPad)
                 .submitLabel(.done)
@@ -102,7 +95,7 @@ struct BaseTextField: View {
                     .resizable()
                     .frame(width: 24, height: 24)
                     .foregroundColor(self.imageColor ?? .red)
-                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(imageColor?.opacity(0.3)))
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity)
                     .padding(8)
@@ -112,16 +105,13 @@ struct BaseTextField: View {
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
             }
             .padding(8)
-            .background(backgroundColor.opacity(0.9))
-            .cornerRadius(8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(backgroundColor.opacity(0.9))
+            )
             .overlay(
-                RoundedRectangle(cornerRadius: 8).stroke(borderColor, lineWidth: 1)
-                    .shadow(
-                        color: backgroundColor.opacity(0.15),
-                            radius: 8,
-                            x: 0,
-                            y: 4
-                    )
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(borderColor, lineWidth: 1)
             )
             
         }
