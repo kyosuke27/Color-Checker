@@ -56,7 +56,8 @@ struct ColorCheckerScreen: View {
                                 }
                             ),
                             borderColor: appSettitngs.themeColor.stringValue.borderColor,
-                            background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor
+                            background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor,
+                            rgbRowBackground: appSettitngs.themeColor.stringValue.rgbArea.background,
                         )
                         .padding(.top, 12)
                     } else if state.colorCheckerType == .Slider {
@@ -174,7 +175,7 @@ struct ColorCheckerScreen: View {
                             text: "リセット",
                             width: 360,
                             bodyColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonBackground,
-                            borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                            borderColor: appSettitngs.themeColor.stringValue.borderButtonColor,
                             fontColor: appSettitngs.themeColor.stringValue.resetButtonColor.resetButtonFontColor,
                             onTap: {
                             onEvent(.clearAll)

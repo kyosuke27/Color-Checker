@@ -7,6 +7,7 @@ struct RGBRow: View {
     @Binding var isShowToastType: ToastType?
     let borderColor: Color
     let background: Color
+    let rgbRowBackground: Color
 
     var body: some View {
         HStack {
@@ -34,8 +35,12 @@ struct RGBRow: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
-        .background(Color.extendedColors.base.BaseBackground)
         .cornerRadius(8)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(rgbRowBackground)
+                .shadow(color: borderColor.opacity(0.8), radius: 3, x: 3, y: 3)
+        )
         .overlay {
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.extendedColors.component.textFieldBorder.opacity(0.2))
@@ -62,7 +67,8 @@ private struct PreviewContainer: View {
             blue: $blue,
             isShowToastType: $isShowToastType,
             borderColor: borderColor,
-            background: backgtound
+            background: backgtound,
+            rgbRowBackground: .black
         )
         .padding()
         .background(Color.black) // 背景が必要なら

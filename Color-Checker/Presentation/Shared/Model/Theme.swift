@@ -11,4 +11,5 @@ protocol Theme {
     var registerButtonColor: RegisterButtonColor {get}
     var tagColor: TagColor {get}
     var tagButtonColor: TagButton {get}
+    var rgbArea: RGBArea {get}
 }

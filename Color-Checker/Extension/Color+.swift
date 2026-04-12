@@ -26,6 +26,10 @@ public struct TagButton {
     let tagFont: Color
 }
 
+public struct RGBArea {
+    let background: Color
+}
+
 struct defaultTheme: Theme {
     let id: String = "Background"
     let fontColor: Color = Color("DarkBaseFont")
@@ -52,6 +56,9 @@ struct defaultTheme: Theme {
         tagButtonColor: Color("DarkDeleteTagBackground"),
         // Fontとborderは同じ色に設定する
         tagFont: Color("Light")
+    )
+    let rgbArea: RGBArea = RGBArea(
+        background: Color("DarkTextFieldBackground")
     )
 }
 
@@ -83,6 +90,9 @@ struct blueTheme: Theme {
         tagFont: Color("Light")
 
     )
+    let rgbArea: RGBArea = RGBArea(
+        background: Color("DarkTextFieldBackground")
+    )
 }
 
 struct darkColorTheme: Theme {
@@ -112,6 +122,9 @@ struct darkColorTheme: Theme {
         // Fontとborderは同じ色に設定する
         tagFont: Color("Light")
     )
+    let rgbArea: RGBArea = RGBArea(
+        background: Color("DarkTextFieldBackground")
+    )
 }
 
 struct LightColorTheme: Theme {
@@ -140,6 +153,9 @@ struct LightColorTheme: Theme {
         tagButtonColor: Color("LightBrawn"),
         // Fontとborderは同じ色に設定する
         tagFont: Color("Brawn")
+    )
+    let rgbArea: RGBArea = RGBArea(
+        background: Color("Light")
     )
 }
 

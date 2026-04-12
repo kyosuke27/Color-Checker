@@ -151,8 +151,14 @@ struct EditFavoriteColorScreen: View {
                     }
                     .pickerStyle(.segmented)
                     if checkerType == .Input {
-                        RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType,
-                               borderColor: appSettitngs.themeColor.stringValue.borderColor, background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor
+                        RGBRow(
+                            red: $red,
+                            green: $green,
+                            blue: $blue,
+                            isShowToastType: $isShowToastType,
+                            borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                            background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor,
+                            rgbRowBackground: appSettitngs.themeColor.stringValue.rgbArea.background
                         )
                         .padding(.top, 12)
                     } else if checkerType == .Slider {
