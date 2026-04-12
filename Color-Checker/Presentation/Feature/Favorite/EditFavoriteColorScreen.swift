@@ -22,7 +22,7 @@ struct EditFavoriteColorScreen: View {
     
     let reposiroty: FavoriteColorRepository = FavoriteColorRepositoryImpl()
     let tagReposiroty: TagRepository = TagRepositoryImpl()
-
+    
     init(selectedColor: ColorData) {
         self._selectedColor = State(initialValue: selectedColor)
         // RGB を文字列で初期化
@@ -34,7 +34,7 @@ struct EditFavoriteColorScreen: View {
         self._greenSlider = State(initialValue: Double(selectedColor.green))
         self._blueSlider = State(initialValue: Double(selectedColor.blue))
         self._tagSelectedIndex = State(initialValue: String(selectedColor.tagId))
-
+        
         // Color と opacity を初期化
         self._opacity = State(initialValue: selectedColor.alpha)
         self._color = State(initialValue:
@@ -45,15 +45,15 @@ struct EditFavoriteColorScreen: View {
                                     a: Double(selectedColor.alpha)
                                 )
         )
-
+        
         // メモを初期化
         self._memoText = State(initialValue: selectedColor.memo)
     }
-
+    
     private func rounded2(value: Float) -> Float {
         return (value * 100).rounded() / 100
     }
-
+    
     private func RGBtoColor() -> Color {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -63,7 +63,7 @@ struct EditFavoriteColorScreen: View {
     private func RGBtoColor(r: Double, g: Double, b: Double) -> Color {
         return Color.rgba(r: r, g: g, b: b, a: Double(opacity))
     }
-
+    
     private func RGBtoHex() -> String {
         let calcR = clampTo255(colorNum: red)
         let calcG = clampTo255(colorNum: green)
@@ -74,9 +74,9 @@ struct EditFavoriteColorScreen: View {
         // 2: 2桁
         // X: 16進数表記にする
         return String(format: "%02X%02X%02X", calcR, calcG, calcB)
-
+        
     }
-
+    
     // 0~255に変換
     private func clampTo255(colorNum: String) -> Int {
         let minLimtValue = 0
@@ -87,7 +87,7 @@ struct EditFavoriteColorScreen: View {
         }
         return min(max((Int(colorNum) ?? 0), minLimtValue), maxValue)
     }
-
+    
     private func updateColor() {
         // Get Favorite Colors Data
         
@@ -96,12 +96,12 @@ struct EditFavoriteColorScreen: View {
         let saveColorData: ColorData
         if checkerType == .Input {
             saveColorData = ColorData(id: selectedColor.id, red: clampTo255(colorNum: red), green: clampTo255(colorNum: green), blue: clampTo255(colorNum: blue), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: tagSelectedIndex)
-   
+            
         } else {
             saveColorData = ColorData(id: selectedColor.id, red: Int(redSlider), green: Int(greenSlider), blue: Int(blueSlider), alpha: rounded2(value: opacity), hexColor: RGBtoHex(), memo: memoText, tagId: tagSelectedIndex)
-  
+            
         }
-                if let index = colorsData.firstIndex(where: { $0.id == selectedColor.id }) {
+        if let index = colorsData.firstIndex(where: { $0.id == selectedColor.id }) {
             colorsData[index] = saveColorData
             reposiroty.saveColor(colorsData)
             return
@@ -109,7 +109,7 @@ struct EditFavoriteColorScreen: View {
             return
         }
     }
-
+    
     private func getColor() {
         let colorsData: [ColorData] = reposiroty.getColor()
         print("colorsData : \(colorsData)")
@@ -117,7 +117,7 @@ struct EditFavoriteColorScreen: View {
             print(color)
         }
     }
-
+    
     private func isValidRGB(red: String, green: String, blue: String) -> String? {
         let upperLimit = 255
         let r = clampTo255(colorNum: red)
@@ -128,17 +128,17 @@ struct EditFavoriteColorScreen: View {
         }
         return nil
     }
-
+    
     private func isValidMessage(messageText: String) -> String? {
         let messageLimit = 20
-
+        
         if memoText.count > messageLimit {
             let message = "入力値は20文字以下にしてください。"
             return message
         }
         return nil
     }
-
+    
     var body: some View {
         ScrollView {
             ZStack {
@@ -151,11 +151,19 @@ struct EditFavoriteColorScreen: View {
                     }
                     .pickerStyle(.segmented)
                     if checkerType == .Input {
-                        RGBRow(red: $red, green: $green, blue: $blue, isShowToastType: $isShowToastType )
-                            .padding(.top, 12)
+                        RGBRow(
+                            red: $red,
+                            green: $green,
+                            blue: $blue,
+                            isShowToastType: $isShowToastType,
+                            borderColor: appSettitngs.themeColor.stringValue.borderColor,
+                            background: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor,
+                            rgbRowBackground: appSettitngs.themeColor.stringValue.rgbArea.background
+                        )
+                        .padding(.top, 12)
                     } else if checkerType == .Slider {
                         VStack {
-                            SliderView(redSlider: $redSlider, greenSlider: $greenSlider, blueSlider: $blueSlider)
+                            SliderView(redSlider: $redSlider, greenSlider: $greenSlider, blueSlider: $blueSlider, background: appSettitngs.themeColor.stringValue.rgbArea.background)
                             
                         }
                         .onChange(of: [redSlider, greenSlider, blueSlider]) { _ in
@@ -171,12 +179,17 @@ struct EditFavoriteColorScreen: View {
                     }
                     ColorArea(color: $color, height: 180)
                     VStack {
-                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"))
+                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), imageColor: appSettitngs.themeColor.stringValue.textFieldColor.textFieldIconColor, borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor)
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
                                     ForEach(tagData) { tag in
-                                        TagView(isSelectedIndex: $tagSelectedIndex, index: tag.id, text: tag.tagName, onTap: { tagSelectedIndex = tag.id }, onDeleteTap: { tagReposiroty.delete(tag)
+                                        TagView(
+                                            isSelectedIndex: $tagSelectedIndex,
+                                            themeColor: appSettitngs.themeColor.stringValue,
+                                            tag: tag,
+                                            onTap: { tagSelectedIndex = tag.id },
+                                            onDeleteTap: { tagReposiroty.delete(tag)
                                             tagData = tagReposiroty.readAll()
                                         })
                                     }
@@ -188,7 +201,7 @@ struct EditFavoriteColorScreen: View {
                     }
                     HStack {
                         Text("A : \(String(format: "%.2f", opacity))")
-                            .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                            .foregroundStyle(appSettitngs.themeColor.stringValue.fontColor)
                         Slider(value: $opacity, in: 0...1)
                             .onChange(of: opacity) { newValue in
                                 opacity = rounded2(value: newValue)
@@ -196,7 +209,7 @@ struct EditFavoriteColorScreen: View {
                             }
                     }
                     HStack {
-                        BaseButton(text: "カラー表示", width: 360, bodyColor: Color.extendedColors.component.buttonBlueBackground, onTap: {
+                        BaseButton(text: "カラー表示", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                             if let valid = isValidRGB(red: red, green: green, blue: blue) {
                                 self.isShowToastType = .error(valid)
                                 Task {
@@ -210,7 +223,7 @@ struct EditFavoriteColorScreen: View {
                         })
                     }
                     HStack {
-                        BaseButton(text: "更新", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, onTap: {
+                        BaseButton(text: "更新", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                             if checkerType == .Input {
                                 if let valid = isValidRGB(red: red, green: green, blue: blue) {
                                     self.isShowToastType = .error(valid)
@@ -258,7 +271,7 @@ struct EditFavoriteColorScreen: View {
                 }
                 .padding(.horizontal, 16)
                 .background(
-                    Image(appSettitngs.themeColor.stringValue)
+                    Image(appSettitngs.themeColor.stringValue.id)
                         .resizable()
                         .scaledToFill()
                         .ignoresSafeArea()
@@ -273,7 +286,7 @@ struct EditFavoriteColorScreen: View {
             }
         }
         .background(
-            Image(appSettitngs.themeColor.stringValue)
+            Image(appSettitngs.themeColor.stringValue.id)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()

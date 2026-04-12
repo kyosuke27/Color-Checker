@@ -5,14 +5,17 @@ struct RGBRow: View {
     @Binding var green: String
     @Binding var blue: String
     @Binding var isShowToastType: ToastType?
+    let borderColor: Color
+    let background: Color
+    let rgbRowBackground: Color
 
     var body: some View {
         HStack {
-            RGBInput(text: $red, labelString: "R", fontColor: Color.extendedColors.base.redFontColor)
+            RGBInput(text: $red, labelString: "R", fontColor: Color.extendedColors.base.redFontColor, borderColor: borderColor, backgroundColor: background)
             Spacer()
-            RGBInput(text: $green, labelString: "G", fontColor: Color.extendedColors.base.greenFontColor)
+            RGBInput(text: $green, labelString: "G", fontColor: Color.extendedColors.base.greenFontColor, borderColor: borderColor, backgroundColor: background)
             Spacer()
-            RGBInput(text: $blue, labelString: "B", fontColor: Color.extendedColors.base.blueFontColor)
+            RGBInput(text: $blue, labelString: "B", fontColor: Color.extendedColors.base.blueFontColor, borderColor: borderColor, backgroundColor: background)
             Spacer()
             Button {
                 UIPasteboard.general.string = "\(red),\(green),\(blue)"
@@ -32,8 +35,12 @@ struct RGBRow: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
-        .background(Color.extendedColors.base.BaseBackground)
         .cornerRadius(8)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(rgbRowBackground)
+                .shadow(color: borderColor.opacity(0.8), radius: 3, x: 3, y: 3)
+        )
         .overlay {
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.extendedColors.component.textFieldBorder.opacity(0.2))
@@ -50,13 +57,18 @@ private struct PreviewContainer: View {
     @State private var green = "255"
     @State private var blue = "255"
     @State private var isShowToastType: ToastType?
+    let borderColor: Color = .black
+    let backgtound: Color = .black
 
     var body: some View {
         RGBRow(
             red: $red,
             green: $green,
             blue: $blue,
-            isShowToastType: $isShowToastType
+            isShowToastType: $isShowToastType,
+            borderColor: borderColor,
+            background: backgtound,
+            rgbRowBackground: .black
         )
         .padding()
         .background(Color.black) // 背景が必要なら
