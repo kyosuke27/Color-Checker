@@ -16,7 +16,6 @@ struct ColorCheckerScreen: View {
                            selection: Binding<ColorCheckerType>(
                             get: { state.colorCheckerType },
                             set: {newValue in
-                                print("newValue \(newValue)")
                                 onEvent(.changePickerType(newValue))
                             }
                            )
@@ -26,7 +25,7 @@ struct ColorCheckerScreen: View {
                         Image(systemName: "numbers.rectangle")
                             .tag(ColorCheckerType.Input)
                     }
-                    .background(.black)
+                    .background(appSettitngs.themeColor.stringValue.pickerColor.pickerBackground)
                     .pickerStyle(.segmented)
                     .cornerRadius(16)
                     if state.colorCheckerType == .Input {
@@ -121,7 +120,8 @@ struct ColorCheckerScreen: View {
                             image: Image(systemName: "bubble.left"),
                             imageColor: appSettitngs.themeColor.stringValue.textFieldColor.textFieldIconColor,
                             borderColor: appSettitngs.themeColor.stringValue.borderColor,
-                            backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor
+                            backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor,
+                            fontColor: appSettitngs.themeColor.stringValue.fontColor
                         )
                         HStack {
                             ScrollView(.horizontal) {

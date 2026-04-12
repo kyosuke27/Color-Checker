@@ -19,7 +19,8 @@ struct RGBInput: View {
                 height: 18,
                 type: .numberInput,
                 borderColor: borderColor,
-                backgroundColor: backgroundColor
+                backgroundColor: backgroundColor,
+                fontColor: fontColor
             )
         }
     }

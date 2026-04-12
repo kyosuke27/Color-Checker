@@ -30,6 +30,10 @@ public struct RGBArea {
     let background: Color
 }
 
+public struct PickerColor {
+    let pickerBackground: Color
+}
+
 struct defaultTheme: Theme {
     let id: String = "Background"
     let fontColor: Color = Color("DarkBaseFont")
@@ -59,6 +63,9 @@ struct defaultTheme: Theme {
     )
     let rgbArea: RGBArea = RGBArea(
         background: Color("DarkTextFieldBackground")
+    )
+    let pickerColor: PickerColor = PickerColor(
+        pickerBackground: Color("LightPurple")
     )
 }
 
@@ -93,6 +100,9 @@ struct blueTheme: Theme {
     let rgbArea: RGBArea = RGBArea(
         background: Color("DarkTextFieldBackground")
     )
+    let pickerColor: PickerColor = PickerColor(
+        pickerBackground: Color("LightPurple")
+    )
 }
 
 struct darkColorTheme: Theme {
@@ -125,6 +135,9 @@ struct darkColorTheme: Theme {
     let rgbArea: RGBArea = RGBArea(
         background: Color("DarkTextFieldBackground")
     )
+    let pickerColor: PickerColor = PickerColor(
+        pickerBackground: Color("LightPurple")
+    )
 }
 
 struct LightColorTheme: Theme {
@@ -156,6 +169,9 @@ struct LightColorTheme: Theme {
     )
     let rgbArea: RGBArea = RGBArea(
         background: Color("Light")
+    )
+    let pickerColor: PickerColor = PickerColor(
+        pickerBackground: Color("PickerBaseLight")
     )
 }
 

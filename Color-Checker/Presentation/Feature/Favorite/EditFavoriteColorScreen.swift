@@ -179,7 +179,7 @@ struct EditFavoriteColorScreen: View {
                     }
                     ColorArea(color: $color, height: 180)
                     VStack {
-                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), imageColor: appSettitngs.themeColor.stringValue.textFieldColor.textFieldIconColor, borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor)
+                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), imageColor: appSettitngs.themeColor.stringValue.textFieldColor.textFieldIconColor, borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor, fontColor: appSettitngs.themeColor.stringValue.fontColor)
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {

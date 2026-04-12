@@ -12,4 +12,5 @@ protocol Theme {
     var tagColor: TagColor {get}
     var tagButtonColor: TagButton {get}
     var rgbArea: RGBArea {get}
+    var pickerColor: PickerColor {get}
 }

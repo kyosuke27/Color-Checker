@@ -9,6 +9,7 @@ struct BaseTextField: View {
     let imageColor: Color?
     let borderColor: Color
     let backgroundColor: Color
+    let fontColor: Color
     
     init(
         inputString: Binding<String>,
@@ -18,7 +19,8 @@ struct BaseTextField: View {
         image: Image? = nil,
         imageColor: Color? = nil,
         borderColor: Color,
-        backgroundColor: Color
+        backgroundColor: Color,
+        fontColor: Color
     ) {
         self._inputString = inputString
         self.width = width
@@ -28,6 +30,7 @@ struct BaseTextField: View {
         self.imageColor = imageColor
         self.borderColor = borderColor
         self.backgroundColor = backgroundColor
+        self.fontColor = fontColor
     }
     
     var body: some View {
@@ -69,7 +72,7 @@ struct BaseTextField: View {
     }
     private func numberTextField() -> some View {
         return ZStack {
-            TextField("0", text: $inputString, prompt: Text("0").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+            TextField("0", text: $inputString, prompt: Text("0").foregroundColor(fontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
                 .background(
@@ -83,7 +86,7 @@ struct BaseTextField: View {
                 .keyboardType(.numberPad)
                 .submitLabel(.done)
                 .multilineTextAlignment(TextAlignment.center)
-                .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                .foregroundStyle(fontColor)
                 .font(.system(size: 18))
             
         }
@@ -126,9 +129,9 @@ private struct BaseTextFieldContainer: View {
     @State var inputString = ""
     var body: some View {
         VStack {
-            BaseTextField(inputString: $inputString, width: 100, height: 50, type: .defaultTextInput, borderColor: .white, backgroundColor: .black)
-            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .numberInput, borderColor: .white, backgroundColor: .black)
-            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .imageTextField, image: Image(systemName: "bubble.left"), borderColor: .white, backgroundColor: .black)
+            BaseTextField(inputString: $inputString, width: 100, height: 50, type: .defaultTextInput, borderColor: .white, backgroundColor: .black, fontColor: .black)
+            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .numberInput, borderColor: .white, backgroundColor: .black, fontColor: .black)
+            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .imageTextField, image: Image(systemName: "bubble.left"), borderColor: .white, backgroundColor: .black, fontColor: .black)
         }
         .padding()
     }
