@@ -179,7 +179,7 @@ struct EditFavoriteColorScreen: View {
                     }
                     ColorArea(color: $color, height: 180)
                     VStack {
-                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor)
+                        BaseTextField(inputString: $memoText, width: .infinity, height: 0, type: .imageTextField, image: Image(systemName: "bubble.left"), imageColor: appSettitngs.themeColor.stringValue.textFieldColor.textFieldIconColor, borderColor: appSettitngs.themeColor.stringValue.borderColor, backgroundColor: appSettitngs.themeColor.stringValue.textFieldColor.textBackgroundColor)
                         HStack {
                             ScrollView(.horizontal) {
                                 HStack {
@@ -201,7 +201,7 @@ struct EditFavoriteColorScreen: View {
                     }
                     HStack {
                         Text("A : \(String(format: "%.2f", opacity))")
-                            .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                            .foregroundStyle(appSettitngs.themeColor.stringValue.fontColor)
                         Slider(value: $opacity, in: 0...1)
                             .onChange(of: opacity) { newValue in
                                 opacity = rounded2(value: newValue)
@@ -209,7 +209,7 @@ struct EditFavoriteColorScreen: View {
                             }
                     }
                     HStack {
-                        BaseButton(text: "カラー表示", width: 360, bodyColor: Color.extendedColors.component.buttonBlueBackground, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: .white, onTap: {
+                        BaseButton(text: "カラー表示", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                             if let valid = isValidRGB(red: red, green: green, blue: blue) {
                                 self.isShowToastType = .error(valid)
                                 Task {
@@ -223,7 +223,7 @@ struct EditFavoriteColorScreen: View {
                         })
                     }
                     HStack {
-                        BaseButton(text: "更新", width: 360, bodyColor: Color.extendedColors.component.buttonPurpleBackground, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.fontColor, onTap: {
+                        BaseButton(text: "更新", width: 360, bodyColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonBackgroundColor, borderColor: appSettitngs.themeColor.stringValue.borderButtonColor, fontColor: appSettitngs.themeColor.stringValue.registerButtonColor.registerButtonFontColor, onTap: {
                             if checkerType == .Input {
                                 if let valid = isValidRGB(red: red, green: green, blue: blue) {
                                     self.isShowToastType = .error(valid)
