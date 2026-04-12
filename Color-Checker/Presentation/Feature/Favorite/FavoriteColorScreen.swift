@@ -32,6 +32,7 @@ struct FavoriteColorScreen: View {
                                 })
                             }
                         }
+                        .padding(.vertical, 4)
                     }
                 }
                 .onChange(of: isSelectedIndex) {newValue in
@@ -49,10 +50,18 @@ struct FavoriteColorScreen: View {
                             NavigationLink {
                                 EditFavoriteColorScreen(selectedColor: color)
                             }label: {
-                                FavoriteColorCardView(colorData: color, onDeleteTap: {
-                                    repository.deleteColor(color.id)
-                                    colorsData = repository.getColor()
-                                }, height: 45)
+                                FavoriteColorCardView(
+                                    colorData: color,
+                                    onDeleteTap: {
+                                        repository.deleteColor(color.id)
+                                        colorsData = repository.getColor()
+                                    },
+                                    height: 45,
+                                    background: appSettings.themeColor.stringValue.tagColor.tagBackground,
+                                    shadowColor: appSettings.themeColor.stringValue.borderButtonColor,
+                                    fontColor: appSettings.themeColor.stringValue.fontColor
+                                )
+                                .padding(.horizontal, 4)
                             }
                             .buttonStyle(.plain)
                         }
@@ -63,9 +72,7 @@ struct FavoriteColorScreen: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding(.horizontal, 4)
             }
-            .padding()
             .background {
                 Image(appSettings.themeColor.stringValue.id)
                         .resizable()
