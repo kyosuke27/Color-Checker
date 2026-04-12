@@ -163,7 +163,7 @@ struct EditFavoriteColorScreen: View {
                         .padding(.top, 12)
                     } else if checkerType == .Slider {
                         VStack {
-                            SliderView(redSlider: $redSlider, greenSlider: $greenSlider, blueSlider: $blueSlider)
+                            SliderView(redSlider: $redSlider, greenSlider: $greenSlider, blueSlider: $blueSlider, background: appSettitngs.themeColor.stringValue.rgbArea.background)
                             
                         }
                         .onChange(of: [redSlider, greenSlider, blueSlider]) { _ in

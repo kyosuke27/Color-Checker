@@ -86,7 +86,8 @@ struct ColorCheckerScreen: View {
                                     set: {newValue in
                                         onEvent(.changeColor(ColorSettingType.blue, newValue.doubleToInt()))
                                     }
-                                )
+                                ),
+                                background: appSettitngs.themeColor.stringValue.rgbArea.background
                             )
                             
                         }
