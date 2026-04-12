@@ -21,7 +21,7 @@ struct SettingScreen: View {
         }
         .padding()
         .background(
-            Image(appSettings.themeColor.stringValue)
+            Image(appSettings.themeColor.stringValue.id)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
@@ -32,7 +32,7 @@ struct SettingScreen: View {
         VStack(alignment: .leading) {
             HStack(alignment: .center) {
                 Text(title)
-                    .foregroundStyle(Color.extendedColors.base.baseFontColor)
+                    .foregroundStyle(appSettings.themeColor.stringValue.fontColor)
                     .fontWeight(.bold)
                 
             }

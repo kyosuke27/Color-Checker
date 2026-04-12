@@ -9,7 +9,7 @@ struct SettingImageCardView: View {
     var isCheck: Bool { selectedSetingImagType.rawValue == settingImageType.rawValue}
 
     var body: some View {
-        Image(settingImageType.stringValue)
+        Image(settingImageType.stringValue.id)
             .resizable()
             .frame(width: side, height: side)
             .cornerRadius(8)

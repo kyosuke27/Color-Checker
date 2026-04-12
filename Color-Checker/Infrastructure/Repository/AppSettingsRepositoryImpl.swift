@@ -23,12 +23,15 @@ struct AppSettingsRepositoryImpl: AppSettingsRepository {
     func save(_ appSettins: AppSettings) {
         iosManager.saveData(fileName: fileName, data: mapToDto(appSettins))
     }
-
+    // Entityへ変換
+    // アプリケーションで使用するモデル
     func mapToEntity(_ appSettingDto: AppSettingsDto) -> AppSettings {
         return AppSettings(id: appSettingDto.id, themeColor: appSettingDto.themeColor)
     }
-    func mapToDto(_ appSettingDto: AppSettings) -> AppSettingsDto {
-        return AppSettingsDto(id: appSettingDto.id, themeColor: appSettingDto.themeColor)
+    
+    // 登録用のモデル
+    func mapToDto(_ appSetting: AppSettings) -> AppSettingsDto {
+        return AppSettingsDto(id: appSetting.id, themeColor: appSetting.themeColor)
     }
 
 }

@@ -14,9 +14,11 @@ struct Color_CheckerApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            AppScreen()
-                .environmentObject(appSettings)
-                .environmentObject(interstitialViewModel)
+            AppScreen(
+                colorCheckerViewModel: ColorCheckerViewModel(interStitialViewModel: interstitialViewModel)
+            )
+            .environmentObject(appSettings)
+            .environmentObject(interstitialViewModel)
         }
     }
 }

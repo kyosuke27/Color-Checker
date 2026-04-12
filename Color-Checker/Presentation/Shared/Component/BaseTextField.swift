@@ -6,19 +6,28 @@ struct BaseTextField: View {
     let height: CGFloat
     let type: InputType
     let image: Image?
+    let imageColor: Color?
+    let borderColor: Color
+    let backgroundColor: Color
     
     init(
         inputString: Binding<String>,
         width: CGFloat,
         height: CGFloat,
         type: InputType,
-        image: Image? = nil
+        image: Image? = nil,
+        imageColor: Color? = nil,
+        borderColor: Color,
+        backgroundColor: Color
     ) {
         self._inputString = inputString
         self.width = width
         self.height = height
         self.type = type
         self.image = image
+        self.imageColor = imageColor
+        self.borderColor = borderColor
+        self.backgroundColor = backgroundColor
     }
     
     var body: some View {
@@ -41,10 +50,13 @@ struct BaseTextField: View {
             TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
-                .background(Color.extendedColors.base.BaseBackground.opacity(0.9))
-                .cornerRadius(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(backgroundColor.opacity(0.9))
+                )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8).stroke(Color.extendedColors.component.textFieldBorder, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(borderColor, lineWidth: 1)
                 )
                 .keyboardType(.default)
                 .submitLabel(.done)
@@ -60,10 +72,13 @@ struct BaseTextField: View {
             TextField("0", text: $inputString, prompt: Text("0").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
                 .frame(width: width, height: height)
                 .padding(8)
-                .background(Color.extendedColors.base.BaseBackground.opacity(0.9))
-                .cornerRadius(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(backgroundColor.opacity(0.9))
+                )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8).stroke(Color.extendedColors.component.textFieldBorder, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(borderColor, lineWidth: 1)
                 )
                 .keyboardType(.numberPad)
                 .submitLabel(.done)
@@ -79,7 +94,8 @@ struct BaseTextField: View {
                 image?
                     .resizable()
                     .frame(width: 24, height: 24)
-                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(Color.extendedColors.base.baseFontColor.opacity(0.1)))
+                    .foregroundColor(self.imageColor ?? .red)
+                TextField("メモを入力", text: $inputString, prompt: Text("メモを入力").foregroundColor(imageColor?.opacity(0.3)))
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity)
                     .padding(8)
@@ -89,10 +105,13 @@ struct BaseTextField: View {
                     .foregroundStyle(Color.extendedColors.base.baseFontColor)
             }
             .padding(8)
-            .background(Color.extendedColors.base.BaseBackground.opacity(0.9))
-            .cornerRadius(8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(backgroundColor.opacity(0.9))
+            )
             .overlay(
-                RoundedRectangle(cornerRadius: 8).stroke(Color.extendedColors.component.textFieldBorder, lineWidth: 1)
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(borderColor, lineWidth: 1)
             )
             
         }
@@ -107,9 +126,9 @@ private struct BaseTextFieldContainer: View {
     @State var inputString = ""
     var body: some View {
         VStack {
-            BaseTextField(inputString: $inputString, width: 100, height: 50, type: .defaultTextInput)
-            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .numberInput)
-            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .imageTextField, image: Image(systemName: "bubble.left"))
+            BaseTextField(inputString: $inputString, width: 100, height: 50, type: .defaultTextInput, borderColor: .white, backgroundColor: .black)
+            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .numberInput, borderColor: .white, backgroundColor: .black)
+            BaseTextField(inputString: $inputString, width: 200, height: 80, type: .imageTextField, image: Image(systemName: "bubble.left"), borderColor: .white, backgroundColor: .black)
         }
         .padding()
     }

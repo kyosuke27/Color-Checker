@@ -2,9 +2,21 @@ import Foundation
 import SwiftUI
 
 struct ColorCheckerState {
-    var red: String
-    var green: String
-    var blue: String
-    var color: Color
+    var red: Int
+    var green: Int
+    var blue: Int
     var opacity: Double
+    var memoText: String
+    var toastType: ToastType?
+    var colorCheckerType: ColorCheckerType
+    var isTagModal: Bool
+    var tagName: String
+    var tagsData: [Tag]
+    var isSelectedTagId: String
+    
+    var color: Color {
+        get {
+            return Color.rgba(r: red.intToDouble(), g: green.intToDouble(), b: blue.intToDouble(), a: opacity)
+        }
+    }
 }

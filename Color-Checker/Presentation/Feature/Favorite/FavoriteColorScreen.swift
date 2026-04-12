@@ -16,10 +16,13 @@ struct FavoriteColorScreen: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(tagData) { tag in
-                                TagView(isSelectedIndex: $isSelectedIndex, index: tag.id, text: tag.tagName, onTap: {
+                                TagView(
+                                    isSelectedIndex: $isSelectedIndex,
+                                    themeColor: appSettings.themeColor.stringValue,
+                                    tag: tag,
+                                    onTap: {
                                     if isSelectedIndex.isEmpty {
                                         self.isSelectedIndex = tag.id
-                                        print("tag.id \(tag.id)")
                                     } else {
                                         self.isSelectedIndex = ""
                                     }
@@ -29,6 +32,7 @@ struct FavoriteColorScreen: View {
                                 })
                             }
                         }
+                        .padding(.vertical, 4)
                     }
                 }
                 .onChange(of: isSelectedIndex) {newValue in
@@ -46,10 +50,18 @@ struct FavoriteColorScreen: View {
                             NavigationLink {
                                 EditFavoriteColorScreen(selectedColor: color)
                             }label: {
-                                FavoriteColorCardView(colorData: color, onDeleteTap: {
-                                    repository.deleteColor(color.id)
-                                    colorsData = repository.getColor()
-                                }, height: 45)
+                                FavoriteColorCardView(
+                                    colorData: color,
+                                    onDeleteTap: {
+                                        repository.deleteColor(color.id)
+                                        colorsData = repository.getColor()
+                                    },
+                                    height: 45,
+                                    background: appSettings.themeColor.stringValue.tagColor.tagBackground,
+                                    shadowColor: appSettings.themeColor.stringValue.borderButtonColor,
+                                    fontColor: appSettings.themeColor.stringValue.fontColor
+                                )
+                                .padding(.horizontal, 4)
                             }
                             .buttonStyle(.plain)
                         }
@@ -60,11 +72,9 @@ struct FavoriteColorScreen: View {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding(.horizontal, 4)
             }
-            .padding()
             .background {
-                    Image(appSettings.themeColor.stringValue)
+                Image(appSettings.themeColor.stringValue.id)
                         .resizable()
                         .scaledToFill()
                         .ignoresSafeArea()
